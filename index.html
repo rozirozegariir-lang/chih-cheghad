@@ -10,7 +10,7 @@
             background-color: #F5E6D3;
             color: #4A3728;
             text-align: center;
-            padding-top: 100px;
+            padding-top: 50px;
             margin: 0;
         }
         .container {
@@ -21,24 +21,29 @@
             border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #D4A574;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-        .btn {
+        h1 { color: #D4A574; font-size: 32px; margin-bottom: 10px; }
+        p { font-size: 18px; line-height: 1.6; }
+        
+        .upload-btn {
             display: inline-block;
             margin-top: 20px;
-            padding: 12px 24px;
+            padding: 15px 30px;
             background-color: #D4A574;
             color: white;
-            text-decoration: none;
             border-radius: 10px;
             font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 18px;
+            width: 100%;
+        }
+        .upload-btn:hover { background-color: #c29564; }
+        
+        #imagePreview {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
         }
     </style>
 </head>
@@ -46,10 +51,36 @@
 
     <div class="container">
         <h1>چی چقد؟</h1>
-        <p>اینجا قراره بفهمیم گنج‌های خونه‌ت چقد می‌ارزن! 🏺</p>
-        <p>به زودی هوش مصنوعی رو اینجا فعال می‌کنیم...</p>
-        <a href="#" class="btn">عکسش رو بذار</a>
+        <p>عکس گنج خونه‌ت رو بذار تا بگم چقد می‌ارزه! 🏺</p>
+        
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <button class="upload-btn" id="uploadBtn">📸 عکسش رو بذار</button>
+        
+        <img id="imagePreview" alt="عکس شما">
     </div>
+
+    <script>
+        const uploadBtn = document.getElementById('uploadBtn');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        uploadBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadBtn.innerText = '⏳ دارم نگاه می‌کنم...';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 
 </body>
 </html>
