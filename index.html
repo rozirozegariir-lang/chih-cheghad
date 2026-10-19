@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>چی چقد؟</title>
-    <!-- فونت وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     
     <style>
@@ -25,7 +24,6 @@
             padding-bottom: 80px;
         }
 
-        /* هدر */
         header {
             text-align: center;
             padding: 20px 10px;
@@ -41,9 +39,10 @@
             margin: 5px 0 0 0;
             font-size: 16px;
             color: #665;
+            font-weight: bold;
         }
 
-        /* بخش کارشناسی (آپلود عکس) - الان بالا قرار داره */
+        /* ۱. بخش آپلود عکس (بالا) */
         .upload-section {
             background: var(--card-bg);
             border-radius: 20px;
@@ -91,7 +90,6 @@
             display: none;
         }
 
-        /* کارت نتیجه */
         .result-card {
             display: none;
             background: var(--card-bg);
@@ -113,35 +111,7 @@
         .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
         .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
 
-        /* دکمه‌های تب - الان پایین قرار دارن */
-        .tabs {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin: 0 15px 20px 15px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 14px;
-            text-align: center;
-            border: none;
-            background: var(--card-bg);
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-            color: #777;
-            border-radius: 15px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
-        }
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
-        }
-
-        /* محتوای تب‌ها */
+        /* ۲. محتوای تب‌ها (وسط) */
         .tab-content {
             display: none;
             padding: 0 15px;
@@ -154,8 +124,15 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        .section-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 25px 0 15px 0;
+        }
 
-        /* گرید محصولات */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -182,7 +159,43 @@
         .product-title { font-weight: bold; font-size: 14px; margin: 0 0 5px 0; }
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
 
-        /* لودر */
+        /* ۳. دکمه‌های تب (پایین‌ترین قسمت) */
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 30px 15px 20px 15px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            border: none;
+            background: var(--card-bg);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            color: #777;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        /* رنگ اختصاصی تب گالری (سبز فیروزه‌ای) */
+        .tab-btn.gallery-btn.active {
+            background: #2A9D8F;
+            color: white;
+            box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
+        }
+
+        /* رنگ اختصاصی تب فروش (نارنجی مرجانی) */
+        .tab-btn.sales-btn.active {
+            background: #E76F51;
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 111, 81, 0.4);
+        }
+
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--primary);
@@ -199,13 +212,13 @@
 
     <header>
         <h1>چی چقد؟</h1>
-        <p>بفهم گنج خونه‌ت چقد می‌ارزه! 🏺</p>
+        <p>بفهمم گنج خونت چقدر می ارزه 🏺</p>
     </header>
 
-    <!-- بخش کارشناسی (آپلود عکس) - الان بالا قرار داره -->
+    <!-- بخش آپلود -->
     <div class="upload-section">
         <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
-        <h2>عکسش رو بفرست ببینم</h2>
+        <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
         <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
         
         <input type="file" id="imageInput" accept="image/*" style="display: none;">
@@ -216,10 +229,9 @@
         <img id="imagePreview" alt="عکس شما">
     </div>
 
-    <!-- کارت نمایش نتیجه -->
+    <!-- کارت نتیجه -->
     <div id="resultCard" class="result-card">
         <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
-        
         <div id="resultContent">
             <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
             <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
@@ -230,15 +242,9 @@
         </div>
     </div>
 
-    <!-- تب‌ها - الان پایین قرار دارن -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
-        <button class="tab-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
-    </div>
-
-    <!-- تب گالری روز -->
+    <!-- محصولات (گالری) -->
     <div id="gallery" class="tab-content active">
-        <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">اینا رو امروز گذاشتم برات ✨</p>
+        <h3 class="section-title">اینا رو امروز گذاشتم برات ✨</h3>
         <div class="grid">
             <div class="product-card">
                 <div class="product-img"></div>
@@ -257,9 +263,9 @@
         </div>
     </div>
 
-    <!-- تب آگهی‌های فروش -->
+    <!-- محصولات (فروش) -->
     <div id="sales" class="tab-content">
-        <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">این محصول‌ها فروشن 🛒</p>
+        <h3 class="section-title">این محصول‌ها فروشن 🛒</h3>
         <div class="grid">
             <div class="product-card">
                 <div class="product-img"></div>
@@ -281,16 +287,27 @@
         </button>
     </div>
 
+    <!-- دکمه‌های تب (پایین‌ترین نقطه) -->
+    <div class="tabs">
+        <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
+        <button class="tab-btn sales-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
+    </div>
+
     <script>
-        // اسکریپت تب‌ها
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            
+            const targetTab = document.getElementById(tabId);
+            targetTab.classList.add('active');
             btnElement.classList.add('active');
+
+            window.scrollTo({
+                top: targetTab.offsetTop - 20,
+                behavior: 'smooth'
+            });
         }
 
-        // اسکریپت آپلود و هوش مصنوعی
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -307,7 +324,6 @@
                 reader.onload = async function(e) {
                     const img = new Image();
                     img.onload = async function() {
-                        // فشرده‌سازی عکس
                         const canvas = document.createElement('canvas');
                         const MAX_WIDTH = 800;
                         const scale = MAX_WIDTH / img.width;
@@ -323,7 +339,6 @@
                         errorBox.style.display = 'none';
                         resultContent.style.display = 'block';
                         
-                        // تغییر وضعیت دکمه
                         uploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>';
                         uploadBtn.disabled = true;
 
@@ -337,7 +352,6 @@
                             const data = await response.json();
 
                             if (response.ok) {
-                                // نمایش نتیجه موفق
                                 document.getElementById('res-name').innerText = data.name;
                                 document.getElementById('res-period').innerText = data.period;
                                 document.getElementById('res-price').innerText = data.price_range;
@@ -345,8 +359,12 @@
                                 document.getElementById('res-story').innerText = data.story;
                                 document.getElementById('res-disclaimer').innerText = data.disclaimer;
                                 resultCard.style.display = 'block';
+                                
+                                window.scrollTo({
+                                    top: resultCard.offsetTop - 20,
+                                    behavior: 'smooth'
+                                });
                             } else {
-                                // نمایش ارور شیک
                                 resultContent.style.display = 'none';
                                 errorBox.innerText = 'متأسفانه در حال حاضر ارتباط با هوش مصنوعی برقرار نشد. (خطا: ' + (data.error || 'نامشخص') + ')';
                                 errorBox.style.display = 'block';
