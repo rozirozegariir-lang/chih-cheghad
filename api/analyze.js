@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-90b-vision-preview', // مدل جدید و معتبر
+        model: 'llama-3.2-90b-vision-instruct',
         messages: [
           {
             role: 'user',
