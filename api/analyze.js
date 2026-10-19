@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.2-11b-vision-instruct', // این مدل جایگزین مدل منقضی شده شد
+        model: 'qwen/qwen3.8-27b', // مدل جدید و معتبر برای پردازش تصویر
         messages: [
           {
             role: 'user',
