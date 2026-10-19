@@ -4,37 +4,285 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>چی چقد؟</title>
+    <!-- فونت وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #F5E6D3; color: #4A3728; text-align: center; padding-top: 30px; margin: 0; }
-        .container { background: white; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #D4A574; font-size: 32px; margin-bottom: 10px; }
-        p { font-size: 18px; line-height: 1.6; }
-        
-        .upload-btn { display: inline-block; margin-top: 20px; padding: 15px 30px; background-color: #D4A574; color: white; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 18px; width: 100%; }
-        .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; }
-        
-        #imagePreview { max-width: 100%; max-height: 300px; object-fit: cover; margin-top: 20px; border-radius: 10px; display: none; }
+        :root {
+            --primary: #D4A574;
+            --primary-dark: #b88655;
+            --bg-color: #F5E6D3;
+            --text-main: #4A3728;
+            --card-bg: #FFFFFF;
+        }
 
-        .result-card { display: none; text-align: right; margin-top: 20px; background: #fdfaf6; padding: 15px; border-radius: 10px; border: 1px solid #e0d0c0; }
-        .result-item { margin-bottom: 10px; }
-        .result-title { font-weight: bold; color: #D4A574; font-size: 16px;}
-        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.5;}
-        .disclaimer { font-size: 12px; color: #888; margin-top: 15px; text-align: center; }
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+
+        /* هدر */
+        header {
+            text-align: center;
+            padding: 20px 10px;
+            background: linear-gradient(180deg, #fff 0%, var(--bg-color) 100%);
+        }
+        header h1 {
+            color: var(--primary);
+            font-size: 36px;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            color: #665;
+        }
+
+        /* تب‌ها */
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin: 0 15px 20px 15px;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            color: #888;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 10px rgba(212, 165, 116, 0.4);
+        }
+
+        /* محتوای تب‌ها */
+        .tab-content {
+            display: none;
+            padding: 0 15px;
+            animation: fadeIn 0.4s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* گرید محصولات */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .product-img {
+            width: 100%;
+            height: 120px;
+            background-color: #eee;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 40px;
+        }
+        .product-info {
+            padding: 10px;
+        }
+        .product-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0 0 5px 0;
+        }
+        .product-price {
+            color: var(--primary-dark);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* بخش کارشناسی (دکمه اصلی) */
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 20px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px dashed var(--primary);
+        }
+        .upload-section h2 {
+            font-size: 20px;
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+        .upload-section p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        .upload-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: inherit;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .upload-btn:active { transform: scale(0.98); }
+        .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
+        
+        #imagePreview {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* کارت نتیجه */
+        .result-card {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: right;
+            border-top: 5px solid var(--primary);
+            animation: slideUp 0.5s;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-item { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+        .result-item:last-child { border-bottom: none; }
+        .result-title { font-weight: bold; color: var(--primary-dark); font-size: 15px; display: flex; align-items: center; gap: 5px; }
+        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
+        .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
+
+        /* لودر */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <header>
         <h1>چی چقد؟</h1>
-        <p>عکس گنج خونه‌ت رو بذار تا بگم چقد می‌ارزه! 🏺</p>
+        <p>بفهم گنج خونه‌ت چقد می‌ارزه! 🏺</p>
+    </header>
+
+    <!-- تب‌ها -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
+        <button class="tab-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
+    </div>
+
+    <!-- تب گالری روز -->
+    <div id="gallery" class="tab-content active">
+        <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">اینا رو امروز گذاشتم برات ✨</p>
+        <div class="grid">
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <p class="product-title">گلدون سفالی قاجاری</p>
+                    <p class="product-price">۲.۵ میلیون تومان</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <p class="product-title">سکه نقره رضا شاه</p>
+                    <p class="product-price">۸۰۰ هزار تومان</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تب آگهی‌های فروش -->
+    <div id="sales" class="tab-content">
+        <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">این محصول‌ها فروشن 🛒</p>
+        <div class="grid">
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <p class="product-title">فرش دستباف تبریز</p>
+                    <p class="product-price">۸ میلیون تومان</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <p class="product-title">کتاب خطی قدیمی</p>
+                    <p class="product-price">۱.۲ میلیون تومان</p>
+                </div>
+            </div>
+        </div>
+        <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;">
+            اینجا بذار برای فروش 📌
+        </button>
+    </div>
+
+    <!-- بخش کارشناسی (آپلود عکس) -->
+    <div class="upload-section">
+        <h2>عکسش رو بذار، ببینم چیه</h2>
+        <p>۳ تا کارشناسی رایگان داری! 🎁</p>
         
         <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <button class="upload-btn" id="uploadBtn">📸 عکسش رو بذار</button>
+        <button class="upload-btn" id="uploadBtn">
+            <span>📸</span> عکسش رو بذار
+        </button>
         
         <img id="imagePreview" alt="عکس شما">
+    </div>
 
-        <!-- بخش نمایش نتیجه -->
-        <div id="resultCard" class="result-card">
+    <!-- کارت نمایش نتیجه -->
+    <div id="resultCard" class="result-card">
+        <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px;"></div>
+        
+        <div id="resultContent">
             <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
             <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
             <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
@@ -45,23 +293,32 @@
     </div>
 
     <script>
+        // اسکریپت تب‌ها
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // اسکریپت آپلود و هوش مصنوعی
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
         const resultCard = document.getElementById('resultCard');
+        const errorBox = document.getElementById('errorBox');
+        const resultContent = document.getElementById('resultContent');
 
-        uploadBtn.addEventListener('click', () => {
-            imageInput.click();
-        });
+        uploadBtn.addEventListener('click', () => { imageInput.click(); });
 
         imageInput.addEventListener('change', async function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
-                    // فشرده‌سازی عکس برای اینکه سریع‌تر ارسال بشه
                     const img = new Image();
                     img.onload = async function() {
+                        // فشرده‌سازی عکس
                         const canvas = document.createElement('canvas');
                         const MAX_WIDTH = 800;
                         const scale = MAX_WIDTH / img.width;
@@ -74,8 +331,11 @@
                         imagePreview.src = base64Image;
                         imagePreview.style.display = 'block';
                         resultCard.style.display = 'none';
+                        errorBox.style.display = 'none';
+                        resultContent.style.display = 'block';
                         
-                        uploadBtn.innerText = '⏳ دارم نگاه می‌کنم...';
+                        // تغییر وضعیت دکمه
+                        uploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>';
                         uploadBtn.disabled = true;
 
                         try {
@@ -88,21 +348,28 @@
                             const data = await response.json();
 
                             if (response.ok) {
+                                // نمایش نتیجه موفق
                                 document.getElementById('res-name').innerText = data.name;
                                 document.getElementById('res-period').innerText = data.period;
                                 document.getElementById('res-price').innerText = data.price_range;
                                 document.getElementById('res-auth').innerText = data.authenticity;
                                 document.getElementById('res-story').innerText = data.story;
                                 document.getElementById('res-disclaimer').innerText = data.disclaimer;
-                                
                                 resultCard.style.display = 'block';
                             } else {
-                                alert('خطا: ' + (data.error || 'مشکلی پیش اومد'));
+                                // نمایش ارور شیک
+                                resultContent.style.display = 'none';
+                                errorBox.innerText = 'متأسفانه در حال حاضر ارتباط با هوش مصنوعی برقرار نشد. (خطا: ' + (data.error || 'نامشخص') + ')';
+                                errorBox.style.display = 'block';
+                                resultCard.style.display = 'block';
                             }
                         } catch (error) {
-                            alert('ارتباط برقرار نشد. اینترنتت رو چک کن.');
+                            resultContent.style.display = 'none';
+                            errorBox.innerText = 'ارتباط با سرور برقرار نشد. لطفاً اینترنت و فیلترشکن خود را بررسی کنید.';
+                            errorBox.style.display = 'block';
+                            resultCard.style.display = 'block';
                         } finally {
-                            uploadBtn.innerText = '📸 عکس دیگه‌ای بذار';
+                            uploadBtn.innerHTML = '<span>📸</span> عکس دیگه‌ای بذار';
                             uploadBtn.disabled = false;
                         }
                     };
