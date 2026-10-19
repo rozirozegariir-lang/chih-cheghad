@@ -5,46 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>چی چقد؟</title>
     <style>
-        body {
-            font-family: Tahoma, sans-serif;
-            background-color: #F5E6D3;
-            color: #4A3728;
-            text-align: center;
-            padding-top: 50px;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        body { font-family: Tahoma, sans-serif; background-color: #F5E6D3; color: #4A3728; text-align: center; padding-top: 30px; margin: 0; }
+        .container { background: white; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         h1 { color: #D4A574; font-size: 32px; margin-bottom: 10px; }
         p { font-size: 18px; line-height: 1.6; }
         
-        .upload-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 30px;
-            background-color: #D4A574;
-            color: white;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            font-size: 18px;
-            width: 100%;
-        }
-        .upload-btn:hover { background-color: #c29564; }
+        .upload-btn { display: inline-block; margin-top: 20px; padding: 15px 30px; background-color: #D4A574; color: white; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 18px; width: 100%; }
+        .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; }
         
-        #imagePreview {
-            max-width: 100%;
-            margin-top: 20px;
-            border-radius: 10px;
-            display: none;
-        }
+        #imagePreview { max-width: 100%; max-height: 300px; object-fit: cover; margin-top: 20px; border-radius: 10px; display: none; }
+
+        .result-card { display: none; text-align: right; margin-top: 20px; background: #fdfaf6; padding: 15px; border-radius: 10px; border: 1px solid #e0d0c0; }
+        .result-item { margin-bottom: 10px; }
+        .result-title { font-weight: bold; color: #D4A574; font-size: 16px;}
+        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.5;}
+        .disclaimer { font-size: 12px; color: #888; margin-top: 15px; text-align: center; }
     </style>
 </head>
 <body>
@@ -57,25 +32,81 @@
         <button class="upload-btn" id="uploadBtn">📸 عکسش رو بذار</button>
         
         <img id="imagePreview" alt="عکس شما">
+
+        <!-- بخش نمایش نتیجه -->
+        <div id="resultCard" class="result-card">
+            <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
+            <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
+            <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
+            <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
+            <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
+            <div class="disclaimer" id="res-disclaimer"></div>
+        </div>
     </div>
 
     <script>
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
+        const resultCard = document.getElementById('resultCard');
 
         uploadBtn.addEventListener('click', () => {
             imageInput.click();
         });
 
-        imageInput.addEventListener('change', function(event) {
+        imageInput.addEventListener('change', async function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                    uploadBtn.innerText = '⏳ دارم نگاه می‌کنم...';
+                reader.onload = async function(e) {
+                    // فشرده‌سازی عکس برای اینکه سریع‌تر ارسال بشه
+                    const img = new Image();
+                    img.onload = async function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const scale = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+
+                        imagePreview.src = base64Image;
+                        imagePreview.style.display = 'block';
+                        resultCard.style.display = 'none';
+                        
+                        uploadBtn.innerText = '⏳ دارم نگاه می‌کنم...';
+                        uploadBtn.disabled = true;
+
+                        try {
+                            const response = await fetch('/api/analyze', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ imageBase64: base64Image })
+                            });
+
+                            const data = await response.json();
+
+                            if (response.ok) {
+                                document.getElementById('res-name').innerText = data.name;
+                                document.getElementById('res-period').innerText = data.period;
+                                document.getElementById('res-price').innerText = data.price_range;
+                                document.getElementById('res-auth').innerText = data.authenticity;
+                                document.getElementById('res-story').innerText = data.story;
+                                document.getElementById('res-disclaimer').innerText = data.disclaimer;
+                                
+                                resultCard.style.display = 'block';
+                            } else {
+                                alert('خطا: ' + (data.error || 'مشکلی پیش اومد'));
+                            }
+                        } catch (error) {
+                            alert('ارتباط برقرار نشد. اینترنتت رو چک کن.');
+                        } finally {
+                            uploadBtn.innerText = '📸 عکس دیگه‌ای بذار';
+                            uploadBtn.disabled = false;
+                        }
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
