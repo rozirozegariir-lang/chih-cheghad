@@ -24,6 +24,7 @@
             padding-bottom: 80px;
         }
 
+        /* هدر */
         header {
             text-align: center;
             padding: 20px 10px;
@@ -35,6 +36,7 @@
             margin: 0;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
+        /* متن زیر عنوان - تغییر یافته */
         header p {
             margin: 5px 0 0 0;
             font-size: 16px;
@@ -90,6 +92,7 @@
             display: none;
         }
 
+        /* کارت نتیجه */
         .result-card {
             display: none;
             background: var(--card-bg);
@@ -159,7 +162,7 @@
         .product-title { font-weight: bold; font-size: 14px; margin: 0 0 5px 0; }
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
 
-        /* ۳. دکمه‌های تب (پایین‌ترین قسمت) */
+        /* ۳. دکمه‌های تب (پایین‌ترین نقطه) */
         .tabs {
             display: flex;
             justify-content: space-between;
@@ -182,14 +185,14 @@
             transition: all 0.3s ease;
         }
 
-        /* رنگ اختصاصی تب گالری (سبز فیروزه‌ای) */
+        /* رنگ سبز فیروزه‌ای برای گالری */
         .tab-btn.gallery-btn.active {
             background: #2A9D8F;
             color: white;
             box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
         }
 
-        /* رنگ اختصاصی تب فروش (نارنجی مرجانی) */
+        /* رنگ نارنجی مرجانی برای فروش */
         .tab-btn.sales-btn.active {
             background: #E76F51;
             color: white;
@@ -212,10 +215,11 @@
 
     <header>
         <h1>چی چقد؟</h1>
+        <!-- متن جدید اینجاست -->
         <p>بفهمم گنج خونت چقدر می ارزه 🏺</p>
     </header>
 
-    <!-- بخش آپلود -->
+    <!-- ۱. بخش آپلود عکس (بالا) -->
     <div class="upload-section">
         <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
         <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
@@ -242,7 +246,9 @@
         </div>
     </div>
 
-    <!-- محصولات (گالری) -->
+    <!-- ۲. محتوای تب‌ها (وسط) -->
+    
+    <!-- تب گالری -->
     <div id="gallery" class="tab-content active">
         <h3 class="section-title">اینا رو امروز گذاشتم برات ✨</h3>
         <div class="grid">
@@ -263,9 +269,10 @@
         </div>
     </div>
 
-    <!-- محصولات (فروش) -->
+    <!-- تب آگهی‌های فروش -->
     <div id="sales" class="tab-content">
         <h3 class="section-title">این محصول‌ها فروشن 🛒</h3>
+        <!-- دو محصول -->
         <div class="grid">
             <div class="product-card">
                 <div class="product-img"></div>
@@ -282,12 +289,13 @@
                 </div>
             </div>
         </div>
+        <!-- دکمه دقیقاً زیر محصولات (پایین) -->
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;">
             اینجا بذار برای فروش 📌
         </button>
     </div>
 
-    <!-- دکمه‌های تب (پایین‌ترین نقطه) -->
+    <!-- ۳. دکمه‌های تب (پایین صفحه) -->
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
         <button class="tab-btn sales-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
@@ -302,6 +310,7 @@
             targetTab.classList.add('active');
             btnElement.classList.add('active');
 
+            // اسکرول به بالای محتوا وقتی تب عوض میشه
             window.scrollTo({
                 top: targetTab.offsetTop - 20,
                 behavior: 'smooth'
