@@ -24,7 +24,6 @@
             padding-bottom: 80px;
         }
 
-        /* هدر */
         header {
             text-align: center;
             padding: 20px 10px;
@@ -36,7 +35,7 @@
             margin: 0;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
-        /* متن زیر عنوان - تغییر یافته */
+        /* تغییر ۱: متن زیر عنوان */
         header p {
             margin: 5px 0 0 0;
             font-size: 16px;
@@ -44,7 +43,6 @@
             font-weight: bold;
         }
 
-        /* ۱. بخش آپلود عکس (بالا) */
         .upload-section {
             background: var(--card-bg);
             border-radius: 20px;
@@ -54,6 +52,7 @@
             text-align: center;
             border: 2px dashed var(--primary);
         }
+        /* تغییر ۲: تیتر بخش آپلود */
         .upload-section h2 {
             font-size: 22px;
             margin: 0 0 5px 0;
@@ -92,7 +91,6 @@
             display: none;
         }
 
-        /* کارت نتیجه */
         .result-card {
             display: none;
             background: var(--card-bg);
@@ -114,7 +112,6 @@
         .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
         .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
 
-        /* ۲. محتوای تب‌ها (وسط) */
         .tab-content {
             display: none;
             padding: 0 15px;
@@ -162,7 +159,7 @@
         .product-title { font-weight: bold; font-size: 14px; margin: 0 0 5px 0; }
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
 
-        /* ۳. دکمه‌های تب (پایین‌ترین نقطه) */
+        /* دکمه‌های تب (پایین‌ترین قسمت) */
         .tabs {
             display: flex;
             justify-content: space-between;
@@ -185,14 +182,14 @@
             transition: all 0.3s ease;
         }
 
-        /* رنگ سبز فیروزه‌ای برای گالری */
+        /* تغییر ۳: رنگ سبز فیروزه‌ای برای تب گالری */
         .tab-btn.gallery-btn.active {
             background: #2A9D8F;
             color: white;
             box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
         }
 
-        /* رنگ نارنجی مرجانی برای فروش */
+        /* تغییر ۴: رنگ نارنجی مرجانی برای تب فروش */
         .tab-btn.sales-btn.active {
             background: #E76F51;
             color: white;
@@ -219,9 +216,10 @@
         <p>بفهمم گنج خونت چقدر می ارزه 🏺</p>
     </header>
 
-    <!-- ۱. بخش آپلود عکس (بالا) -->
+    <!-- بخش آپلود عکس (بالا) -->
     <div class="upload-section">
         <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
+        <!-- متن جدید اینجاست -->
         <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
         <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
         
@@ -246,7 +244,7 @@
         </div>
     </div>
 
-    <!-- ۲. محتوای تب‌ها (وسط) -->
+    <!-- محتوای تب‌ها (وسط) -->
     
     <!-- تب گالری -->
     <div id="gallery" class="tab-content active">
@@ -272,6 +270,7 @@
     <!-- تب آگهی‌های فروش -->
     <div id="sales" class="tab-content">
         <h3 class="section-title">این محصول‌ها فروشن 🛒</h3>
+        
         <!-- دو محصول -->
         <div class="grid">
             <div class="product-card">
@@ -289,13 +288,14 @@
                 </div>
             </div>
         </div>
-        <!-- دکمه دقیقاً زیر محصولات (پایین) -->
+        
+        <!-- تغییر ۵: دکمه دقیقاً زیر دو محصول قرار گرفت -->
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;">
             اینجا بذار برای فروش 📌
         </button>
     </div>
 
-    <!-- ۳. دکمه‌های تب (پایین صفحه) -->
+    <!-- دکمه‌های تب (پایین صفحه) -->
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
         <button class="tab-btn sales-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
@@ -310,7 +310,6 @@
             targetTab.classList.add('active');
             btnElement.classList.add('active');
 
-            // اسکرول به بالای محتوا وقتی تب عوض میشه
             window.scrollTo({
                 top: targetTab.offsetTop - 20,
                 behavior: 'smooth'
