@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'عکسی ارسال نشده!' });
     }
 
-    const apiKey = process.env.GROQ_API_KEY; // ما این متغیر رو در ورسل به کلید OpenRouter تغییر دادیم
+    const apiKey = process.env.GROQ_API_KEY; 
 
     const prompt = `
 تو یه کارشناس اشیاء قدیمی و عتیقه‌ای، مثل یه دوست که سال‌هاست توی این کاره. کاربر یه عکس از شیء قدیمی فرستاده. با لحن خودمونی و صمیمی اینا رو بگو:
@@ -31,7 +31,6 @@ export default async function handler(req, res) {
 }
 `;
 
-    // این بخش به OpenRouter وصل میشه
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -41,7 +40,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.2-11b-vision-instruct:free', // مدل رایگان و پایدار OpenRouter
+        model: 'qwen/qwen2.5-vl-72b-instruct:free', // مدل رایگان و قدرتمند Qwen Vision
         messages: [
           {
             role: 'user',
