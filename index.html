@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>چی چقد؟</title>
+    <!-- فونت وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
     <style>
         :root {
             --primary: #D4A574;
@@ -13,6 +15,7 @@
             --text-main: #4A3728;
             --card-bg: #FFFFFF;
         }
+
         body {
             font-family: 'Vazirmatn', Tahoma, sans-serif;
             background-color: var(--bg-color);
@@ -21,6 +24,8 @@
             padding: 0;
             padding-bottom: 80px;
         }
+
+        /* هدر */
         header {
             text-align: center;
             padding: 20px 10px;
@@ -37,33 +42,36 @@
             font-size: 16px;
             color: #665;
         }
+
+        /* دکمه‌های تب (جدا شده) */
         .tabs {
             display: flex;
-            background: var(--card-bg);
-            border-radius: 15px;
+            justify-content: space-between;
+            gap: 12px;
             margin: 0 15px 20px 15px;
-            padding: 5px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
             border: none;
-            background: none;
+            background: var(--card-bg);
             font-family: inherit;
             font-size: 16px;
             font-weight: bold;
-            color: #888;
-            border-radius: 10px;
+            color: #777;
+            border-radius: 15px;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
         }
         .tab-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 2px 10px rgba(212, 165, 116, 0.4);
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
         }
+
+        /* محتوای تب‌ها */
         .tab-content {
             display: none;
             padding: 0 15px;
@@ -76,6 +84,8 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* گرید محصولات */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -101,7 +111,8 @@
         .product-info { padding: 10px; }
         .product-title { font-weight: bold; font-size: 14px; margin: 0 0 5px 0; }
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
-        
+
+        /* بخش کارشناسی (آپلود عکس) */
         .upload-section {
             background: var(--card-bg);
             border-radius: 20px;
@@ -111,8 +122,16 @@
             text-align: center;
             border: 2px dashed var(--primary);
         }
-        .upload-section h2 { font-size: 20px; margin-top: 0; color: var(--primary-dark); }
-        .upload-section p { font-size: 14px; color: #777; margin-bottom: 20px; }
+        .upload-section h2 {
+            font-size: 22px;
+            margin: 0 0 5px 0;
+            color: var(--primary-dark);
+        }
+        .upload-section p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
         .upload-btn {
             background-color: var(--primary);
             color: white;
@@ -133,8 +152,15 @@
         }
         .upload-btn:active { transform: scale(0.98); }
         .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
-        #imagePreview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
+        
+        #imagePreview {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
 
+        /* کارت نتیجه */
         .result-card {
             display: none;
             background: var(--card-bg);
@@ -156,6 +182,7 @@
         .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
         .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
 
+        /* لودر */
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--primary);
@@ -175,11 +202,13 @@
         <p>بفهم گنج خونه‌ت چقد می‌ارزه! 🏺</p>
     </header>
 
+    <!-- تب‌ها -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
         <button class="tab-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
     </div>
 
+    <!-- تب گالری روز -->
     <div id="gallery" class="tab-content active">
         <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">اینا رو امروز گذاشتم برات ✨</p>
         <div class="grid">
@@ -200,6 +229,7 @@
         </div>
     </div>
 
+    <!-- تب آگهی‌های فروش -->
     <div id="sales" class="tab-content">
         <p style="text-align:center; font-size:14px; color:#666; margin-bottom:15px;">این محصول‌ها فروشن 🛒</p>
         <div class="grid">
@@ -223,9 +253,11 @@
         </button>
     </div>
 
+    <!-- بخش کارشناسی (آپلود عکس) -->
     <div class="upload-section">
-        <h2>عکسش رو بذار، ببینم چیه</h2>
-        <p>۳ تا کارشناسی رایگان داری! 🎁</p>
+        <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
+        <h2>عکسش رو بفرست ببینم</h2>
+        <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
         
         <input type="file" id="imageInput" accept="image/*" style="display: none;">
         <button class="upload-btn" id="uploadBtn">
@@ -235,6 +267,7 @@
         <img id="imagePreview" alt="عکس شما">
     </div>
 
+    <!-- کارت نمایش نتیجه -->
     <div id="resultCard" class="result-card">
         <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
         
@@ -249,6 +282,7 @@
     </div>
 
     <script>
+        // اسکریپت تب‌ها
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -256,6 +290,7 @@
             btnElement.classList.add('active');
         }
 
+        // اسکریپت آپلود و هوش مصنوعی
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -272,6 +307,7 @@
                 reader.onload = async function(e) {
                     const img = new Image();
                     img.onload = async function() {
+                        // فشرده‌سازی عکس
                         const canvas = document.createElement('canvas');
                         const MAX_WIDTH = 800;
                         const scale = MAX_WIDTH / img.width;
@@ -287,6 +323,7 @@
                         errorBox.style.display = 'none';
                         resultContent.style.display = 'block';
                         
+                        // تغییر وضعیت دکمه
                         uploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>';
                         uploadBtn.disabled = true;
 
@@ -300,6 +337,7 @@
                             const data = await response.json();
 
                             if (response.ok) {
+                                // نمایش نتیجه موفق
                                 document.getElementById('res-name').innerText = data.name;
                                 document.getElementById('res-period').innerText = data.period;
                                 document.getElementById('res-price').innerText = data.price_range;
@@ -308,6 +346,7 @@
                                 document.getElementById('res-disclaimer').innerText = data.disclaimer;
                                 resultCard.style.display = 'block';
                             } else {
+                                // نمایش ارور شیک
                                 resultContent.style.display = 'none';
                                 errorBox.innerText = 'متأسفانه در حال حاضر ارتباط با هوش مصنوعی برقرار نشد. (خطا: ' + (data.error || 'نامشخص') + ')';
                                 errorBox.style.display = 'block';
