@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'qwen/qwen3.8-27b', // مدل جدید و معتبر برای پردازش تصویر
+        model: 'llama-3.2-90b-vision-preview', // مدل جدید و معتبر
         messages: [
           {
             role: 'user',
