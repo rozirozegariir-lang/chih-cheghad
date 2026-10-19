@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'عکسی ارسال نشده!' });
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY; // ما این متغیر رو در ورسل به کلید OpenRouter تغییر دادیم
 
     const prompt = `
 تو یه کارشناس اشیاء قدیمی و عتیقه‌ای، مثل یه دوست که سال‌هاست توی این کاره. کاربر یه عکس از شیء قدیمی فرستاده. با لحن خودمونی و صمیمی اینا رو بگو:
@@ -31,14 +31,17 @@ export default async function handler(req, res) {
 }
 `;
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    // این بخش به OpenRouter وصل میشه
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://chih-cheghad.vercel.app',
+        'X-Title': 'Chih Cheghad',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+        model: 'meta-llama/llama-3.2-11b-vision-instruct:free', // مدل رایگان و پایدار OpenRouter
         messages: [
           {
             role: 'user',
