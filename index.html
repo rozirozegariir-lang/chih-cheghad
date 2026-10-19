@@ -43,7 +43,77 @@
             color: #665;
         }
 
-        /* دکمه‌های تب (جدا شده) */
+        /* بخش کارشناسی (آپلود عکس) - الان بالا قرار داره */
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 10px 15px 25px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px dashed var(--primary);
+        }
+        .upload-section h2 {
+            font-size: 22px;
+            margin: 0 0 5px 0;
+            color: var(--primary-dark);
+        }
+        .upload-section p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        .upload-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: inherit;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .upload-btn:active { transform: scale(0.98); }
+        .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
+        
+        #imagePreview {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* کارت نتیجه */
+        .result-card {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: right;
+            border-top: 5px solid var(--primary);
+            animation: slideUp 0.5s;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-item { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+        .result-item:last-child { border-bottom: none; }
+        .result-title { font-weight: bold; color: var(--primary-dark); font-size: 15px; display: flex; align-items: center; gap: 5px; }
+        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
+        .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
+
+        /* دکمه‌های تب - الان پایین قرار دارن */
         .tabs {
             display: flex;
             justify-content: space-between;
@@ -112,76 +182,6 @@
         .product-title { font-weight: bold; font-size: 14px; margin: 0 0 5px 0; }
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
 
-        /* بخش کارشناسی (آپلود عکس) */
-        .upload-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px 20px;
-            margin: 20px 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            border: 2px dashed var(--primary);
-        }
-        .upload-section h2 {
-            font-size: 22px;
-            margin: 0 0 5px 0;
-            color: var(--primary-dark);
-        }
-        .upload-section p {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 20px;
-        }
-        .upload-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 15px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            font-family: inherit;
-            width: 100%;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
-            transition: all 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        .upload-btn:active { transform: scale(0.98); }
-        .upload-btn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
-        
-        #imagePreview {
-            max-width: 100%;
-            border-radius: 12px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        /* کارت نتیجه */
-        .result-card {
-            display: none;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            text-align: right;
-            border-top: 5px solid var(--primary);
-            animation: slideUp 0.5s;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .result-item { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
-        .result-item:last-child { border-bottom: none; }
-        .result-title { font-weight: bold; color: var(--primary-dark); font-size: 15px; display: flex; align-items: center; gap: 5px; }
-        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
-        .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
-
         /* لودر */
         .loader {
             border: 4px solid #f3f3f3;
@@ -202,7 +202,35 @@
         <p>بفهم گنج خونه‌ت چقد می‌ارزه! 🏺</p>
     </header>
 
-    <!-- تب‌ها -->
+    <!-- بخش کارشناسی (آپلود عکس) - الان بالا قرار داره -->
+    <div class="upload-section">
+        <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
+        <h2>عکسش رو بفرست ببینم</h2>
+        <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
+        
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <button class="upload-btn" id="uploadBtn">
+            <span>📸</span> عکسش رو بذار
+        </button>
+        
+        <img id="imagePreview" alt="عکس شما">
+    </div>
+
+    <!-- کارت نمایش نتیجه -->
+    <div id="resultCard" class="result-card">
+        <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
+        
+        <div id="resultContent">
+            <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
+            <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
+            <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
+            <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
+            <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
+            <div class="disclaimer" id="res-disclaimer"></div>
+        </div>
+    </div>
+
+    <!-- تب‌ها - الان پایین قرار دارن -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('gallery', this)">امروز چی داریم؟</button>
         <button class="tab-btn" onclick="switchTab('sales', this)">اینجا بفروش</button>
@@ -251,34 +279,6 @@
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;">
             اینجا بذار برای فروش 📌
         </button>
-    </div>
-
-    <!-- بخش کارشناسی (آپلود عکس) -->
-    <div class="upload-section">
-        <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
-        <h2>عکسش رو بفرست ببینم</h2>
-        <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
-        
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <button class="upload-btn" id="uploadBtn">
-            <span>📸</span> عکسش رو بذار
-        </button>
-        
-        <img id="imagePreview" alt="عکس شما">
-    </div>
-
-    <!-- کارت نمایش نتیجه -->
-    <div id="resultCard" class="result-card">
-        <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
-        
-        <div id="resultContent">
-            <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
-            <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
-            <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
-            <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
-            <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
-            <div class="disclaimer" id="res-disclaimer"></div>
-        </div>
     </div>
 
     <script>
