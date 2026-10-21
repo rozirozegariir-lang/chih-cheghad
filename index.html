@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>چی چقد؟ | همیار زندگی</title>
+    <title>همیار زندگی | چی چقد؟</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {
@@ -34,7 +34,7 @@
         .result-item { margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
         .result-item:last-child { border-bottom: none; }
         .result-title { font-weight: bold; color: var(--primary-dark); font-size: 15px; display: flex; align-items: center; gap: 5px; }
-        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.6; color: #333; }
+        .result-text { margin: 5px 0 0 0; font-size: 15px; line-height: 1.8; color: #333; white-space: pre-wrap; }
         .disclaimer { font-size: 12px; color: #999; text-align: center; margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 10px; }
         
         .tab-content { display: none; padding: 0 15px; animation: fadeIn 0.4s; }
@@ -55,7 +55,6 @@
         .tab-btn.sales-btn.active { background: #E76F51; color: white; box-shadow: 0 4px 15px rgba(231, 111, 81, 0.4); }
         .tab-btn.repair-btn.active { background: var(--repair-color); color: white; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4); }
         
-        /* استایل اختصاصی بخش تعمیرکار */
         .repair-upload-box { border-color: var(--repair-color); }
         .repair-upload-box h2 { color: var(--repair-color); }
         .repair-textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; font-size: 14px; margin-bottom: 15px; resize: none; box-sizing: border-box; }
@@ -74,7 +73,6 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
-    <!-- ۱. بخش کارشناسی قیمت -->
     <div id="mainValuation" class="upload-section">
         <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
         <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
@@ -84,7 +82,6 @@
         <img id="imagePreview" alt="عکس شما">
     </div>
 
-    <!-- نتیجه کارشناسی قیمت -->
     <div id="resultCard" class="result-card">
         <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
         <div id="resultContent">
@@ -97,24 +94,17 @@
         </div>
     </div>
 
-    <!-- ۲. تب گالری -->
     <div id="gallery" class="tab-content active">
         <h3 class="section-title">اینا رو امروز گذاشتم برات ✨</h3>
-        <div class="grid" id="galleryGrid">
-            <!-- محصولات اینجا لود میشن -->
-        </div>
+        <div class="grid" id="galleryGrid"></div>
     </div>
 
-    <!-- ۳. تب فروش -->
     <div id="sales" class="tab-content">
         <h3 class="section-title">این محصول‌ها فروشن 🛒</h3>
-        <div class="grid" id="salesGrid">
-            <!-- محصولات اینجا لود میشن -->
-        </div>
+        <div class="grid" id="salesGrid"></div>
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;">اینجا بذار برای فروش 📌</button>
     </div>
 
-    <!-- ۴. تب تعمیرکار (جدید) -->
     <div id="repair" class="tab-content">
         <h3 class="section-title">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -138,7 +128,6 @@
         </div>
     </div>
 
-    <!-- دکمه‌های تب (پایین) -->
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)">گالری</button>
         <button class="tab-btn sales-btn" onclick="switchTab('sales', this)">بفروش</button>
@@ -146,27 +135,25 @@
     </div>
 
     <script>
-        // تابع تغییر تب‌ها و مدیریت نمایش بخش بالای صفحه
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
             const targetTab = document.getElementById(tabId);
             targetTab.classList.add('active');
             btnElement.classList.add('active');
-
-            // مخفی کردن بخش کارشناسی قیمت وقتی وارد تب‌های دیگه میشیم
-            const mainValuation = document.getElementById('mainValuation');
-            const resultCard = document.getElementById('resultCard');
-            
-            if (tabId === 'gallery' || tabId === 'sales' || tabId === 'repair') {
-                 // در این نسخه، بخش قیمت بالا میمونه تا همیشه در دسترس باشه، 
-                 // اما اگر بخوای مخفی بشه، این خطوط رو آنکامنت کن:
-                 // mainValuation.style.display = 'none';
-                 // resultCard.style.display = 'none';
-            }
-
             window.scrollTo({ top: targetTab.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // تابع کمکی برای تبدیل هر نوع خروجی (آبجکت، آرایه یا متن) به متن قابل نمایش
+        function formatAIResponse(val) {
+            if (!val) return 'نامشخص';
+            if (Array.isArray(val)) {
+                return val.map((item, index) => `${index + 1}. ${item}`).join('\n');
+            }
+            if (typeof val === 'object') {
+                return Object.values(val).join('\n');
+            }
+            return val.toString();
         }
 
         // --- لود محصولات ---
@@ -174,7 +161,6 @@
             try {
                 const response = await fetch('/api/products');
                 const products = await response.json();
-                
                 const galleryGrid = document.getElementById('galleryGrid');
                 const salesGrid = document.getElementById('salesGrid');
 
@@ -185,7 +171,6 @@
 
                 products.forEach(product => {
                     const imgUrl = product.image_url ? product.image_url : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
-                    
                     const cardHTML = `
                         <div class="product-card">
                             <img src="${imgUrl}" class="product-img" alt="${product.title}">
@@ -195,19 +180,13 @@
                             </div>
                         </div>
                     `;
-
-                    if (product.category === 'sales') {
-                        salesGrid.innerHTML += cardHTML;
-                    } else {
-                        galleryGrid.innerHTML += cardHTML;
-                    }
+                    if (product.category === 'sales') salesGrid.innerHTML += cardHTML;
+                    else galleryGrid.innerHTML += cardHTML;
                 });
-            } catch (error) {
-                console.error("Error loading products:", error);
-            }
+            } catch (error) { console.error("Error loading products:", error); }
         }
 
-        // --- آپلود عکس برای کارشناسی قیمت (Chih Cheghad) ---
+        // --- آپلود عکس برای کارشناسی قیمت ---
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -250,12 +229,12 @@
                             });
                             const data = await response.json();
                             if (response.ok) {
-                                document.getElementById('res-name').innerText = data.name;
-                                document.getElementById('res-period').innerText = data.period;
-                                document.getElementById('res-price').innerText = data.price_range;
-                                document.getElementById('res-auth').innerText = data.authenticity;
-                                document.getElementById('res-story').innerText = data.story;
-                                document.getElementById('res-disclaimer').innerText = data.disclaimer;
+                                document.getElementById('res-name').innerText = formatAIResponse(data.name);
+                                document.getElementById('res-period').innerText = formatAIResponse(data.period);
+                                document.getElementById('res-price').innerText = formatAIResponse(data.price_range);
+                                document.getElementById('res-auth').innerText = formatAIResponse(data.authenticity);
+                                document.getElementById('res-story').innerText = formatAIResponse(data.story);
+                                document.getElementById('res-disclaimer').innerText = formatAIResponse(data.disclaimer);
                                 resultCard.style.display = 'block';
                                 window.scrollTo({ top: resultCard.offsetTop - 20, behavior: 'smooth' });
                             } else {
@@ -280,7 +259,7 @@
             }
         });
 
-        // --- آپلود عکس برای تعمیرکار (Repair) ---
+        // --- آپلود عکس برای تعمیرکار ---
         const repairUploadBtn = document.getElementById('repairUploadBtn');
         const repairImageInput = document.getElementById('repairImageInput');
         const repairImagePreview = document.getElementById('repairImagePreview');
@@ -327,10 +306,10 @@
                             });
                             const data = await response.json();
                             if (response.ok) {
-                                document.getElementById('rep-problem').innerText = data.problem;
-                                document.getElementById('rep-steps').innerText = data.steps;
-                                document.getElementById('rep-cost').innerText = data.cost;
-                                document.getElementById('rep-warning').innerText = data.warning;
+                                document.getElementById('rep-problem').innerText = formatAIResponse(data.problem);
+                                document.getElementById('rep-steps').innerText = formatAIResponse(data.steps);
+                                document.getElementById('rep-cost').innerText = formatAIResponse(data.cost);
+                                document.getElementById('rep-warning').innerText = formatAIResponse(data.warning);
                                 repairResultCard.style.display = 'block';
                                 window.scrollTo({ top: repairResultCard.offsetTop - 100, behavior: 'smooth' });
                             } else {
@@ -355,7 +334,6 @@
             }
         });
 
-        // اجرای تابع هنگام لود صفحه
         document.addEventListener('DOMContentLoaded', loadProducts);
     </script>
 </body>
