@@ -4,34 +4,59 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { imageBase64, description } = req.body;
-
-    if (!imageBase64) {
-      return res.status(400).json({ error: 'عکسی ارسال نشده!' });
-    }
-
+    const { imageBase64, description, messages } = req.body;
     const apiKey = process.env.GROQ_API_KEY; 
 
-    const prompt = `
-تو یه تعمیرکار ماهر و دلسوز هستی که می‌خوای به یه نفر که درآمد کمی داره کمک کنی وسیله‌اش رو خودش تعمیر کنه.
-کاربر یه عکس از وسیله خرابش فرستاده و توضیح داده که چه مشکلی داره: "${description || 'توضیحی نداده'}"
+    let apiMessages = [];
+    let isFollowUp = false;
 
-با لحن خودمونی و ساده اینا رو بگو:
-۱. «ایراد چیه؟» → تشخیصت از مشکل چیه.
-۲. «چطور تعمیرش کنم؟» → مرحله به مرحله و خیلی ساده توضیح بده چطور درستش کنه (چی لازم داره).
-۳. «هزینه تقریبی» → هزینه تقریبی قطعه یا تعمیرکار چقدره.
-۴. «هشدار» → نکات ایمنی مهم (مثلاً حتما دوشاخه رو بکش).
+    if (messages && messages.length > 0) {
+      apiMessages = messages;
+      isFollowUp = true;
+    } else {
+      if (!imageBase64) return res.status(400).json({ error: 'عکسی ارسال نشده!' });
+      
+      const prompt = `
+تو یه تعمیرکار ماهر، صبور و دلسوز هستی. کاربر یه عکس فرستاده و گفته: "${description || 'توضیحی نداده'}"
+چون یه عکس کافی نیست، تو باید مثل یه تعمیرکار واقعی قدم به قدم باهاش پیش بری.
 
-قوانین مهم: لحن خودمونی و امیدبخش باشه. از اصطلاحات پیچیده استفاده نکن. اگه عکس یا وسیله خطرناکه حتما هشدار بده.
-مهم‌ترین قانون: مقادیر تمام کلیدها در خروجی JSON باید حتما یک رشته متن (String) ساده باشند، نه آبجکت (Object) و نه آرایه (Array).
+در این مرحله اول فقط اینا رو بگو:
+۱. «تشخیص اولیه» → به نظرت مشکل چیه؟
+۲. «اقدام اولیه» → برای اینکه خطری نباشه، همین الان چیکار کنه (مثلاً دوشاخه رو بکشه).
+۳. «درخواست بعدی» → ازش بخواه یه عکس دیگه از قسمت خاصی بگیره یا یه تست کوچیک انجام بده و نتیجه رو بگه (مثلاً: "عکس پشت دستگاه رو بفرست" یا "بگو چراغش روشن میشه یا نه").
+۴. «هزینه تقریبی» → یه بازه قیمتی کلی.
+۵. «هشدار ایمنی» → نکات مهم.
+
+مهم‌ترین قانون: مقادیر تمام کلیدها باید حتما یک رشته متن (String) ساده باشند.
 خروجی رو دقیقا به صورت JSON بده:
 {
-  "problem": "تشخیص ایراد به صورت متن",
-  "steps": "مراحل تعمیر به صورت متن با شماره",
-  "cost": "هزینه تقریبی به صورت متن",
-  "warning": "هشدار ایمنی به صورت متن"
+  "problem": "تشخیص اولیه",
+  "initial_step": "اقدام اولیه",
+  "ask_user": "درخواست بعدی و سوال از کاربر",
+  "cost": "بازه قیمتی",
+  "warning": "هشدار ایمنی"
 }
 `;
+      apiMessages = [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: imageBase64 } }
+          ]
+        }
+      ];
+    }
+
+    const body = {
+      model: 'pixtral-12b-2409',
+      messages: apiMessages,
+      temperature: 0.5
+    };
+
+    if (!isFollowUp) {
+      body.response_format = { type: "json_object" };
+    }
 
     const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
@@ -39,20 +64,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        model: 'pixtral-12b-2409',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: imageBase64 } }
-            ]
-          }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.5
-      })
+      body: JSON.stringify(body)
     });
 
     const data = await response.json();
@@ -61,8 +73,8 @@ export default async function handler(req, res) {
        return res.status(500).json({ error: data.error.message });
     }
 
-    const result = JSON.parse(data.choices[0].message.content);
-    return res.status(200).json(result);
+    const result = data.choices[0].message.content;
+    return res.status(200).json(isFollowUp ? { text: result } : JSON.parse(result));
 
   } catch (error) {
     console.error(error);
