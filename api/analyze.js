@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'qwen/qwen2.5-vl-72b-instruct:free', // مدل رایگان و قدرتمند Qwen Vision
+        model: 'google/gemma-4-26b-a4b-it:free',
         messages: [
           {
             role: 'user',
