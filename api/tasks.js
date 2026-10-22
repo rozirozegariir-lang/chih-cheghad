@@ -1,11 +1,6 @@
 export default async function handler(req, res) {
   const supabaseUrl = 'https://grfeyftvtknbrphpafqf.supabase.co';
-  // ⚠️ اینجا کلیدی که کپی کردی رو جایگزین کن (داخل دابل کوتیشن)
-  const supabaseKey = 'PASTE_YOUR_KEY_HERE'; 
-
-  if (!supabaseKey || supabaseKey === 'PASTE_YOUR_KEY_HERE') {
-    return res.status(500).json({ error: 'کلید سوپابیس تنظیم نشده است' });
-  }
+  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo';
 
   try {
     if (req.method === 'GET') {
@@ -36,7 +31,7 @@ export default async function handler(req, res) {
       const data = await response.json();
       
       if (!response.ok) {
-        return res.status(response.status).json({ error: 'خطا در ثبت کار' });
+        return res.status(response.status).json({ error: 'خطا در ثبت کار', details: data });
       }
       
       return res.status(201).json(data);
