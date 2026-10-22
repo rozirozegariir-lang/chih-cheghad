@@ -248,7 +248,6 @@
         <div class="grid" id="galleryGrid"></div>
     </div>
 
-    <!-- تب معلم هوشمند (چت) -->
     <div id="teacher" class="tab-content">
         <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
         
@@ -580,7 +579,6 @@
             tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
         }
         
-        // نمایش پیام اولیه
         renderTutorChat();
 
         async function sendTutorMessage(text, imageBase64 = null) {
@@ -590,11 +588,9 @@
             if (text) userContent.push({ type: 'text', text });
             if (imageBase64) userContent.push({ type: 'image_url', image_url: { url: imageBase64 } });
 
-            // ذخیره در تاریخچه
             tutorChatHistory.push({ role: 'user', content: userContent.length === 1 && userContent[0].type === 'text' ? text : userContent });
             renderTutorChat();
 
-            // نمایش لودینگ
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'msg assistant';
             loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال فکر کردن...';
@@ -615,9 +611,10 @@
                     tutorChatHistory.push({ role: 'assistant', content: data.text });
                     renderTutorChat();
                 } else {
+                    // نمایش خطای دقیق‌تر
                     const errorMsg = document.createElement('div');
                     errorMsg.className = 'msg assistant';
-                    errorMsg.innerText = 'متأسفم، مشکلی پیش اومد. دوباره تلاش کن.';
+                    errorMsg.innerText = 'خطای سرور: ' + (data.error || 'نامشخص');
                     tutorChatMessages.appendChild(errorMsg);
                 }
             } catch (error) {
@@ -631,19 +628,13 @@
 
         tutorSendBtn.addEventListener('click', () => {
             const text = tutorInput.value.trim();
-            if (text) {
-                sendTutorMessage(text);
-                tutorInput.value = '';
-            }
+            if (text) { sendTutorMessage(text); tutorInput.value = ''; }
         });
 
         tutorInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const text = tutorInput.value.trim();
-                if (text) {
-                    sendTutorMessage(text);
-                    tutorInput.value = '';
-                }
+                if (text) { sendTutorMessage(text); tutorInput.value = ''; }
             }
         });
 
@@ -676,8 +667,6 @@
         });
 
         // --- بخش تعمیرکار و چت ---
-        // ... (بقیه کدهای تعمیرکار، میکروکار و آشپز یار دقیقاً مثل قبل هستند)
-        
         const repairUploadBtn = document.getElementById('repairUploadBtn');
         const repairImageInput = document.getElementById('repairImageInput');
         const repairImagePreview = document.getElementById('repairImagePreview');
