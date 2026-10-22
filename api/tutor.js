@@ -1,0 +1,48 @@
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const { question, imageBase64 } = req.body;
+  const apiKey = process.env.GROQ_API_KEY;
+
+  if (!apiKey) return res.status(500).json({ error: 'API Key missing' });
+
+  try {
+    let messages = [
+      { 
+        role: "system", 
+        content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی دانش‌آموزان و دانشجویان پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، متن یا مسئله داخل عکس را با دقت بخوان و حل کن." 
+      }
+    ];
+
+    let userContent = [];
+    if (question) userContent.push({ type: "text", text: question });
+    if (imageBase64) userContent.push({ type: "image_url", image_url: { url: imageBase64 } });
+    
+    if (userContent.length === 0) return res.status(400).json({ error: 'سوالی پرسیده نشده است' });
+    
+    messages.push({ 
+      role: "user", 
+      content: userContent.length === 1 && userContent[0].type === 'text' ? userContent[0].text : userContent 
+    });
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "pixtral-12b-2409",
+        messages: messages,
+        temperature: 0.5
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error?.message || 'خطا در ارتباط با هوش مصنوعی');
+
+    return res.status(200).json({ text: data.choices[0].message.content });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
