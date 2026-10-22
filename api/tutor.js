@@ -8,22 +8,11 @@ export default async function handler(req, res) {
 
   try {
     let content = [];
-    
-    // اضافه کردن متن سوال
-    if (question) {
-      content.push({ type: "text", text: question });
-    }
-    
-    // اضافه کردن عکس در صورت وجود
-    if (imageBase64) {
-      content.push({ type: "image_url", image_url: { url: imageBase64 } });
-    }
+    if (question) content.push({ type: "text", text: question });
+    if (imageBase64) content.push({ type: "image_url", image_url: { url: imageBase64 } });
 
-    if (content.length === 0) {
-      return res.status(400).json({ error: 'سوالی پرسیده نشده است' });
-    }
+    if (content.length === 0) return res.status(400).json({ error: 'سوالی پرسیده نشده است' });
 
-    // اگر فقط متن بود، به صورت رشته ساده ارسال میکنیم
     let userMessage = content.length === 1 && content[0].type === 'text' ? content[0].text : content;
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -35,7 +24,8 @@ export default async function handler(req, res) {
         'X-Title': 'Chih Cheghad Tutor'
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-exp:free",
+        // مدل جدید جایگزین شد
+        model: "google/gemini-3.5-flash:free",
         messages: [
           { 
             role: "system", 
