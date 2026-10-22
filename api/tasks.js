@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
   const supabaseUrl = 'https://grfeyftvtknbrphpafqf.supabase.co';
-  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZmV5ZnR2dGtuYnJwaHBhZnFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MjcwMzgsImV4cCI6MjEwODEwMzAzOH0.Pl7iuL3kJFNPGoW2NMPIm88jGBRYHiaJQuROjGdPZ-M';
 
   try {
     if (req.method === 'GET') {
       const response = await fetch(`${supabaseUrl}/rest/v1/tasks?select=*&order=created_at.desc`, {
         headers: {
           'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}` // این خط برگشت
+          'Authorization': `Bearer ${supabaseKey}`
         }
       });
       const data = await response.json();
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`, // این خط برگشت
+          'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
         },
