@@ -14,7 +14,7 @@
             --card-bg: #FFFFFF;
             
             --gallery-color: #2A9D8F;
-            --sales-color: #2E8B57;
+            --teacher-color: #2E8B57;
             --repair-color: #E67E22;
             --tasks-color: #8E44AD;
             --chef-color: #E74C3C;
@@ -31,83 +31,40 @@
         header h1 { color: var(--primary); font-size: 34px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
         header p { margin: 5px 0 0 0; font-size: 14px; color: #665; font-weight: bold; }
         
-        /* استایل دکمه منو */
         .menu-btn {
             position: absolute;
-            top: 20px;
-            left: 15px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 24px;
-            padding: 5px 10px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            color: var(--primary-dark);
+            top: 20px; left: 15px;
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            font-size: 24px; padding: 5px 10px; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: var(--primary-dark);
         }
 
-        /* استایل پنجره منو (Modal) */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center;
         }
         .modal-content {
-            background: white;
-            width: 85%;
-            max-width: 350px;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-            text-align: center;
+            background: white; width: 85%; max-width: 350px; border-radius: 15px;
+            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative; text-align: center;
         }
         .close-btn {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 28px;
-            color: #999;
-            cursor: pointer;
-            font-weight: bold;
+            position: absolute; top: 10px; right: 15px;
+            font-size: 28px; color: #999; cursor: pointer; font-weight: bold;
         }
         .modal-content h2 {
-            color: var(--primary-dark);
-            margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 10px;
+            color: var(--primary-dark); margin-top: 0; margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-color); padding-bottom: 10px;
         }
-        .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .menu-list li {
-            margin-bottom: 12px;
-        }
+        .menu-list { list-style: none; padding: 0; margin: 0; }
+        .menu-list li { margin-bottom: 12px; }
         .menu-list a, .menu-list button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--bg-color);
-            color: var(--text-main);
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-family: inherit;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s;
-            box-sizing: border-box;
+            display: block; width: 100%; padding: 12px; background: var(--bg-color);
+            color: var(--text-main); text-decoration: none; border-radius: 10px;
+            font-weight: bold; font-family: inherit; font-size: 15px;
+            border: none; cursor: pointer; transition: background 0.2s; box-sizing: border-box;
         }
-        .menu-list a:hover, .menu-list button:hover {
-            background: #e8d5bb;
-        }
+        .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
         .upload-section { background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 10px 12px 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px dashed var(--primary); }
@@ -158,7 +115,7 @@
         .tab-btn span { font-size: 20px; }
         
         .tab-btn.gallery-btn { background: var(--gallery-color); box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3); }
-        .tab-btn.sales-btn { background: var(--sales-color); box-shadow: 0 4px 10px rgba(46, 139, 87, 0.3); }
+        .tab-btn.teacher-btn { background: var(--teacher-color); box-shadow: 0 4px 10px rgba(46, 139, 87, 0.3); }
         .tab-btn.repair-btn { background: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); }
         .tab-btn.tasks-btn { background: var(--tasks-color); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3); }
         .tab-btn.chef-btn { background: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
@@ -174,7 +131,7 @@
 
         .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 12px; margin: 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-hint { text-align: center; font-size: 12px; color: #777; margin-bottom: 8px; }
-        .chat-messages { height: 220px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        .chat-messages { height: 350px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
         .msg.assistant { background: #F5F5F5; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; white-space: pre-wrap; }
@@ -183,7 +140,7 @@
         .chat-img-btn { background: #fef4e8; color: var(--repair-color); border: 1px solid #f5d2b0; border-radius: 8px; padding: 0 10px; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; }
         .chat-img-btn:active { background: #fce1c8; }
         .chat-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; outline: none; min-width: 0; }
-        .chat-send-btn { background: var(--repair-color); color: white; border: none; border-radius: 8px; padding: 0 12px; font-family: inherit; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
+        .chat-send-btn { color: white; border: none; border-radius: 8px; padding: 0 12px; font-family: inherit; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
         .tasks-upload-box { border-color: var(--tasks-color); }
         .tasks-upload-box h2 { color: var(--tasks-color); }
@@ -221,7 +178,6 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
-    <!-- منوی کشویی بالا -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
@@ -292,10 +248,22 @@
         <div class="grid" id="galleryGrid"></div>
     </div>
 
-    <div id="sales" class="tab-content">
-        <h3 class="section-title" style="color: var(--sales-color);">این محصول‌ها فروشن 🛒</h3>
-        <div class="grid" id="salesGrid"></div>
-        <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;"><span>📌</span> اینجا بذار برای فروش</button>
+    <!-- تب معلم هوشمند (چت) -->
+    <div id="teacher" class="tab-content">
+        <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
+        
+        <div class="upload-section" style="border-color: var(--teacher-color); margin: 10px 0; padding-bottom: 15px;">
+            <div id="tutorChatMessages" class="chat-messages" style="height: 380px;">
+                <!-- پیام خوش‌آمدگویی اولیه -->
+            </div>
+            
+            <div class="chat-input-area">
+                <button id="tutorImageBtn" class="chat-img-btn" style="color: var(--teacher-color); border-color: #b5e0c8; background: #eefaf4;"><span>📷</span> عکس</button>
+                <input type="file" id="tutorImageInput" accept="image/*" style="display: none;">
+                <input type="text" id="tutorInput" class="chat-input" placeholder="سوال درسیت رو بنویس...">
+                <button id="tutorSendBtn" class="chat-send-btn" style="background: var(--teacher-color);"><span>✉️</span> بپرس</button>
+            </div>
+        </div>
     </div>
 
     <div id="repair" class="tab-content">
@@ -329,7 +297,7 @@
                 <button id="chatImageBtn" class="chat-img-btn"><span>📷</span> عکس بده</button>
                 <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
                 <input type="text" id="chatInput" class="chat-input" placeholder="یا اینجا بنویس...">
-                <button id="chatSendBtn" class="chat-send-btn"><span>✉️</span> بپرس</button>
+                <button id="chatSendBtn" class="chat-send-btn" style="background: var(--repair-color);"><span>✉️</span> بپرس</button>
             </div>
         </div>
     </div>
@@ -392,7 +360,7 @@
 
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
-        <button class="tab-btn sales-btn" onclick="switchTab('sales', this)"><span>🏷️</span> بفروش</button>
+        <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم خانه</button>
         <button class="tab-btn repair-btn" onclick="switchTab('repair', this)"><span>🛠️</span> تعمیرکار</button>
         <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکرو-کار</button>
         <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز یار</button>
@@ -411,14 +379,9 @@
         const errorBox = document.getElementById('errorBox');
         const resultContent = document.getElementById('resultContent');
 
-        // منطق منو
         function toggleMenu() {
             const modal = document.getElementById('menuModal');
-            if (modal.style.display === 'flex') {
-                modal.style.display = 'none';
-            } else {
-                modal.style.display = 'flex';
-            }
+            if (modal.style.display === 'flex') { modal.style.display = 'none'; } else { modal.style.display = 'flex'; }
         }
 
         function registerMobile() {
@@ -426,12 +389,9 @@
             alert('بخش ثبت نام با موبایل به زودی فعال می‌شود.');
         }
 
-        // بستن منو با کلیک روی فضای بیرون
         window.onclick = function(event) {
             const modal = document.getElementById('menuModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
+            if (event.target == modal) { modal.style.display = 'none'; }
         }
 
         function checkSubscription() {
@@ -491,7 +451,6 @@
                 const response = await fetch('/api/products');
                 const products = await response.json();
                 const galleryGrid = document.getElementById('galleryGrid');
-                const salesGrid = document.getElementById('salesGrid');
                 if (products.length === 0) {
                     galleryGrid.innerHTML = '<p style="text-align:center; width:100%;">محصولی یافت نشد.</p>';
                     return;
@@ -507,8 +466,7 @@
                             </div>
                         </div>
                     `;
-                    if (product.category === 'sales') salesGrid.innerHTML += cardHTML;
-                    else galleryGrid.innerHTML += cardHTML;
+                    galleryGrid.innerHTML += cardHTML;
                 });
             } catch (error) { console.error("Error loading products:", error); }
         }
@@ -586,6 +544,140 @@
             }
         });
 
+        // --- بخش معلم هوشمند (چت) ---
+        const tutorImageBtn = document.getElementById('tutorImageBtn');
+        const tutorImageInput = document.getElementById('tutorImageInput');
+        const tutorInput = document.getElementById('tutorInput');
+        const tutorSendBtn = document.getElementById('tutorSendBtn');
+        const tutorChatMessages = document.getElementById('tutorChatMessages');
+
+        let tutorChatHistory = [
+            { role: 'assistant', content: 'سلام! من معلم هوشمند شما هستم. هر سوال درسی داری بپرس، یا عکس مسئله رو بفرست تا برات حل کنم. 😊' }
+        ];
+
+        function renderTutorChat() {
+            tutorChatMessages.innerHTML = '';
+            tutorChatHistory.forEach(msg => {
+                if (msg.role === 'user' && Array.isArray(msg.content)) {
+                    const textPart = msg.content.find(c => c.type === 'text');
+                    const imgPart = msg.content.find(c => c.type === 'image_url');
+                    const userMsgDiv = document.createElement('div');
+                    userMsgDiv.className = 'msg user';
+                    userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : '');
+                    tutorChatMessages.appendChild(userMsgDiv);
+                } else if (msg.role === 'user') {
+                    const userMsgDiv = document.createElement('div');
+                    userMsgDiv.className = 'msg user';
+                    userMsgDiv.innerText = msg.content;
+                    tutorChatMessages.appendChild(userMsgDiv);
+                } else {
+                    const botMsgDiv = document.createElement('div');
+                    botMsgDiv.className = 'msg assistant';
+                    botMsgDiv.innerText = msg.content;
+                    tutorChatMessages.appendChild(botMsgDiv);
+                }
+            });
+            tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
+        }
+        
+        // نمایش پیام اولیه
+        renderTutorChat();
+
+        async function sendTutorMessage(text, imageBase64 = null) {
+            if (!text && !imageBase64) return;
+
+            let userContent = [];
+            if (text) userContent.push({ type: 'text', text });
+            if (imageBase64) userContent.push({ type: 'image_url', image_url: { url: imageBase64 } });
+
+            // ذخیره در تاریخچه
+            tutorChatHistory.push({ role: 'user', content: userContent.length === 1 && userContent[0].type === 'text' ? text : userContent });
+            renderTutorChat();
+
+            // نمایش لودینگ
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'msg assistant';
+            loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال فکر کردن...';
+            tutorChatMessages.appendChild(loadingDiv);
+            tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
+
+            try {
+                const response = await fetch('/api/tutor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: text, imageBase64: imageBase64 })
+                });
+                const data = await response.json();
+                
+                tutorChatMessages.removeChild(loadingDiv);
+
+                if (response.ok) {
+                    tutorChatHistory.push({ role: 'assistant', content: data.text });
+                    renderTutorChat();
+                } else {
+                    const errorMsg = document.createElement('div');
+                    errorMsg.className = 'msg assistant';
+                    errorMsg.innerText = 'متأسفم، مشکلی پیش اومد. دوباره تلاش کن.';
+                    tutorChatMessages.appendChild(errorMsg);
+                }
+            } catch (error) {
+                tutorChatMessages.removeChild(loadingDiv);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'msg assistant';
+                errorMsg.innerText = 'ارتباط با سرور برقرار نشد.';
+                tutorChatMessages.appendChild(errorMsg);
+            }
+        }
+
+        tutorSendBtn.addEventListener('click', () => {
+            const text = tutorInput.value.trim();
+            if (text) {
+                sendTutorMessage(text);
+                tutorInput.value = '';
+            }
+        });
+
+        tutorInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const text = tutorInput.value.trim();
+                if (text) {
+                    sendTutorMessage(text);
+                    tutorInput.value = '';
+                }
+            }
+        });
+
+        tutorImageBtn.addEventListener('click', () => tutorImageInput.click());
+
+        tutorImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        const scale = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        
+                        sendTutorMessage(tutorInput.value.trim(), base64Image);
+                        tutorInput.value = '';
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            tutorImageInput.value = ''; 
+        });
+
+        // --- بخش تعمیرکار و چت ---
+        // ... (بقیه کدهای تعمیرکار، میکروکار و آشپز یار دقیقاً مثل قبل هستند)
+        
         const repairUploadBtn = document.getElementById('repairUploadBtn');
         const repairImageInput = document.getElementById('repairImageInput');
         const repairImagePreview = document.getElementById('repairImagePreview');
@@ -813,6 +905,7 @@
             chatImageInput.value = '';
         });
 
+        // --- بخش میکرو-کار ---
         async function loadTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
@@ -882,6 +975,7 @@
             }
         });
 
+        // --- بخش آشپز یار ---
         document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
             const ingredients = document.getElementById('chefIngredients').value;
             if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
