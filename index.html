@@ -17,6 +17,7 @@
             --gallery-color: #2A9D8F; /* فیروزه‌ای */
             --sales-color: #2E8B57;   /* سبز */
             --repair-color: #E67E22;  /* نارنجی */
+            --tasks-color: #8E44AD;   /* بنفش */
         }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; padding-bottom: 80px; }
         header { text-align: center; padding: 20px 10px; background: linear-gradient(180deg, #fff 0%, var(--bg-color) 100%); }
@@ -54,40 +55,22 @@
         .product-price { color: var(--primary-dark); font-size: 13px; margin: 0; }
         
         /* تب‌ها: همیشه رنگی و جذاب */
-        .tabs { display: flex; justify-content: space-between; gap: 8px; margin: 30px 15px 20px 15px; }
+        .tabs { display: flex; justify-content: space-between; gap: 5px; margin: 30px 15px 20px 15px; }
         
         .tab-btn { 
-            flex: 1; 
-            padding: 12px 5px; 
-            text-align: center; 
-            border: none; 
-            font-family: inherit; 
-            font-size: 15px; 
-            font-weight: bold; 
-            color: white; /* متن‌ها همیشه سفید */
-            border-radius: 15px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 5px; 
-            opacity: 0.85; /* کمی محو برای حالت غیرفعال */
+            flex: 1; padding: 10px 2px; text-align: center; border: none; font-family: inherit; font-size: 13px; font-weight: bold; color: white; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; opacity: 0.85;
         }
         
-        /* رنگ‌های پس‌زمینه برای همه حالت‌ها */
         .tab-btn.gallery-btn { background: var(--gallery-color); box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3); }
         .tab-btn.sales-btn { background: var(--sales-color); box-shadow: 0 4px 10px rgba(46, 139, 87, 0.3); }
         .tab-btn.repair-btn { background: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); }
+        .tab-btn.tasks-btn { background: var(--tasks-color); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3); }
 
-        /* حالت فعال (وقتی روش کلیک می‌کنی) */
-        .tab-btn.active { 
-            opacity: 1; 
-            transform: translateY(-3px); /* کمی میاد بالا */
-        }
+        .tab-btn.active { opacity: 1; transform: translateY(-3px); }
         .tab-btn.gallery-btn.active { box-shadow: 0 6px 15px rgba(42, 157, 143, 0.6); }
         .tab-btn.sales-btn.active { box-shadow: 0 6px 15px rgba(46, 139, 87, 0.6); }
         .tab-btn.repair-btn.active { box-shadow: 0 6px 15px rgba(230, 126, 34, 0.6); }
+        .tab-btn.tasks-btn.active { box-shadow: 0 6px 15px rgba(142, 68, 173, 0.6); }
         
         /* استایل اختصاصی بخش تعمیرکار */
         .repair-upload-box { border-color: var(--repair-color); }
@@ -107,28 +90,21 @@
         
         /* دکمه‌های چت */
         .chat-input-area { display: flex; gap: 8px; align-items: center; }
-        
-        .chat-img-btn {
-            background: #fef4e8; /* پس‌زمینه هلویی روشن */
-            color: var(--repair-color); /* متن نارنجی */
-            border: 1px solid #f5d2b0;
-            border-radius: 10px;
-            padding: 0 12px;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            height: 44px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
+        .chat-img-btn { background: #fef4e8; color: var(--repair-color); border: 1px solid #f5d2b0; border-radius: 10px; padding: 0 12px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer; height: 44px; display: flex; justify-content: center; align-items: center; gap: 5px; white-space: nowrap; }
         .chat-img-btn:active { background: #fce1c8; }
-        
         .chat-input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; font-size: 14px; outline: none; min-width: 0; }
         .chat-send-btn { background: var(--repair-color); color: white; border: none; border-radius: 10px; padding: 0 15px; font-family: inherit; font-weight: bold; cursor: pointer; height: 44px; display: flex; justify-content: center; align-items: center; gap: 5px; white-space: nowrap; }
+
+        /* استایل بخش میکرو-کار */
+        .tasks-upload-box { border-color: var(--tasks-color); }
+        .tasks-upload-box h2 { color: var(--tasks-color); }
+        .tasks-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; font-size: 14px; margin-bottom: 15px; box-sizing: border-box; }
+        .tasks-upload-btn { background-color: var(--tasks-color); box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4); }
+        .task-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: right; border-right: 5px solid var(--tasks-color); }
+        .task-title { color: var(--tasks-color); margin: 0 0 10px 0; font-size: 16px; }
+        .task-desc { font-size: 14px; color: #555; margin-bottom: 10px; line-height: 1.5; }
+        .task-price { font-weight: bold; color: #333; margin-bottom: 10px; }
+        .task-contact { font-size: 13px; color: #888; display: flex; align-items: center; gap: 5px; }
 
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid currentColor; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -141,6 +117,7 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
+    <!-- بخش کارشناسی اصلی -->
     <div id="mainValuation" class="upload-section">
         <p style="font-size: 16px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
         <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
@@ -162,17 +139,20 @@
         </div>
     </div>
 
+    <!-- تب ۱: گالری -->
     <div id="gallery" class="tab-content active">
         <h3 class="section-title">اینا رو امروز گذاشتم برات ✨</h3>
         <div class="grid" id="galleryGrid"></div>
     </div>
 
+    <!-- تب ۲: فروش -->
     <div id="sales" class="tab-content">
         <h3 class="section-title">این محصول‌ها فروشن 🛒</h3>
         <div class="grid" id="salesGrid"></div>
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;"><span>📌</span> اینجا بذار برای فروش</button>
     </div>
 
+    <!-- تب ۳: تعمیرکار -->
     <div id="repair" class="tab-content">
         <h3 class="section-title">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -197,6 +177,7 @@
         </div>
 
         <div id="chatContainer" class="chat-container">
+            <h4 style="text-align: center; color: var(--repair-color); margin-top: 0; margin-bottom: 15px;">💬 چت با تعمیرکار</h4>
             <p class="chat-hint">می‌خوای تعمیرش کنی؟ عکس‌های بیشتری بفرست تا دقیق‌تر راهنماییت کنم. 📸</p>
             <div id="chatMessages" class="chat-messages"></div>
             <div class="chat-input-area">
@@ -208,10 +189,32 @@
         </div>
     </div>
 
+    <!-- تب ۴: میکرو-کار -->
+    <div id="tasks" class="tab-content">
+        <h3 class="section-title">کاری داری؟ اینجا ثبت کن 🤝</h3>
+        
+        <div class="upload-section tasks-upload-box" style="margin: 10px 0;">
+            <input type="text" id="taskTitle" class="tasks-input" placeholder="عنوان کار (مثلاً: تعمیر پنکه)">
+            <textarea id="taskDescription" class="tasks-input" rows="2" placeholder="توضیحات بیشتر (اختیاری)..."></textarea>
+            <input type="text" id="taskPrice" class="tasks-input" placeholder="دستمزد (مثلاً: ۱۰۰ هزار تومان)">
+            <input type="text" id="taskContact" class="tasks-input" placeholder="شماره تماس یا آیدی تلگرام">
+            <button class="upload-btn tasks-upload-btn" id="submitTaskBtn">
+                <span>📝</span> ثبت کار در سایت
+            </button>
+        </div>
+
+        <h3 class="section-title">کارهای ثبت شده 📋</h3>
+        <div id="tasksList">
+            <!-- کارها اینجا لود میشن -->
+        </div>
+    </div>
+
+    <!-- نوار تب‌ها -->
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
         <button class="tab-btn sales-btn" onclick="switchTab('sales', this)"><span>🏷️</span> بفروش</button>
         <button class="tab-btn repair-btn" onclick="switchTab('repair', this)"><span>🛠️</span> تعمیرکار</button>
+        <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکرو-کار</button>
     </div>
 
     <script>
@@ -221,6 +224,9 @@
             const targetTab = document.getElementById(tabId);
             targetTab.classList.add('active');
             btnElement.classList.add('active');
+            
+            if(tabId === 'tasks') loadTasks();
+            
             window.scrollTo({ top: targetTab.offsetTop - 100, behavior: 'smooth' });
         }
 
@@ -231,6 +237,7 @@
             return val.toString();
         }
 
+        // --- لود محصولات ---
         async function loadProducts() {
             try {
                 const response = await fetch('/api/products');
@@ -258,6 +265,7 @@
             } catch (error) { console.error("Error loading products:", error); }
         }
 
+        // --- بخش کارشناسی قیمت ---
         const uploadBtn = document.getElementById('uploadBtn');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -329,6 +337,7 @@
             }
         });
 
+        // --- بخش تعمیرکار و چت ---
         const repairUploadBtn = document.getElementById('repairUploadBtn');
         const repairImageInput = document.getElementById('repairImageInput');
         const repairImagePreview = document.getElementById('repairImagePreview');
@@ -398,7 +407,7 @@
                                 chatMessages.innerHTML = '';
                                 const welcomeMsg = document.createElement('div');
                                 welcomeMsg.className = 'msg assistant';
-                                welcomeMsg.innerText = data.ask_user;
+                                welcomeMsg.innerText = 'سلام! من اینجام تا قدم به قدم کمکت کنم. اگر عکس دیگه‌ای از دستگاه داری، همین پایین با دکمه 📷 بفرست یا هر سوالی داری تایپ کن. 😊';
                                 chatMessages.appendChild(welcomeMsg);
                                 
                                 window.scrollTo({ top: repairResultCard.offsetTop - 100, behavior: 'smooth' });
@@ -556,7 +565,80 @@
             chatImageInput.value = '';
         });
 
-        document.addEventListener('DOMContentLoaded', loadProducts);
+        // --- بخش میکرو-کار (Supabase) ---
+        async function loadTasks() {
+            const tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
+            
+            try {
+                const response = await fetch('/api/tasks');
+                const tasks = await response.json();
+                
+                tasksList.innerHTML = '';
+                if (tasks.length === 0) {
+                    tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777;">هنوز کاری ثبت نشده. اولین نفر باش!</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const card = document.createElement('div');
+                    card.className = 'task-card';
+                    card.innerHTML = `
+                        <h4 class="task-title">${task.title}</h4>
+                        <p class="task-desc">${task.description || ''}</p>
+                        <p class="task-price">💰 ${task.price || 'توافقی'}</p>
+                        <p class="task-contact">📞 ${task.contact}</p>
+                    `;
+                    tasksList.appendChild(card);
+                });
+            } catch (error) {
+                tasksList.innerHTML = '<p style="text-align:center; width:100%; color:red;">خطا در دریافت اطلاعات</p>';
+            }
+        }
+
+        document.getElementById('submitTaskBtn').addEventListener('click', async () => {
+            const title = document.getElementById('taskTitle').value;
+            const description = document.getElementById('taskDescription').value;
+            const price = document.getElementById('taskPrice').value;
+            const contact = document.getElementById('taskContact').value;
+
+            if (!title || !contact) {
+                return alert('عنوان کار و شماره تماس الزامی است!');
+            }
+
+            const btn = document.getElementById('submitTaskBtn');
+            btn.innerHTML = 'در حال ثبت... <div class="loader"></div>';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, price, contact })
+                });
+
+                if (response.ok) {
+                    alert('کار شما با موفقیت ثبت شد!');
+                    document.getElementById('taskTitle').value = '';
+                    document.getElementById('taskDescription').value = '';
+                    document.getElementById('taskPrice').value = '';
+                    document.getElementById('taskContact').value = '';
+                    loadTasks(); // رفرش لیست
+                } else {
+                    alert('خطا در ثبت کار. لطفا دوباره تلاش کنید.');
+                }
+            } catch (error) {
+                alert('ارتباط با سرور برقرار نشد.');
+            } finally {
+                btn.innerHTML = '<span>📝</span> ثبت کار در سایت';
+                btn.disabled = false;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            loadTasks();
+        });
     </script>
 </body>
 </html>
