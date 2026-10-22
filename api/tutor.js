@@ -2,9 +2,6 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { question, imageBase64 } = req.body;
-  const apiKey = process.env.OPENROUTER_API_KEY;
-
-  if (!apiKey) return res.status(500).json({ error: 'API Key missing' });
 
   try {
     let content = [];
@@ -15,26 +12,20 @@ export default async function handler(req, res) {
 
     let userMessage = content.length === 1 && content[0].type === 'text' ? content[0].text : content;
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // اتصال به سرویس پایدار Pollinations (بدون نیاز به API Key)
+    const response = await fetch('https://text.pollinations.ai/openai', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://chih-cheghad.vercel.app',
-        'X-Title': 'Chih Cheghad Tutor'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        // مدل جدید جایگزین شد
-        model: "google/gemini-3.5-flash:free",
+        model: "openai", // این مدل هم متن و هم عکس رو عالی می‌فهمه
         messages: [
           { 
             role: "system", 
-            content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی دانش‌آموزان پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، متن یا مسئله داخل عکس را با دقت بخوان و حل کن." 
+            content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، مسئله داخل آن را حل کن." 
           },
-          { 
-            role: "user", 
-            content: userMessage 
-          }
+          { role: "user", content: userMessage }
         ]
       })
     });
@@ -42,7 +33,7 @@ export default async function handler(req, res) {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'خطا در ارتباط با OpenRouter');
+      throw new Error(data.error?.message || 'خطا در ارتباط با سرور');
     }
 
     return res.status(200).json({ text: data.choices[0].message.content });
