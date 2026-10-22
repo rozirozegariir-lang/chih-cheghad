@@ -18,20 +18,24 @@
             --tasks-color: #8E44AD;
             --chef-color: #E74C3C;
         }
+        
+        /* پس زمینه پرانرژی و پررنگ (بنفش-آبی) برای تضاد عالی با دکمه‌ها */
         body { 
             font-family: 'Vazirmatn', Tahoma, sans-serif; 
-            background: linear-gradient(135deg, #F0F4FF 0%, #FDF2F8 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             background-attachment: fixed;
             color: var(--text-main); 
             margin: 0; 
             padding: 0; 
-            padding-bottom: 120px; /* فاصله بیشتر برای نوار شناور */
+            padding-bottom: 80px; /* فاصله کم شد تا نوار پایین به محتوا نزدیک‌تر باشه */
         }
-        header { text-align: center; padding: 20px 10px; background: transparent; }
-        header h1 { color: var(--primary); font-size: 34px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
-        header p { margin: 5px 0 0 0; font-size: 14px; color: #4B5563; font-weight: bold; }
         
-        .upload-section { background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 10px 12px 15px 12px; box-shadow: 0 8px 25px rgba(99, 102, 241, 0.08); text-align: center; border: 2px dashed var(--primary); }
+        /* متن هدر سفید شد تا روی پس‌زمینه تیره/پررنگ دیده بشه */
+        header { text-align: center; padding: 20px 10px; background: transparent; }
+        header h1 { color: #ffffff; font-size: 34px; margin: 0; text-shadow: 1px 1px 4px rgba(0,0,0,0.2); }
+        header p { margin: 5px 0 0 0; font-size: 14px; color: #E2E8F0; font-weight: bold; }
+        
+        .upload-section { background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 10px 12px 15px 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); text-align: center; border: 2px dashed var(--primary); }
         .upload-section h2 { font-size: 18px; margin: 0 0 5px 0; color: var(--primary-dark); }
         .upload-section p { font-size: 13px; color: #6B7280; margin-bottom: 12px; margin-top: 0; }
         
@@ -41,7 +45,7 @@
         
         #imagePreview, #repairImagePreview { max-width: 100%; border-radius: 10px; margin-top: 10px; display: none; }
         
-        .result-card { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); text-align: right; border-top: 4px solid var(--primary); animation: slideUp 0.5s; }
+        .result-card { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-align: right; border-top: 4px solid var(--primary); animation: slideUp 0.5s; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .result-item { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
         .result-item:last-child { border-bottom: none; }
@@ -53,33 +57,34 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .section-title { text-align: center; font-size: 20px; font-weight: 900; margin: 15px 0 15px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        /* تیترها با رنگ سفید برای دیده شدن روی پس‌زمینه */
+        .section-title { text-align: center; font-size: 20px; font-weight: 900; margin: 15px 0 15px 0; text-shadow: 1px 1px 4px rgba(0,0,0,0.3); }
         
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .product-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; padding-bottom: 8px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 5px; /* فاصله کمتر شد */ }
+        .product-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15); text-align: center; padding-bottom: 8px; }
         .product-img { width: 100%; height: 100px; object-fit: cover; background-color: #eee; }
         .product-info { padding: 8px; }
         .product-title { font-weight: bold; font-size: 13px; margin: 0 0 4px 0; }
         .product-price { color: var(--primary-dark); font-size: 12px; margin: 0; }
         
-        /* ==== نوار تب‌های شناور (بالاتر آمدند) ==== */
+        /* نوار تب‌های شناور (بالاتر و نزدیک‌تر به محتوا) */
         .tabs { 
             position: fixed; 
-            bottom: 15px; /* فاصله از پایین صفحه */
-            left: 12px;   /* فاصله از چپ */
-            right: 12px;  /* فاصله از راست */
+            bottom: 10px; 
+            left: 10px; 
+            right: 10px; 
             background-color: #ffffff; 
             display: flex; 
             justify-content: space-between; 
             gap: 6px; 
-            padding: 10px 12px; 
+            padding: 8px 10px; 
             margin: 0; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
             z-index: 1000; 
-            border-radius: 20px; /* همه گوشه‌ها گرد شد */
+            border-radius: 18px; 
         }
         
-        .tab-btn { flex: 1; padding: 10px 2px; text-align: center; border: none; font-family: inherit; font-size: 13px; font-weight: bold; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; opacity: 0.75; }
+        .tab-btn { flex: 1; padding: 8px 2px; text-align: center; border: none; font-family: inherit; font-size: 13px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; opacity: 0.75; }
         .tab-btn span { font-size: 20px; }
         
         .tab-btn.gallery-btn { background: var(--gallery-color); box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3); }
@@ -88,7 +93,7 @@
         .tab-btn.tasks-btn { background: var(--tasks-color); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3); }
         .tab-btn.chef-btn { background: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
 
-        .tab-btn.active { opacity: 1; transform: translateY(-8px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
+        .tab-btn.active { opacity: 1; transform: translateY(-6px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important; }
         
         .repair-upload-box { border-color: var(--repair-color); }
         .repair-upload-box h2 { color: var(--repair-color); }
@@ -97,7 +102,7 @@
         .repair-result-card { border-top-color: var(--repair-color); }
         .repair-result-title { color: var(--repair-color); }
 
-        .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 12px; margin: 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 12px; margin: 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .chat-hint { text-align: center; font-size: 12px; color: #777; margin-bottom: 8px; }
         .chat-messages { height: 220px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
@@ -114,7 +119,7 @@
         .tasks-upload-box h2 { color: var(--tasks-color); }
         .tasks-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; box-sizing: border-box; }
         .tasks-upload-btn { background-color: var(--tasks-color); box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4); }
-        .task-card { background: white; border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: right; border-right: 4px solid var(--tasks-color); }
+        .task-card { background: white; border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: right; border-right: 4px solid var(--tasks-color); }
         .task-title { color: var(--tasks-color); margin: 0 0 8px 0; font-size: 15px; }
         .task-desc { font-size: 13px; color: #555; margin-bottom: 8px; line-height: 1.4; }
         .task-price { font-weight: bold; color: #333; margin-bottom: 8px; font-size: 14px; }
@@ -167,18 +172,18 @@
     </div>
 
     <div id="gallery" class="tab-content active">
-        <h3 class="section-title" style="color: var(--gallery-color);">اینا رو امروز گذاشتم برات ✨</h3>
+        <h3 class="section-title" style="color: #ffffff;">اینا رو امروز گذاشتم برات ✨</h3>
         <div class="grid" id="galleryGrid"></div>
     </div>
 
     <div id="sales" class="tab-content">
-        <h3 class="section-title" style="color: var(--sales-color);">این محصول‌ها فروشن 🛒</h3>
+        <h3 class="section-title" style="color: #ffffff;">این محصول‌ها فروشن 🛒</h3>
         <div class="grid" id="salesGrid"></div>
         <button class="upload-btn" style="background-color: var(--text-main); margin-top: 10px; box-shadow: none;"><span>📌</span> اینجا بذار برای فروش</button>
     </div>
 
     <div id="repair" class="tab-content">
-        <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
+        <h3 class="section-title" style="color: #ffffff;">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
         <div class="upload-section repair-upload-box" style="margin: 10px 0;">
             <textarea id="repairDescription" class="repair-textarea" rows="2" placeholder="چه مشکلی داره؟ (مثلاً روشن نمیشه، صدا میده...)"></textarea>
@@ -214,7 +219,7 @@
     </div>
 
     <div id="tasks" class="tab-content">
-        <h3 class="section-title" style="color: var(--tasks-color);">کاری داری؟ اینجا ثبت کن 🤝</h3>
+        <h3 class="section-title" style="color: #ffffff;">کاری داری؟ اینجا ثبت کن 🤝</h3>
         
         <div class="explanation-card">
             <p style="margin-top: 0;">اینجا فضای همکاری و کمک به همسایه‌هاست! اگر کاری داری که خودت نمی‌تونی انجام بدی، همینجا ثبت کن تا یک <strong style="color: var(--tasks-color); font-size: 14px;">همیار</strong> پیدا بشه و کمکت کنه.</p>
@@ -239,12 +244,12 @@
             </button>
         </div>
 
-        <h3 class="section-title" style="color: var(--tasks-color);">کارهای ثبت شده 📋</h3>
+        <h3 class="section-title" style="color: #ffffff;">کارهای ثبت شده 📋</h3>
         <div id="tasksList"></div>
     </div>
 
     <div id="chef" class="tab-content">
-        <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
+        <h3 class="section-title" style="color: #ffffff;">آشپز یار 👨‍🍳</h3>
         
         <div class="upload-section chef-upload-box" style="margin: 10px 0;">
             <h2>توی یخچالت چی داری؟</h2>
@@ -305,7 +310,7 @@
                 const galleryGrid = document.getElementById('galleryGrid');
                 const salesGrid = document.getElementById('salesGrid');
                 if (products.length === 0) {
-                    galleryGrid.innerHTML = '<p style="text-align:center; width:100%;">محصولی یافت نشد.</p>';
+                    galleryGrid.innerHTML = '<p style="text-align:center; width:100%; color: white;">محصولی یافت نشد.</p>';
                     return;
                 }
                 products.forEach(product => {
@@ -628,7 +633,7 @@
         // --- بخش میکرو-کار ---
         async function loadTasks() {
             const tasksList = document.getElementById('tasksList');
-            tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
+            tasksList.innerHTML = '<div style="text-align:center; width:100%; color:white;"><div class="loader"></div></div>';
             
             try {
                 const response = await fetch('/api/tasks');
@@ -636,7 +641,7 @@
                 
                 tasksList.innerHTML = '';
                 if (tasks.length === 0) {
-                    tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777;">هنوز کاری ثبت نشده. اولین نفر باش!</p>';
+                    tasksList.innerHTML = '<p style="text-align:center; width:100%; color:white;">هنوز کاری ثبت نشده. اولین نفر باش!</p>';
                     return;
                 }
                 
