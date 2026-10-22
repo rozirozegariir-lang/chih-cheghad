@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     let messages = [
       { 
         role: "system", 
-        content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی دانش‌آموزان و دانشجویان پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، متن یا مسئله داخل عکس را با دقت بخوان و حل کن." 
+        content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی دانش‌آموزان پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، متن یا مسئله داخل عکس را با دقت بخوان و حل کن." 
       }
     ];
 
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "pixtral-12b-2409",
+        model: "llama-3.2-11b-vision-preview", 
         messages: messages,
         temperature: 0.5
       })
