@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
   const supabaseUrl = 'https://grfeyftvtknbrphpafqf.supabase.co';
-  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo'; 
+  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo';
 
   try {
     if (req.method === 'GET') {
       const response = await fetch(`${supabaseUrl}/rest/v1/tasks?select=*&order=created_at.desc`, {
         headers: {
-          'apikey': supabaseKey
-          // هدر Authorization حذف شد
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}` // این خط برگشت
         }
       });
       const data = await response.json();
@@ -21,9 +21,9 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`, // این خط برگشت
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
-          // هدر Authorization حذف شد
         },
         body: JSON.stringify({ title, description, price, contact })
       });
