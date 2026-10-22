@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
   const supabaseUrl = 'https://grfeyftvtknbrphpafqf.supabase.co';
-  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo';
+  const supabaseKey = 'sb_publishable_-kLqQmw9tuRWOw8msWGqNA_aYkhTCjo'; 
 
   try {
     if (req.method === 'GET') {
       const response = await fetch(`${supabaseUrl}/rest/v1/tasks?select=*&order=created_at.desc`, {
         headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`
+          'apikey': supabaseKey
+          // هدر Authorization حذف شد
         }
       });
       const data = await response.json();
@@ -21,9 +21,9 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
+          // هدر Authorization حذف شد
         },
         body: JSON.stringify({ title, description, price, contact })
       });
@@ -40,6 +40,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'مشکلی پیش اومد' });
+    return res.status(500).json({ error: 'مشکلی پیش آمد' });
   }
 }
