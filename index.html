@@ -40,7 +40,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: var(--primary-dark);
         }
 
-        /* استایل‌های مودال منو */
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 85%; max-width: 350px; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; text-align: center; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #999; cursor: pointer; font-weight: bold; }
@@ -88,19 +87,38 @@
         .section-title { text-align: center; font-size: 19px; font-weight: 900; margin: 10px 0 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
         
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 10px; }
-        .product-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); text-align: center; padding-bottom: 15px; width: 100%; max-width: 320px; transition: transform 0.2s; cursor: pointer; }
-        .product-card:hover { transform: translateY(-3px); }
+        .product-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); text-align: center; padding-bottom: 15px; width: 100%; max-width: 320px; transition: transform 0.2s; }
         
         .product-img-wrapper { position: relative; }
         .product-img { width: 100%; height: 200px; object-fit: cover; background-color: #eee; display: block; }
         
-        /* آیکون پخش ویدیو روی عکس */
-        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; color: rgba(255,255,255,0.9); text-shadow: 0 0 10px rgba(0,0,0,0.5); display: none; }
+        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; color: rgba(255,255,255,0.9); text-shadow: 0 0 10px rgba(0,0,0,0.5); display: none; pointer-events: none; }
         .has-video .play-icon { display: block; }
         
         .product-info { padding: 12px; }
         .product-title { font-weight: bold; font-size: 18px; margin: 0 0 8px 0; color: var(--text-main); }
-        .product-price { color: var(--primary-dark); font-size: 15px; margin: 0; font-weight: bold; }
+        .product-price { color: var(--primary-dark); font-size: 15px; margin: 0 0 10px 0; font-weight: bold; }
+
+        /* استایل دکمه ویدیو */
+        .watch-video-btn {
+            background-color: var(--chef-color); /* رنگ قرمز برای جلب توجه */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+            transition: transform 0.1s;
+        }
+        .watch-video-btn:active { transform: scale(0.96); }
 
         /* ==== استایل پخش‌کننده ویدیو (استوری) ==== */
         #videoModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; }
@@ -482,17 +500,25 @@
                     
                     const hasVideo = product.video_url && product.video_url.trim() !== '';
                     const videoClass = hasVideo ? 'has-video' : '';
-                    const clickAction = hasVideo ? `onclick="openVideo('${product.video_url}')"` : '';
+                    
+                    // دکمه ویدیو اگر وجود داشت
+                    const videoBtnHTML = hasVideo 
+                        ? `<button class="watch-video-btn" onclick="openVideo('${product.video_url}')">🎬 فیلم و استوری رو ببین</button>` 
+                        : '';
+
+                    // کلیک روی عکس هم ویدیو رو باز میکنه
+                    const imgWrapperClick = hasVideo ? `onclick="openVideo('${product.video_url}')" style="cursor: pointer;"` : '';
 
                     const cardHTML = `
-                        <div class="product-card ${videoClass}" ${clickAction}>
-                            <div class="product-img-wrapper">
+                        <div class="product-card ${videoClass}">
+                            <div class="product-img-wrapper" ${imgWrapperClick}>
                                 <img src="${imgUrl}" class="product-img" alt="${product.title}">
                                 <div class="play-icon">▶️</div>
                             </div>
                             <div class="product-info">
                                 <p class="product-title">${product.title}</p>
                                 <p class="product-price">${product.price}</p>
+                                ${videoBtnHTML}
                             </div>
                         </div>
                     `;
