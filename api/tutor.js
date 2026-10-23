@@ -4,7 +4,9 @@ export default async function handler(req, res) {
   const { question, imageBase64 } = req.body;
   const apiKey = process.env.HF_API_KEY;
 
-  if (!apiKey) return res.status(500).json({ error: 'API Key missing' });
+  if (!apiKey) {
+    return res.status(500).json({ error: 'کلید API پیدا نشد. لطفا تنظیمات Environment Variables در ورسل را چک کنید.' });
+  }
 
   try {
     let content = [];
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'خطا در ارتباط با Hugging Face');
+      throw new Error(data.error?.message || data.message || 'خطا در ارتباط با Hugging Face');
     }
 
     return res.status(200).json({ text: data.choices[0].message.content });
