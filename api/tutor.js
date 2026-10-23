@@ -12,18 +12,17 @@ export default async function handler(req, res) {
 
     let userMessage = content.length === 1 && content[0].type === 'text' ? content[0].text : content;
 
-    // اتصال به سرویس پایدار Pollinations (بدون نیاز به API Key)
     const response = await fetch('https://text.pollinations.ai/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "openai", // این مدل هم متن و هم عکس رو عالی می‌فهمه
+        model: "openai", 
         messages: [
           { 
             role: "system", 
-            content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، مسئله داخل آن را حل کن." 
+            content: "تو یک معلم خصوصی دلسوز، صبور و بسیار باهوش هستی. به سوالات درسی دانش‌آموزان پاسخ کامل، ساده و قدم به قدم بده. اگر عکسی فرستاده شد، متن یا مسئله داخل عکس را با دقت بخوان و حل کن." 
           },
           { role: "user", content: userMessage }
         ]
