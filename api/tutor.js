@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { question, imageBase64 } = req.body;
-  const apiKey = process.env.OPENROUTER_API_KEY; // از کلید قبلی خودت استفاده میکنیم
+  const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) return res.status(500).json({ error: 'API Key missing' });
 
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         'X-Title': 'Chih Cheghad Tutor'
       },
       body: JSON.stringify({
-        model: "qwen/qwen-2-vl-7b-instruct:free", // مدل جدید و رایگان مخصوص عکس
+        model: "google/gemma-3-27b-it:free", // مدل رایگان و پایدار گوگل
         messages: [
           { 
             role: "system", 
