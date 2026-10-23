@@ -6,11 +6,12 @@ export default async function handler(req, res) {
 
   if (!apiKey) return res.status(500).json({ error: 'API Key missing' });
 
-  // لیست مدل‌های رایگان و پایدار (به ترتیب اولویت)
+  // لیست جدید مدل‌های رایگان و پایدار (به ترتیب اولویت)
   const models = [
-    "google/gemma-4-26b-a4b-it:free",
+    "meta-llama/llama-3.2-11b-vision-instruct:free",
+    "qwen/qwen2.5-vl-72b-instruct:free",
     "nvidia/nemotron-nano-12b-v2-vl:free",
-    "google/gemma-3-27b-it:free"
+    "google/gemma-4-26b-a4b-it:free"
   ];
 
   let lastError = null;
@@ -38,7 +39,7 @@ export default async function handler(req, res) {
           messages: [
             { 
               role: "system", 
-              content: "تو یک معلم خصوصی دلسوز و بسیار باهوش هستی. وظیفه تو حل مسائل درسی است. اگر عکسی فرستاده شد، متن و اعداد داخل عکس را بخوان و مسئله را قدم به قدم حل کن. هرگز از حل مسئله امتناع نکن." 
+              content: "تو یک معلم خصوصی دلسوز و بسیار باهوش هستی. وظیفه تو حل مسائل درسی است. اگر عکسی فرستاده شد، متن و اعداد داخل عکس را بخوان و مسئله را قدم به قدم حل کن." 
             },
             { role: "user", content: userMessage }
           ]
@@ -48,11 +49,9 @@ export default async function handler(req, res) {
       const data = await response.json();
 
       if (response.ok) {
-        // اگر مدل جواب داد، خارج شو و نتیجه را برگردان
         return res.status(200).json({ text: data.choices[0].message.content });
       }
 
-      // اگر مدل خطا داد، خطا را ذخیره کن و برو سراغ مدل بعدی
       lastError = data.error?.message || `مدل ${model} در دسترس نیست`;
       console.warn(`Model ${model} failed:`, lastError);
 
@@ -62,6 +61,5 @@ export default async function handler(req, res) {
     }
   }
 
-  // اگر هیچ مدلی جواب نداد
   return res.status(500).json({ error: `همه مدل‌ها با خطا مواجه شدند. آخرین خطا: ${lastError}` });
 }
