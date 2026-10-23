@@ -92,16 +92,13 @@
         .product-img-wrapper { position: relative; }
         .product-img { width: 100%; height: 200px; object-fit: cover; background-color: #eee; display: block; }
         
-        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; color: rgba(255,255,255,0.9); text-shadow: 0 0 10px rgba(0,0,0,0.5); display: none; pointer-events: none; }
-        .has-video .play-icon { display: block; }
-        
         .product-info { padding: 12px; }
         .product-title { font-weight: bold; font-size: 18px; margin: 0 0 8px 0; color: var(--text-main); }
         .product-price { color: var(--primary-dark); font-size: 15px; margin: 0 0 10px 0; font-weight: bold; }
 
         /* استایل دکمه ویدیو */
         .watch-video-btn {
-            background-color: var(--chef-color); /* رنگ قرمز برای جلب توجه */
+            background-color: var(--chef-color);
             color: white;
             border: none;
             border-radius: 8px;
@@ -499,21 +496,16 @@
                     const imgUrl = product.image_url ? product.image_url : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
                     
                     const hasVideo = product.video_url && product.video_url.trim() !== '';
-                    const videoClass = hasVideo ? 'has-video' : '';
                     
-                    // دکمه ویدیو اگر وجود داشت
+                    // فقط دکمه قرمز برای پخش ویدیو
                     const videoBtnHTML = hasVideo 
                         ? `<button class="watch-video-btn" onclick="openVideo('${product.video_url}')">🎬 فیلم و استوری رو ببین</button>` 
                         : '';
 
-                    // کلیک روی عکس هم ویدیو رو باز میکنه
-                    const imgWrapperClick = hasVideo ? `onclick="openVideo('${product.video_url}')" style="cursor: pointer;"` : '';
-
                     const cardHTML = `
-                        <div class="product-card ${videoClass}">
-                            <div class="product-img-wrapper" ${imgWrapperClick}>
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
                                 <img src="${imgUrl}" class="product-img" alt="${product.title}">
-                                <div class="play-icon">▶️</div>
                             </div>
                             <div class="product-info">
                                 <p class="product-title">${product.title}</p>
