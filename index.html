@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>همیار زندگی | چی چقد؟</title>
     <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#D4A574">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="همیار">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/192/2602.png">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
     <style>
         :root {
             --primary: #D4A574; --primary-dark: #b88655; --bg-color: #F5E6D3; --text-main: #4A3728; --card-bg: #FFFFFF;
-            --gallery-color: #2A9D8F; --teacher-color: #2E8B57; --repair-color: #E67E22; --tasks-color: #8E44AD; --chef-color: #E74C3C; --subscription-color: #2980B9;
+            --gallery-color: #2A9D8F; --teacher-color: #2E8B57; --repair-color: #E67E22; --tasks-color: #8E44AD; --chef-color: #E74C3C; --subscription-color: #2980B9; --success: #2E8B57;
         }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background: linear-gradient(180deg, #FFF8F0 0%, var(--bg-color) 100%); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 0; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
         header { text-align: center; padding: 50px 10px 5px 10px; position: relative; flex-shrink: 0; }
@@ -133,12 +138,28 @@
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid currentColor; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* استایل جدید فرم ثبت نام */
+        /* استایل فرم ثبت نام با تیک رنگی */
         .captcha-box { display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; border-radius: 8px; padding: 15px; background: #f9f9f9; cursor: pointer; margin-top: 15px; transition: all 0.2s; }
         .captcha-box:hover { background: #f0f0f0; }
-        .captcha-checkbox { width: 26px; height: 26px; border: 2px solid #aaa; border-radius: 4px; background: white; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
-        .captcha-checkbox.checked { background: var(--success); border-color: var(--success); }
-        .captcha-checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 18px; }
+        
+        .captcha-checkbox { 
+            width: 28px; height: 28px; border: 2px solid #aaa; border-radius: 6px; 
+            background: white; display: flex; justify-content: center; align-items: center; 
+            transition: all 0.2s; 
+        }
+        
+        /* وقتی تیک می‌خوره، پس‌زمینه سبز و حاشیه سبز میشه */
+        .captcha-checkbox.checked { 
+            background: #2E8B57; 
+            border-color: #2E8B57; 
+        }
+        
+        /* علامت تیک سفید و درشت */
+        .captcha-checkbox.checked::after { 
+            content: '✓'; color: white; font-weight: bold; font-size: 22px; 
+            line-height: 1;
+        }
+        
         .captcha-text { font-size: 15px; font-weight: bold; color: #555; margin-right: 10px; }
         .captcha-icon { font-size: 28px; color: var(--gallery-color); }
         #phoneInputContainer { display: none; margin-top: 20px; animation: fadeIn 0.5s; }
@@ -169,7 +190,6 @@
             <h2>ثبت نام سریع</h2>
             <p style="font-size: 13px; color: #666; margin-bottom: 5px;">برای ورود، ابتدا تایید کنید که ربات نیستید</p>
             
-            <!-- کادر کپچا -->
             <div class="captcha-box" id="captchaContainer" onclick="toggleCaptcha()">
                 <div style="display: flex; align-items: center;">
                     <div class="captcha-checkbox" id="captchaBox"></div>
@@ -178,10 +198,9 @@
                 <div class="captcha-icon">🛡️</div>
             </div>
 
-            <!-- کادری که بعد از تیک کپچا باز میشه -->
             <div id="phoneInputContainer">
-                <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px; margin-top: 0;">
-                <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--teacher-color);">ثبت نام و ورود</button>
+                <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px; margin-top: 0; padding: 12px;">
+                <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--success);">ثبت نام و ورود</button>
             </div>
         </div>
     </div>
