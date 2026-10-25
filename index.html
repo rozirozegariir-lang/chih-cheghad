@@ -25,19 +25,49 @@
             background: linear-gradient(180deg, #FFF8F0 0%, var(--bg-color) 100%);
             background-attachment: fixed;
             color: var(--text-main); margin: 0; padding: 0; 
-            padding-bottom: 110px; 
+            padding-bottom: 130px;
         }
         
         header { text-align: center; padding: 15px 10px 10px 10px; position: relative; }
         header h1 { color: var(--primary); font-size: 32px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
         header p { margin: 5px 0 0 0; font-size: 14px; color: #665; font-weight: bold; }
         
+        /* ==== دکمه منو سمت چپ ==== */
         .menu-btn {
             position: absolute;
             top: 15px; left: 15px;
             background: white; border: 1px solid #ddd; border-radius: 8px;
             font-size: 24px; padding: 5px 10px; cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: var(--primary-dark);
+            z-index: 100;
+        }
+
+        /* ==== دکمه نصب اپلیکیشن سمت راست (جذاب) ==== */
+        .install-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%); /* گرادیانت قرمز-صورتی پرانرژی */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+            animation: pulse-glow 2s infinite; /* انیمیشن جلب توجه */
+        }
+        .install-btn:active { transform: scale(0.95); }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(221, 36, 118, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0); }
         }
 
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
@@ -50,7 +80,7 @@
         .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
-        .upload-section { background: var(--card-bg); border-radius: 15px; padding: 12px; margin: 5px 12px 10px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px dashed var(--primary); }
+        .upload-section { background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 5px 0 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px dashed var(--primary); }
         .upload-section h2 { font-size: 17px; margin: 0 0 5px 0; color: var(--primary-dark); }
         .upload-section p { font-size: 13px; color: #777; margin-bottom: 10px; margin-top: 0; }
         
@@ -59,7 +89,7 @@
         
         #imagePreview, #repairImagePreview { max-width: 100%; border-radius: 10px; margin-top: 10px; display: none; }
         
-        #subscriptionSection { display: none; border-color: var(--subscription-color); }
+        #subscriptionSection { display: none; border-color: var(--subscription-color); margin-top: 15px;}
         #subscriptionSection h2 { color: var(--subscription-color); }
         .plan-card { border: 1px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 10px; background: #fff; }
         .plan-title { font-size: 16px; font-weight: bold; color: var(--text-main); margin: 0 0 5px 0; }
@@ -72,7 +102,7 @@
         .bazaar-btn { background-color: #7E22CE; }
         .bale-btn { background-color: #10B981; }
 
-        .result-card { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: right; border-top: 4px solid var(--primary); animation: slideUp 0.5s; }
+        .result-card { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: right; border-top: 4px solid var(--primary); animation: slideUp 0.5s; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .result-item { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
         .result-item:last-child { border-bottom: none; }
@@ -80,11 +110,11 @@
         .result-text { margin: 5px 0 0 0; font-size: 14px; line-height: 1.6; color: #333; white-space: pre-wrap; }
         .disclaimer { font-size: 11px; color: #999; text-align: center; margin-top: 10px; background: #fafafa; padding: 8px; border-radius: 8px; }
         
-        .tab-content { display: none; padding: 0 12px; animation: fadeIn 0.4s; }
+        .tab-content { display: none; padding: 0 12px 20px 12px; animation: fadeIn 0.4s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .section-title { text-align: center; font-size: 19px; font-weight: 900; margin: 10px 0 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        .section-title { text-align: center; font-size: 19px; font-weight: 900; margin: 15px 0 15px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
         
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 10px; }
         .product-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); text-align: center; padding-bottom: 15px; width: 100%; max-width: 320px; transition: transform 0.2s; }
@@ -96,7 +126,6 @@
         .product-title { font-weight: bold; font-size: 18px; margin: 0 0 8px 0; color: var(--text-main); }
         .product-price { color: var(--primary-dark); font-size: 15px; margin: 0 0 10px 0; font-weight: bold; }
 
-        /* استایل دکمه ویدیو */
         .watch-video-btn {
             background-color: var(--chef-color);
             color: white;
@@ -117,7 +146,6 @@
         }
         .watch-video-btn:active { transform: scale(0.96); }
 
-        /* ==== استایل پخش‌کننده ویدیو (استوری) ==== */
         #videoModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; }
         #storyVideo { width: 95%; max-width: 400px; max-height: 80vh; border-radius: 15px; outline: none; }
         .close-video { position: absolute; top: 20px; right: 20px; color: white; font-size: 45px; font-weight: bold; cursor: pointer; z-index: 3001; }
@@ -141,9 +169,11 @@
         .repair-result-card { border-top-color: var(--repair-color); }
         .repair-result-title { color: var(--repair-color); }
 
-        .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 12px; margin: 15px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-hint { text-align: center; font-size: 12px; color: #777; margin-bottom: 8px; }
-        .chat-messages { height: 350px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        
+        .chat-messages { height: 450px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
         .msg.assistant { background: #F5F5F5; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; white-space: pre-wrap; }
@@ -180,97 +210,141 @@
 
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid currentColor; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ==== استایل کپچا ثبت نام ==== */
+        .captcha-box { 
+            display: flex; align-items: center; justify-content: space-between; 
+            border: 1px solid #ccc; border-radius: 8px; padding: 12px 15px; 
+            background: #f9f9f9; cursor: pointer; margin-top: 15px; 
+            transition: all 0.2s;
+        }
+        .captcha-box:hover { background: #f0f0f0; }
+        .captcha-checkbox { 
+            width: 24px; height: 24px; border: 2px solid #aaa; border-radius: 4px; 
+            background: white; display: flex; justify-content: center; align-items: center; 
+            transition: all 0.2s;
+        }
+        .captcha-checkbox.checked { background: var(--primary); border-color: var(--primary); }
+        .captcha-checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 16px; }
+        .captcha-text { font-size: 14px; font-weight: bold; color: #555; margin-right: 10px; }
+        .captcha-icon { font-size: 24px; color: var(--gallery-color); }
     </style>
 </head>
 <body>
 
     <header>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <!-- دکمه نصب اپلیکیشن با انیمیشن جلب توجه -->
+        <button class="install-btn" onclick="showInstallPrompt()"><span>📥</span> نصب اپلیکیشن</button>
+        
         <h1>همیار زندگی</h1>
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
+    <!-- منوی اصلی -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
-                <li><button onclick="registerMobile()"><i>📱</i> ثبت نام با موبایل</button></li>
-                <li><a href="https://diirin.ir" target="_blank"><i>🏺</i> عتیقه‌ها (سایت دیرین)</a></li>
-                <li><a href="tel:09159245773"><i>📞</i> پشتیبانی: ۰۹۱۵۹۲۴۵۷۷۳</a></li>
+                <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
+                <!-- لینک پشتیبانی -->
+                <li><a href="YOUR_LINK_HERE" target="_blank"><i>📞</i> پشتیبانی: ۰۹۱۵۹۲۴۵۷۷۳</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- مودال پخش ویدیو (استوری) -->
+    <!-- مودال ثبت نام سریع -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
+            <h2>ثبت نام سریع</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 5px;">بدون نیاز به کد پیامکی تایید</p>
+            
+            <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px;">
+            
+            <div class="captcha-box" onclick="toggleCaptcha()">
+                <div style="display: flex; align-items: center;">
+                    <div class="captcha-checkbox" id="captchaBox"></div>
+                    <div class="captcha-text">من ربات نیستم</div>
+                </div>
+                <div class="captcha-icon">🛡️</div>
+            </div>
+
+            <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 20px; background-color: var(--teacher-color);">ثبت نام و ورود</button>
+        </div>
+    </div>
+
     <div id="videoModal">
         <span class="close-video" onclick="closeVideo()">&times;</span>
         <video id="storyVideo" controls playsinline></video>
     </div>
 
-    <div id="mainValuation" class="upload-section">
-        <p style="font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
-        <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
-        <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <button class="upload-btn" id="uploadBtn"><span>📸</span> عکسش رو بذار</button>
-        <img id="imagePreview" alt="عکس شما">
-    </div>
-
-    <div id="subscriptionSection" class="upload-section">
-        <h2>اشتراک ویژه همیار زندگی</h2>
-        <p style="margin-bottom: 15px;">۳ کارشناسی رایگان شما تمام شد. برای ادامه و استفاده نامحدود، یکی از پلن‌های زیر را انتخاب کنید:</p>
-        
-        <div class="plan-card">
-            <p class="plan-title">اشتراک ۳ ماهه</p>
-            <p class="plan-price">۳۰,۰۰۰ تومان</p>
-            <div class="gateway-buttons">
-                <button class="gateway-btn bazaar-btn" onclick="selectGateway('۳ ماهه', 'بازار پی')">بازار پی</button>
-                <button class="gateway-btn bale-btn" onclick="selectGateway('۳ ماهه', 'بله پی')">بله پی</button>
-            </div>
-        </div>
-        
-        <div class="plan-card">
-            <p class="plan-title">اشتراک ۶ ماهه <span class="plan-badge">پیشنهاد ویژه</span></p>
-            <p class="plan-price">۶۰,۰۰۰ تومان</p>
-            <div class="gateway-buttons">
-                <button class="gateway-btn bazaar-btn" onclick="selectGateway('۶ ماهه', 'بازار پی')">بازار پی</button>
-                <button class="gateway-btn bale-btn" onclick="selectGateway('۶ ماهه', 'بله پی')">بله پی</button>
-            </div>
-        </div>
-        
-        <div class="plan-card">
-            <p class="plan-title">اشتراک ۱ ساله</p>
-            <p class="plan-price">۱۰۰,۰۰۰ تومان</p>
-            <div class="gateway-buttons">
-                <button class="gateway-btn bazaar-btn" onclick="selectGateway('۱ ساله', 'بازار پی')">بازار پی</button>
-                <button class="gateway-btn bale-btn" onclick="selectGateway('۱ ساله', 'بله پی')">بله پی</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="resultCard" class="result-card">
-        <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
-        <div id="resultContent">
-            <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
-            <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
-            <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
-            <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
-            <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
-            <div class="disclaimer" id="res-disclaimer"></div>
-        </div>
-    </div>
-
+    <!-- تب گالری (شامل کارشناسی) -->
     <div id="gallery" class="tab-content active">
-        <h3 class="section-title" style="color: var(--gallery-color);">اینا رو امروز گذاشتم برات ✨</h3>
+        <div id="mainValuation" class="upload-section">
+            <p style="font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
+            <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
+            <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            <button class="upload-btn" id="uploadBtn"><span>📸</span> عکسش رو بذار</button>
+            <img id="imagePreview" alt="عکس شما">
+        </div>
+
+        <div id="subscriptionSection" class="upload-section">
+            <h2>اشتراک ویژه همیار زندگی</h2>
+            <p style="margin-bottom: 15px;">۳ کارشناسی رایگان شما تمام شد. برای ادامه و استفاده نامحدود، یکی از پلن‌های زیر را انتخاب کنید:</p>
+            
+            <div class="plan-card">
+                <p class="plan-title">اشتراک ۳ ماهه</p>
+                <p class="plan-price">۳۰,۰۰۰ تومان</p>
+                <div class="gateway-buttons">
+                    <button class="gateway-btn bazaar-btn" onclick="selectGateway('۳ ماهه', 'بازار پی')">بازار پی</button>
+                    <button class="gateway-btn bale-btn" onclick="selectGateway('۳ ماهه', 'بله پی')">بله پی</button>
+                </div>
+            </div>
+            
+            <div class="plan-card">
+                <p class="plan-title">اشتراک ۶ ماهه <span class="plan-badge">پیشنهاد ویژه</span></p>
+                <p class="plan-price">۶۰,۰۰۰ تومان</p>
+                <div class="gateway-buttons">
+                    <button class="gateway-btn bazaar-btn" onclick="selectGateway('۶ ماهه', 'بازار پی')">بازار پی</button>
+                    <button class="gateway-btn bale-btn" onclick="selectGateway('۶ ماهه', 'بله پی')">بله پی</button>
+                </div>
+            </div>
+            
+            <div class="plan-card">
+                <p class="plan-title">اشتراک ۱ ساله</p>
+                <p class="plan-price">۱۰۰,۰۰۰ تومان</p>
+                <div class="gateway-buttons">
+                    <button class="gateway-btn bazaar-btn" onclick="selectGateway('۱ ساله', 'بازار پی')">بازار پی</button>
+                    <button class="gateway-btn bale-btn" onclick="selectGateway('۱ ساله', 'بله پی')">بله پی</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultCard" class="result-card">
+            <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 15px; line-height: 1.6;"></div>
+            <div id="resultContent">
+                <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
+                <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
+                <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
+                <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
+                <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
+                <div class="disclaimer" id="res-disclaimer"></div>
+            </div>
+        </div>
+
+        <h3 class="section-title" style="color: var(--gallery-color); margin-top: 25px;">اینا رو امروز گذاشتم برات ✨</h3>
         <div class="grid" id="galleryGrid"></div>
     </div>
 
+    <!-- تب معلم -->
     <div id="teacher" class="tab-content">
         <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
         
         <div class="upload-section" style="border-color: var(--teacher-color); margin: 10px 0; padding-bottom: 15px;">
-            <div id="tutorChatMessages" class="chat-messages" style="height: 380px;">
+            <div id="tutorChatMessages" class="chat-messages">
                 <!-- پیام خوش‌آمدگویی اولیه -->
             </div>
             
@@ -283,6 +357,7 @@
         </div>
     </div>
 
+    <!-- تب تعمیرکار -->
     <div id="repair" class="tab-content">
         <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -319,6 +394,7 @@
         </div>
     </div>
 
+    <!-- تب میکروکار -->
     <div id="tasks" class="tab-content">
         <h3 class="section-title" style="color: var(--tasks-color);">کاری داری؟ اینجا ثبت کن 🤝</h3>
         
@@ -349,6 +425,7 @@
         <div id="tasksList"></div>
     </div>
 
+    <!-- تب آشپز یار -->
     <div id="chef" class="tab-content">
         <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
         
@@ -386,6 +463,7 @@
     <script>
         let freeUses = parseInt(localStorage.getItem('valuationCount') || '0');
         let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
+        let isCaptchaChecked = false;
         
         const mainValuation = document.getElementById('mainValuation');
         const subscriptionSection = document.getElementById('subscriptionSection');
@@ -396,21 +474,78 @@
         const errorBox = document.getElementById('errorBox');
         const resultContent = document.getElementById('resultContent');
 
+        // --- نصب اپلیکیشن ---
+        function showInstallPrompt() {
+            alert('برای نصب اپلیکیشن، از منوی مرورگر خود گزینه «Add to Home Screen» (افزودن به صفحه اصلی) را انتخاب کنید. 📲');
+        }
+
+        // --- بخش منو و ثبت نام ---
         function toggleMenu() {
             const modal = document.getElementById('menuModal');
             if (modal.style.display === 'flex') { modal.style.display = 'none'; } else { modal.style.display = 'flex'; }
         }
 
-        function registerMobile() {
+        function updateMenuAfterLogin() {
+            const savedPhone = localStorage.getItem('userPhone');
+            if (savedPhone) {
+                document.getElementById('menuRegisterBtn').innerHTML = `<i>👤</i> حساب کاربری: ${savedPhone}`;
+            }
+        }
+
+        function openRegisterModal() {
             toggleMenu();
-            alert('بخش ثبت نام با موبایل به زودی فعال می‌شود.');
+            const savedPhone = localStorage.getItem('userPhone');
+            if (savedPhone) {
+                alert('شما با شماره ' + savedPhone + ' قبلاً ثبت نام کرده‌اید.');
+                return;
+            }
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function toggleCaptcha() {
+            isCaptchaChecked = !isCaptchaChecked;
+            const box = document.getElementById('captchaBox');
+            if (isCaptchaChecked) {
+                box.classList.add('checked');
+            } else {
+                box.classList.remove('checked');
+            }
+        }
+
+        function submitRegistration() {
+            const phone = document.getElementById('regPhoneInput').value.trim();
+            if (!phone || phone.length < 10) {
+                alert('لطفا یک شماره موبایل معتبر وارد کنید.');
+                return;
+            }
+            if (!isCaptchaChecked) {
+                alert('لطفا تیک «من ربات نیستم» را بزنید.');
+                return;
+            }
+
+            localStorage.setItem('userPhone', phone);
+            alert('ثبت نام با موفقیت انجام شد! خوش آمدید. 🌟');
+            closeRegisterModal();
+            updateMenuAfterLogin();
+            
+            // ریست کردن فرم
+            document.getElementById('regPhoneInput').value = '';
+            isCaptchaChecked = false;
+            document.getElementById('captchaBox').classList.remove('checked');
         }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('menuModal');
-            if (event.target == modal) { modal.style.display = 'none'; }
+            const menuModal = document.getElementById('menuModal');
+            const regModal = document.getElementById('registerModal');
+            if (event.target == menuModal) { menuModal.style.display = 'none'; }
+            if (event.target == regModal) { regModal.style.display = 'none'; }
         }
 
+        // --- بخش اشتراک ---
         function checkSubscription() {
             if (isSubscribed) {
                 mainValuation.style.display = 'block';
@@ -435,6 +570,7 @@
         }
 
         checkSubscription();
+        updateMenuAfterLogin();
 
         uploadBtn.addEventListener('click', () => {
             if (!isSubscribed && freeUses >= 3) {
@@ -453,7 +589,7 @@
             
             if(tabId === 'tasks') loadTasks();
             
-            window.scrollTo({ top: targetTab.offsetTop - 100, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function formatAIResponse(val) {
@@ -463,7 +599,6 @@
             return val.toString();
         }
 
-        // --- بخش پخش ویدیو ---
         function openVideo(url) {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('storyVideo');
@@ -480,7 +615,6 @@
             modal.style.display = 'none';
         }
 
-        // --- لود محصولات ---
         async function loadProducts() {
             try {
                 const response = await fetch('/api/products');
@@ -496,8 +630,6 @@
                     const imgUrl = product.image_url ? product.image_url : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
                     
                     const hasVideo = product.video_url && product.video_url.trim() !== '';
-                    
-                    // فقط دکمه قرمز برای پخش ویدیو
                     const videoBtnHTML = hasVideo 
                         ? `<button class="watch-video-btn" onclick="openVideo('${product.video_url}')">🎬 فیلم و استوری رو ببین</button>` 
                         : '';
@@ -592,7 +724,7 @@
             }
         });
 
-        // --- بخش معلم هوشمند (چت) ---
+        // --- معلم هوشمند ---
         const tutorImageBtn = document.getElementById('tutorImageBtn');
         const tutorImageInput = document.getElementById('tutorImageInput');
         const tutorInput = document.getElementById('tutorInput');
@@ -714,7 +846,7 @@
             tutorImageInput.value = ''; 
         });
 
-        // --- بخش تعمیرکار و چت ---
+        // --- تعمیرکار و چت ---
         const repairUploadBtn = document.getElementById('repairUploadBtn');
         const repairImageInput = document.getElementById('repairImageInput');
         const repairImagePreview = document.getElementById('repairImagePreview');
@@ -942,7 +1074,7 @@
             chatImageInput.value = '';
         });
 
-        // --- بخش میکرو-کار ---
+        // --- میکرو-کار ---
         async function loadTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
@@ -1012,7 +1144,7 @@
             }
         });
 
-        // --- بخش آشپز یار ---
+        // --- آشپز یار ---
         document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
             const ingredients = document.getElementById('chefIngredients').value;
             if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
