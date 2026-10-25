@@ -32,7 +32,6 @@
             overflow: hidden; 
         }
         
-        /* هدر */
         header { 
             text-align: center; 
             padding: 50px 10px 5px 10px; 
@@ -88,7 +87,6 @@
         .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
-        /* ==== تنظیمات اصلی تب‌ها ==== */
         .tab-content { 
             display: none; 
             flex-grow: 1; 
@@ -165,7 +163,6 @@
         #storyVideo { width: 95%; max-width: 400px; max-height: 80vh; border-radius: 15px; outline: none; }
         .close-video { position: absolute; top: 20px; right: 20px; color: white; font-size: 45px; font-weight: bold; cursor: pointer; z-index: 3001; }
 
-        /* نوار تب‌های پایین */
         .tabs { 
             position: fixed; 
             bottom: 0; left: 0; right: 0; 
@@ -190,7 +187,6 @@
 
         .tab-btn.active { opacity: 1; transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
         
-        /* ==== تنظیمات اختصاصی معلم ==== */
         #teacher.active { 
             display: flex; 
             flex-direction: column; 
@@ -227,9 +223,8 @@
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
         .msg.assistant { background: #F5F5F5; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; white-space: pre-wrap; }
 
-        /* استایل بقیه تب‌ها */
-        .repair-upload-box { border-color: var(--repair-color); padding: 10px; }
-        .repair-textarea { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 8px; resize: none; box-sizing: border-box; min-height: 60px; }
+        .repair-upload-box { border-color: var(--repair-color); padding: 15px; }
+        .repair-textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; resize: none; box-sizing: border-box; min-height: 80px; }
         .repair-upload-btn { background-color: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4); padding: 10px; font-size: 15px; }
         
         .explanation-card { background: linear-gradient(135deg, #ffffff 0%, #f8f1fe 100%); border: 1px solid #E1CAF6; border-right: 4px solid var(--tasks-color); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; font-size: 11px; line-height: 1.5; color: #333; box-shadow: 0 3px 10px rgba(142, 68, 173, 0.08); }
@@ -242,29 +237,44 @@
         #chef.active {
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* تغییر به auto برای اسکرول در صورت نیاز */
-            padding-bottom: 100px; /* فاصله از پایین */
+            overflow-y: auto; 
+            padding-bottom: 100px; 
         }
-        .chef-upload-box { 
-            border-color: var(--chef-color); 
-            padding: 15px; 
-            flex-shrink: 0; 
-        }
+        .chef-upload-box { border-color: var(--chef-color); padding: 15px; flex-shrink: 0; }
         .chef-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; box-sizing: border-box; resize: vertical; min-height: 80px; }
         .chef-btn { background-color: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); padding: 10px; font-size: 15px; }
         
-        /* باکس عکس آشپز (اصلاح شده) */
         .chef-image-wrapper {
             display: flex;
-            justify-content: space-around; /* فاصله مساوی چپ و راست */
+            justify-content: space-around; 
             align-items: center;
-            padding: 20px 10px;
-            margin-bottom: 30px; /* فاصله از نوار پایین */
+            padding: 10px;
+            margin-bottom: 20px; 
         }
         .chef-image-wrapper img {
-            width: 42%; /* اندازه مناسب برای هر عکس */
-            max-height: 160px; /* جلوگیری از بزرگ شدن بیش از حد */
-            object-fit: contain; /* حفظ نسبت تصویر کارتونی */
+            width: 42%; 
+            max-height: 140px; 
+            object-fit: contain; 
+        }
+
+        /* ==== تنظیمات اختصاصی تعمیرکار ==== */
+        #repair.active {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; 
+            padding-bottom: 100px; 
+        }
+        .repair-image-wrapper {
+            display: flex;
+            justify-content: space-around; 
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 20px; 
+        }
+        .repair-image-wrapper img {
+            width: 42%; 
+            max-height: 140px; 
+            object-fit: contain; 
         }
 
         .task-card { background: white; border-radius: 12px; padding: 10px; margin-bottom: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); text-align: right; border-right: 4px solid var(--tasks-color); }
@@ -409,6 +419,7 @@
         </div>
     </div>
 
+    <!-- تب تعمیرکار -->
     <div id="repair" class="tab-content">
         <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -419,6 +430,12 @@
                 <span>🛠️</span> عکسش رو بذار
             </button>
             <img id="repairImagePreview" alt="عکس وسیله">
+        </div>
+
+        <!-- عکس‌های کارتونی تعمیرکار -->
+        <div class="repair-image-wrapper">
+            <img src="https://img.icons8.com/3d-fluency/480/technician.png" alt="تعمیرکار">
+            <img src="https://img.icons8.com/3d-fluency/480/washing-machine.png" alt="لوازم خانگی">
         </div>
 
         <div id="repairResultCard" class="result-card repair-result-card">
@@ -486,8 +503,8 @@
 
         <!-- عکس‌های کارتونی آشپز -->
         <div class="chef-image-wrapper">
-            <img src="https://cdni.iconscout.com/illustration/premium/thumb/female-chef-4689333-3883939.png" alt="آشپز خانم کارتونی">
-            <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-chef-4689327-3883933.png" alt="آشپز آقا کارتونی">
+            <img src="https://img.icons8.com/color/480/chef-female.png" alt="آشپز خانم کارتونی">
+            <img src="https://img.icons8.com/color/480/chef-male.png" alt="آشپز آقا کارتونی">
         </div>
 
         <div id="chefResultCard" class="result-card chef-result-card">
