@@ -190,7 +190,7 @@
 
         .tab-btn.active { opacity: 1; transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
         
-        /* ==== تنظیمات اختصاصی معلم برای ثابت ماندن کادر تایپ ==== */
+        /* ==== تنظیمات اختصاصی معلم ==== */
         #teacher.active { 
             display: flex; 
             flex-direction: column; 
@@ -242,8 +242,8 @@
         #chef.active {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            padding-bottom: 85px;
+            overflow-y: auto; /* تغییر به auto برای اسکرول در صورت نیاز */
+            padding-bottom: 100px; /* فاصله از پایین */
         }
         .chef-upload-box { 
             border-color: var(--chef-color); 
@@ -253,23 +253,18 @@
         .chef-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; box-sizing: border-box; resize: vertical; min-height: 80px; }
         .chef-btn { background-color: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); padding: 10px; font-size: 15px; }
         
-        /* باکس عکس آشپز (حالا شامل دو عکس) */
+        /* باکس عکس آشپز (اصلاح شده) */
         .chef-image-wrapper {
-            flex-grow: 1;
             display: flex;
-            gap: 8px;
-            justify-content: center;
-            align-items: stretch;
-            overflow: hidden;
-            border-radius: 15px;
-            margin-top: 10px;
-            opacity: 0.85;
+            justify-content: space-around; /* فاصله مساوی چپ و راست */
+            align-items: center;
+            padding: 20px 10px;
+            margin-bottom: 30px; /* فاصله از نوار پایین */
         }
         .chef-image-wrapper img {
-            width: 50%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px;
+            width: 42%; /* اندازه مناسب برای هر عکس */
+            max-height: 160px; /* جلوگیری از بزرگ شدن بیش از حد */
+            object-fit: contain; /* حفظ نسبت تصویر کارتونی */
         }
 
         .task-card { background: white; border-radius: 12px; padding: 10px; margin-bottom: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); text-align: right; border-right: 4px solid var(--tasks-color); }
@@ -489,10 +484,10 @@
             </button>
         </div>
 
-        <!-- عکس‌های آشپز برای پر کردن فضای خالی -->
+        <!-- عکس‌های کارتونی آشپز -->
         <div class="chef-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=600&auto=format&fit=crop" alt="آشپز خانم">
-            <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=600&auto=format&fit=crop" alt="آشپز آقا">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/female-chef-4689333-3883939.png" alt="آشپز خانم کارتونی">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-chef-4689327-3883933.png" alt="آشپز آقا کارتونی">
         </div>
 
         <div id="chefResultCard" class="result-card chef-result-card">
@@ -1210,7 +1205,7 @@
             resultCard.style.display = 'none';
             errorBox.style.display = 'none';
             resultContent.style.display = 'block';
-            chefImageWrapper.style.display = 'none'; // مخفی کردن عکس آشپزها هنگام نمایش نتیجه
+            if(chefImageWrapper) chefImageWrapper.style.display = 'none'; // مخفی کردن عکس‌ها
 
             try {
                 const response = await fetch('/api/chef', {
@@ -1240,14 +1235,14 @@
                     errorBox.style.display = 'block';
                     resultContent.style.display = 'none';
                     resultCard.style.display = 'block';
-                    chefImageWrapper.style.display = 'flex'; // برگرداندن عکس‌ها در صورت خطا
+                    if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; 
                 }
             } catch (error) {
                 errorBox.innerText = 'ارتباط با سرور برقرار نشد.';
                 errorBox.style.display = 'block';
                 resultContent.style.display = 'none';
                 resultCard.style.display = 'block';
-                chefImageWrapper.style.display = 'flex'; // برگرداندن عکس‌ها در صورت خطا
+                if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; 
             } finally {
                 btn.innerHTML = '<span>🍳</span> چی بپزم؟';
                 btn.disabled = false;
