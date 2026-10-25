@@ -247,13 +247,32 @@
             display: flex;
             justify-content: space-around; 
             align-items: center;
-            padding: 10px;
-            margin-bottom: 20px; 
+            padding: 10px 10px 0 10px;
+            margin-bottom: 0; 
         }
         .chef-image-wrapper img {
             width: 45%; 
             max-height: 120px; 
             object-fit: contain; 
+        }
+
+        /* استایل جدید برای متن های انگیزشی زیر عکس ها */
+        .motivational-text {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 900;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            animation: pulse-text 3s infinite;
+        }
+        .chef-motivational { color: var(--chef-color); }
+        .repair-motivational { color: var(--repair-color); }
+
+        @keyframes pulse-text {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
 
         #repair.active {
@@ -266,8 +285,8 @@
             display: flex;
             justify-content: space-around; 
             align-items: center;
-            padding: 10px;
-            margin-bottom: 20px; 
+            padding: 10px 10px 0 10px;
+            margin-bottom: 0; 
         }
         .repair-image-wrapper img {
             width: 45%; 
@@ -430,10 +449,11 @@
         </div>
 
         <div class="repair-image-wrapper">
-            <!-- استفاده از لینک های بسیار پایدار و کارتونی برای تعمیرکار -->
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f527.svg" alt="تعمیرکار">
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f527.svg" alt="ابزار">
         </div>
+        <!-- متن انگیزشی تعمیرکار -->
+        <p class="motivational-text repair-motivational">قدم به قدم باهاتم تا وسیله خرابتو درست کنی! 💪🛠️</p>
 
         <div id="repairResultCard" class="result-card repair-result-card">
             <div id="repairErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
@@ -498,10 +518,11 @@
         </div>
 
         <div class="chef-image-wrapper">
-            <!-- استفاده از لینک های بسیار پایدار و کارتونی برای آشپزها -->
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f373.svg" alt="آشپز خانم کارتونی">
             <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f373.svg" alt="آشپز آقا کارتونی">
         </div>
+        <!-- متن انگیزشی آشپز -->
+        <p class="motivational-text chef-motivational">با هم بهترین آشپز میشیم! ✨👨‍🍳</p>
 
         <div id="chefResultCard" class="result-card chef-result-card">
             <div id="chefErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
@@ -1212,6 +1233,7 @@
             const resultContent = document.getElementById('chefResultContent');
             const imgContainer = document.getElementById('chefImageContainer');
             const chefImageWrapper = document.querySelector('.chef-image-wrapper');
+            const chefMotivationalText = document.querySelector('.chef-motivational');
 
             btn.innerHTML = 'در حال پختن... <div class="loader"></div>';
             btn.disabled = true;
@@ -1219,6 +1241,7 @@
             errorBox.style.display = 'none';
             resultContent.style.display = 'block';
             if(chefImageWrapper) chefImageWrapper.style.display = 'none';
+            if(chefMotivationalText) chefMotivationalText.style.display = 'none';
 
             try {
                 const response = await fetch('/api/chef', {
@@ -1249,6 +1272,7 @@
                     resultContent.style.display = 'none';
                     resultCard.style.display = 'block';
                     if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; 
+                    if(chefMotivationalText) chefMotivationalText.style.display = 'block';
                 }
             } catch (error) {
                 errorBox.innerText = 'ارتباط با سرور برقرار نشد.';
@@ -1256,6 +1280,7 @@
                 resultContent.style.display = 'none';
                 resultCard.style.display = 'block';
                 if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; 
+                if(chefMotivationalText) chefMotivationalText.style.display = 'block';
             } finally {
                 btn.innerHTML = '<span>🍳</span> چی بپزم؟';
                 btn.disabled = false;
