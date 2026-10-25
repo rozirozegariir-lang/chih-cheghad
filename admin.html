@@ -7,83 +7,32 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         :root {
-            --primary: #D4A574;
-            --primary-dark: #b88655;
-            --bg-color: #F5E6D3;
-            --text-main: #4A3728;
-            --card-bg: #FFFFFF;
-            --danger: #E74C3C;
-            --success: #2E8B57;
+            --primary: #D4A574; --primary-dark: #b88655; --bg-color: #F5E6D3; --text-main: #4A3728; --danger: #E74C3C; --success: #2E8B57;
         }
-        body {
-            font-family: 'Vazirmatn', Tahoma, sans-serif;
-            background-color: #f4f7f6;
-            color: var(--text-main);
-            margin: 0; padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .login-container {
-            background: white; padding: 30px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center;
-            width: 90%; max-width: 350px;
-        }
+        body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; color: var(--text-main); margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .login-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 350px; }
         .login-container h2 { color: var(--primary-dark); margin-bottom: 20px; }
-        .login-input {
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
-            font-family: inherit; font-size: 16px; box-sizing: border-box;
-            margin-bottom: 15px; text-align: center; letter-spacing: 2px;
-        }
-        .login-btn {
-            width: 100%; padding: 12px; background: var(--primary); color: white;
-            border: none; border-radius: 8px; font-family: inherit; font-size: 16px;
-            font-weight: bold; cursor: pointer; transition: background 0.2s;
-        }
+        .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 16px; box-sizing: border-box; margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
+        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
         .login-btn:hover { background: var(--primary-dark); }
         .error-msg { color: var(--danger); font-size: 13px; display: none; margin-bottom: 10px; }
-
-        .dashboard-container {
-            display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box;
-        }
-        .header-dash {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; background: white; padding: 15px 20px;
-            border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+        .dashboard-container { display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
+        .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .header-dash h2 { margin: 0; color: var(--primary-dark); font-size: 20px; }
-        .logout-btn {
-            background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px;
-            border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer;
-        }
-
+        .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; }
         .dash-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .dash-tab {
-            flex: 1; padding: 12px; background: white; border: none; border-radius: 10px;
-            font-family: inherit; font-weight: bold; cursor: pointer; color: #777;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s;
-        }
+        .dash-tab { flex: 1; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s; }
         .dash-tab.active { background: var(--primary); color: white; }
-
         .tab-panel { display: none; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tab-panel.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .form-group { margin-bottom: 15px; text-align: right; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
         .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; background: #f9f9f9; }
-        .submit-btn { 
-            background: var(--success); color: white; border: none; padding: 12px 20px; 
-            border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; 
-            width: 100%; font-size: 15px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
+        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .status-msg { text-align: center; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; }
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; }
@@ -93,7 +42,6 @@
 
     <div id="loginBox" class="login-container">
         <h2>🔐 ورود به پنل مدیریت</h2>
-        <p style="font-size: 13px; color: #777; margin-bottom: 20px;">لطفاً رمز عبور خود را وارد کنید</p>
         <div id="loginError" class="error-msg">رمز عبور اشتباه است!</div>
         <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور...">
         <button class="login-btn" onclick="checkLogin()">ورود</button>
@@ -112,7 +60,6 @@
 
         <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
-            
             <div id="productStatusMsg" class="status-msg"></div>
 
             <div class="form-group">
@@ -137,16 +84,13 @@
 
         <div id="tasks" class="tab-panel">
             <h3 style="margin-top: 0; color: var(--tasks-color);">لیست کارهای ثبت شده</h3>
-            <p style="font-size: 13px; color: #777;">در این بخش لیست کارهای سوپابیس نمایش داده می‌شود.</p>
             <div style="text-align: center; padding: 20px; color: #aaa;">(این بخش در مرحله بعد به دیتابیس وصل می‌شود)</div>
         </div>
     </div>
 
     <script>
-        // اطلاعات سوپابیس شما به صورت خودکار قرار داده شد
         const SUPABASE_URL = "https://grfeyftvktknbrphphafqf.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZmV5ZnR2a3RuYnJwaHBoYWZxZiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkyNTI3MDM4LCJleHAiOjIxMDgxMDMwMzh9.Pl7iuL3kJFNPGoW2NMPIm88jGBRYHiaJQuROjGdPZ-M";
-
         const ADMIN_PASSWORD = "admin123"; 
 
         function checkLogin() {
@@ -154,7 +98,6 @@
             if (input === ADMIN_PASSWORD) {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'block';
-                document.getElementById('loginError').style.display = 'none';
                 localStorage.setItem('isAdminLoggedIn', 'true');
             } else {
                 document.getElementById('loginError').style.display = 'block';
@@ -180,6 +123,7 @@
 
         async function uploadFile(file) {
             if (!file) return null;
+            alert("1. شروع آپلود فایل: " + file.name);
             const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
             
             const res = await fetch(`${SUPABASE_URL}/storage/v1/object/products/${fileName}`, {
@@ -192,13 +136,18 @@
             });
 
             if (!res.ok) {
-                throw new Error('خطا در آپلود فایل به سوپابیس');
+                const err = await res.text();
+                alert("خطای سوپابیس در آپلود: " + err);
+                throw new Error('خطا در آپلود فایل');
             }
             
+            alert("2. آپلود فایل با موفقیت انجام شد.");
             return `${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
         }
 
         async function addProduct() {
+            alert("0. دکمه ثبت کلیک شد!");
+            
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
             const imgFile = document.getElementById('prodImgFile').files[0];
@@ -208,8 +157,7 @@
             const statusMsg = document.getElementById('productStatusMsg');
 
             if (!title || !price || !imgFile) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.';
+                alert("لطفاً عنوان، قیمت و عکس را وارد کنید.");
                 return;
             }
 
@@ -219,12 +167,13 @@
 
             try {
                 const image_url = await uploadFile(imgFile);
-                
                 let video_url = "";
                 if (vidFile) {
                     video_url = await uploadFile(vidFile);
                 }
 
+                alert("3. در حال ارسال اطلاعات به دیتابیس (ورکل)...");
+                
                 const response = await fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -237,6 +186,7 @@
                 });
 
                 if (response.ok) {
+                    alert("4. محصول با موفقیت در دیتابیس ثبت شد!");
                     statusMsg.className = 'status-msg success';
                     statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
                     
@@ -245,9 +195,12 @@
                     document.getElementById('prodImgFile').value = '';
                     document.getElementById('prodVidFile').value = '';
                 } else {
+                    const errText = await response.text();
+                    alert("خطای دیتابیس: " + errText);
                     throw new Error('خطا در ثبت نهایی');
                 }
             } catch (error) {
+                alert("کد به خطا خورد: " + error.message);
                 statusMsg.className = 'status-msg error';
                 statusMsg.innerText = '❌ ' + error.message;
             } finally {
