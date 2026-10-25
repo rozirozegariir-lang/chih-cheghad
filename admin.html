@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پنل ادمین | همیار زندگی</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.min.js"></script>
     <style>
         :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -36,7 +35,6 @@
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; font-size: 12px; word-wrap: break-word;}
 
-        /* استایل‌های تب ابزارها */
         .tools-grid { display: flex; flex-direction: column; gap: 15px; }
         .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--primary-dark); font-weight: bold; transition: all 0.2s; }
         .tool-card:hover { background: var(--bg-color); border-color: var(--primary); }
@@ -62,7 +60,6 @@
             <button class="dash-tab" onclick="switchDashTab('tools', this)">🛠️ ابزارهای مدیریتی</button>
         </div>
 
-        <!-- تب محصولات -->
         <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
             <div id="productStatusMsg" class="status-msg"></div>
@@ -70,12 +67,10 @@
             <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
             <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
             <div class="form-group"><label>انتخاب عکس *</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
-            <div class="form-group"><label>انتخاب ویدیو (اختیاری)</label><input type="file" id="prodVidFile" class="form-control" accept="video/*"></div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
-        <!-- تب ابزارهای مدیریتی (جدید) -->
         <div id="tools" class="tab-panel">
             <h3 style="margin-top: 0; color: var(--primary-dark);">ابزارهای مدیریتی</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 20px;">با کلیک روی هر کدام، به تب جدیدی هدایت می‌شوید.</p>
@@ -127,46 +122,10 @@
             btnElement.classList.add('active');
         }
 
-        async function uploadFile(file, btnElement) {
-            if (!file) return null;
-            const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-            
-            // آدرس دقیق و اختصاصی برای آپلود تکه‌تکه (Resumable)
-            const endpoint = `https://grfeyftvktknbrphphafqf.storage.supabase.co/storage/v1/upload/resumable`;
-
-            return new Promise((resolve, reject) => {
-                const upload = new tus.Upload(file, {
-                    endpoint: endpoint,
-                    retryDelays: [0, 3000, 5000],
-                    headers: { authorization: `Bearer ${SUPABASE_ANON_KEY}` },
-                    uploadDataDuringCreation: true,
-                    removeFingerprintOnSuccess: true,
-                    metadata: { bucketName: 'products', objectName: fileName, contentType: file.type, cacheControl: '3600' },
-                    chunkSize: 6 * 1024 * 1024, // حجم هر تکه ۶ مگابایت
-                    onError: function (error) {
-                        alert("خطای آپلود: " + (error.message || JSON.stringify(error)));
-                        reject(new Error("خطا در آپلود"));
-                    },
-                    onProgress: function (b, t) {
-                        btnElement.innerHTML = `در حال آپلود: ${((b / t) * 100).toFixed(1)}% <div class="loader"></div>`;
-                    },
-                    onSuccess: function () {
-                        resolve(`${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`);
-                    },
-                });
-
-                upload.findPreviousUploads().then(function (prev) {
-                    if (prev.length) upload.resumeFromPreviousUpload(prev[0]);
-                    upload.start();
-                });
-            });
-        }
-
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
             const imgFile = document.getElementById('prodImgFile').files[0];
-            const vidFile = document.getElementById('prodVidFile').files[0];
             
             const btn = document.getElementById('addProductBtn');
             const statusMsg = document.getElementById('productStatusMsg');
@@ -178,29 +137,45 @@
             }
 
             btn.disabled = true;
-            btn.innerHTML = 'آماده‌سازی...';
+            btn.innerHTML = 'در حال آپلود... <div class="loader"></div>';
             statusMsg.style.display = 'none';
 
             try {
-                const image_url = await uploadFile(imgFile, btn);
-                let video_url = "";
-                if (vidFile) video_url = await uploadFile(vidFile, btn);
-
-                btn.innerHTML = 'ذخیره در دیتابیس... <div class="loader"></div>';
-                const res = await fetch('/api/products', {
+                const fileName = `${Date.now()}_${imgFile.name.replace(/\s/g, '_')}`;
+                
+                // آپلود مستقیم و ساده
+                const res = await fetch(`${SUPABASE_URL}/storage/v1/object/products/${fileName}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, price, image_url, video_url })
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': imgFile.type
+                    },
+                    body: imgFile
                 });
 
-                if (res.ok) {
+                if (!res.ok) {
+                    const err = await res.text();
+                    throw new Error(`خطای سوپابیس: ${err}`);
+                }
+
+                const image_url = `${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
+
+                btn.innerHTML = 'ذخیره در دیتابیس... <div class="loader"></div>';
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, price, image_url, video_url: "" })
+                });
+
+                if (response.ok) {
                     statusMsg.className = 'status-msg success';
                     statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
                     document.getElementById('prodTitle').value = '';
                     document.getElementById('prodPrice').value = '';
                     document.getElementById('prodImgFile').value = '';
-                    document.getElementById('prodVidFile').value = '';
-                } else { throw new Error('خطا در ثبت نهایی'); }
+                } else {
+                    throw new Error('خطا در ثبت نهایی در دیتابیس');
+                }
             } catch (error) {
                 statusMsg.className = 'status-msg error';
                 statusMsg.innerText = '❌ ' + error.message;
