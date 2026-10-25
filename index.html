@@ -26,13 +26,41 @@
         .install-btn:active { transform: scale(0.95); }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(221, 36, 118, 0); } 100% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0); } }
 
+        /* استایل دکمه شناور اشتراک‌گذاری */
+        .float-share-btn {
+            position: fixed;
+            bottom: 85px; /* بالاتر از نوار تب‌ها */
+            left: 15px;   /* سمت چپ صفحه */
+            background: linear-gradient(135deg, #2A9D8F, #21867a);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            z-index: 990;
+            cursor: pointer;
+            animation: pulse-share 2.5s infinite;
+            transition: transform 0.2s;
+        }
+        .float-share-btn:active { transform: scale(0.9); }
+        @keyframes pulse-share {
+            0% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(42, 157, 143, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
+        }
+
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 85%; max-width: 350px; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; text-align: center; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #999; cursor: pointer; font-weight: bold; }
         .modal-content h2 { color: var(--primary-dark); margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid var(--bg-color); padding-bottom: 10px; }
         .menu-list { list-style: none; padding: 0; margin: 0; }
         .menu-list li { margin-bottom: 12px; }
-        .menu-list a, .menu-list button { display: block; width: 100%; padding: 12px; background: var(--bg-color); color: var(--text-main); text-decoration: none; border-radius: 10px; font-weight: bold; font-family: inherit; font-size: 15px; border: none; cursor: pointer; transition: background 0.2s; box-sizing: border-box; }
+        .menu-list a, .menu-list button { display: block; width: 100%; padding: 12px; background: var(--bg-color); color: var(--text-main); text-decoration: none; border-radius: 10px; font-weight: bold; font-family: inherit; font-size: 15px; border: none; cursor: pointer; transition: background 0.2s; box-sizing: border-box; text-align: right;}
         .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
@@ -141,25 +169,9 @@
         /* استایل فرم ثبت نام با تیک رنگی */
         .captcha-box { display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; border-radius: 8px; padding: 15px; background: #f9f9f9; cursor: pointer; margin-top: 15px; transition: all 0.2s; }
         .captcha-box:hover { background: #f0f0f0; }
-        
-        .captcha-checkbox { 
-            width: 28px; height: 28px; border: 2px solid #aaa; border-radius: 6px; 
-            background: white; display: flex; justify-content: center; align-items: center; 
-            transition: all 0.2s; 
-        }
-        
-        /* وقتی تیک می‌خوره، پس‌زمینه سبز و حاشیه سبز میشه */
-        .captcha-checkbox.checked { 
-            background: #2E8B57; 
-            border-color: #2E8B57; 
-        }
-        
-        /* علامت تیک سفید و درشت */
-        .captcha-checkbox.checked::after { 
-            content: '✓'; color: white; font-weight: bold; font-size: 22px; 
-            line-height: 1;
-        }
-        
+        .captcha-checkbox { width: 28px; height: 28px; border: 2px solid #aaa; border-radius: 6px; background: white; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .captcha-checkbox.checked { background: #2E8B57; border-color: #2E8B57; }
+        .captcha-checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 22px; line-height: 1; }
         .captcha-text { font-size: 15px; font-weight: bold; color: #555; margin-right: 10px; }
         .captcha-icon { font-size: 28px; color: var(--gallery-color); }
         #phoneInputContainer { display: none; margin-top: 20px; animation: fadeIn 0.5s; }
@@ -173,12 +185,16 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
+    <!-- دکمه شناور اشتراک‌گذاری که ترکیب رو به هم نمیزنه -->
+    <button class="float-share-btn" onclick="shareApp()" title="ارسال برای دوستان">📤</button>
+
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
+                <li><button onclick="shareApp()"><i>🔗</i> ارسال برای دوستان</button></li>
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
         </div>
@@ -391,6 +407,13 @@
     </div>
 
     <script>
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            const installBtn = document.querySelector('.install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+        }
+
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -414,6 +437,24 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').then(reg => { console.log('SW registered'); }).catch(err => { console.log('SW error', err); });
             });
+        }
+
+        async function shareApp() {
+            const shareData = {
+                title: 'همیار زندگی',
+                text: 'دستیار هوشمند شما در کارهای روزمره! همین الان نصبش کن:',
+                url: window.location.origin
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+                    alert('لینک اپلیکیشن کپی شد! می‌تونی برای دوستات بفرستی. 😊');
+                }
+            } catch (err) {
+                console.log('Error sharing:', err);
+            }
         }
 
         let freeUses = parseInt(localStorage.getItem('valuationCount') || '0');
