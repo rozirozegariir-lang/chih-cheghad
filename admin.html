@@ -6,7 +6,7 @@
     <title>پنل ادمین | همیار زندگی</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
-        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; --tasks-color: #8E44AD; --chef-color: #E74C3C; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .login-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 350px; }
         .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; text-align: center; box-sizing: border-box; font-family: inherit;}
@@ -16,8 +16,8 @@
         .header-dash { display: flex; justify-content: space-between; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-family: inherit; }
         
-        .dash-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .dash-tab { flex: 1; white-space: nowrap; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .dash-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .dash-tab { flex: 1; white-space: nowrap; padding: 12px 10px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s; font-size: 13px;}
         .dash-tab.active { background: var(--primary); color: white; }
         
         .tab-panel { display: none; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
@@ -26,7 +26,9 @@
         
         .form-group { margin-bottom: 15px; text-align: right; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; font-family: inherit;}
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; font-family: inherit; margin-bottom: 5px;}
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        
         .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: inherit; font-weight: bold;}
         .submit-btn:disabled { opacity: 0.7; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; }
@@ -35,6 +37,12 @@
         .status-msg { text-align: center; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; }
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; font-size: 12px; word-wrap: break-word;}
+
+        /* استایل لیست کارت ها برای مدیریت */
+        .manage-card { border: 1px solid #eee; border-radius: 10px; padding: 15px; margin-bottom: 10px; background: #fafafa; position: relative;}
+        .manage-card h4 { margin: 0 0 5px 0; color: var(--primary-dark); font-size: 15px;}
+        .manage-card p { margin: 0 0 5px 0; font-size: 12px; color: #555;}
+        .delete-btn { background: #fce4e4; color: var(--danger); border: 1px solid #f5c6cb; padding: 5px 10px; border-radius: 5px; font-family: inherit; font-size: 12px; cursor: pointer; position: absolute; left: 10px; top: 10px;}
 
         /* استایل ابزارها */
         .tools-section-title { color: var(--primary-dark); font-size: 15px; margin: 20px 0 10px 0; border-bottom: 2px solid #eee; padding-bottom: 5px; }
@@ -62,40 +70,53 @@
             <button class="logout-btn" onclick="logout()">خروج</button>
         </div>
 
+        <!-- تب ها -->
         <div class="dash-tabs">
             <button class="dash-tab active" onclick="switchDashTab('products', this)">📦 محصولات</button>
-            <button class="dash-tab" onclick="switchDashTab('tools', this)">🛠️ ابزارهای مدیریتی</button>
+            <button class="dash-tab" onclick="switchDashTab('tasks', this)">🤝 میکرو-کارها</button>
+            <button class="dash-tab" onclick="switchDashTab('chef', this)">👨‍🍳 آشپز یار</button>
+            <button class="dash-tab" onclick="switchDashTab('tools', this)">🛠️ ابزارها</button>
         </div>
 
-        <!-- تب محصولات -->
+        <!-- ۱. تب محصولات -->
         <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
             <div id="productStatusMsg" class="status-msg"></div>
 
-            <div class="form-group">
-                <label>عنوان محصول *</label>
-                <input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی...">
-            </div>
-            <div class="form-group">
-                <label>قیمت *</label>
-                <input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان">
-            </div>
-            <div class="form-group">
-                <label>لینک عکس (URL) *</label>
-                <input type="text" id="prodImg" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار...">
-            </div>
-            <div class="form-group">
-                <label>لینک ویدیو (اختیاری)</label>
-                <input type="text" id="prodVid" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار...">
-            </div>
+            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
+            <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
+            <div class="form-group"><label>لینک عکس (URL) *</label><input type="text" id="prodImg" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار..."></div>
+            <div class="form-group"><label>لینک ویدیو (اختیاری)</label><input type="text" id="prodVid" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار..."></div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
-        <!-- تب ابزارهای مدیریتی -->
+        <!-- ۲. تب میکرو-کارها (مدیریت) -->
+        <div id="tasks" class="tab-panel">
+            <h3 style="margin-top: 0; color: var(--tasks-color);">مدیریت میکرو-کارها</h3>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">لیست کارهایی که کاربران در سایت ثبت کرده‌اند.</p>
+            
+            <div id="tasksList">
+                <p style="text-align: center; color: #aaa;">در حال دریافت اطلاعات...</p>
+            </div>
+        </div>
+
+        <!-- ۳. تب آشپز یار (مدیریت) -->
+        <div id="chef" class="tab-panel">
+            <h3 style="margin-top: 0; color: var(--chef-color);">افزودن دستور پخت (آشپز یار)</h3>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">اینجا می‌تونی دستور پخت‌های خاص خودت رو با عکس اضافه کنی.</p>
+            
+            <div class="form-group"><label>اسم غذا *</label><input type="text" id="chefName" class="form-control"></div>
+            <div class="form-group"><label>مواد لازم *</label><textarea id="chefIngredients" class="form-control" placeholder="هر ماده را با کاما جدا کنید..."></textarea></div>
+            <div class="form-group"><label>دستور پخت *</label><textarea id="chefInstructions" class="form-control"></textarea></div>
+            <div class="form-group"><label>لینک عکس غذا (اختیاری)</label><input type="text" id="chefImg" class="form-control" placeholder="از تب ابزارها لینک بگیر..."></div>
+            
+            <button class="submit-btn" id="addChefBtn" style="background-color: var(--chef-color);" onclick="alert('این بخش در مرحله بعد به دیتابیس وصل می‌شود.')">ثبت دستور پخت</button>
+        </div>
+
+        <!-- ۴. تب ابزارهای مدیریتی -->
         <div id="tools" class="tab-panel">
             <h3 style="margin-top: 0; color: var(--primary-dark);">ابزارهای مدیریتی</h3>
-            <p style="font-size: 13px; color: #666;">از این ابزارها برای آپلود فایل، گرفتن لینک و مدیریت سایت استفاده کن.</p>
             
             <div class="tools-section-title">📸 آپلود عکس و ویدیو (برای گرفتن لینک)</div>
             <div class="tools-grid">
@@ -107,52 +128,32 @@
                     <span><span class="tool-icon">🎬</span> آپلود ویدیو (Streamable)</span>
                     <span>↗</span>
                 </a>
-                <a href="https://imgbb.com" target="_blank" class="tool-card highlight-tool">
-                    <span><span class="tool-icon">🌄</span> آپلود عکس (ImgBB)</span>
-                    <span>↗</span>
-                </a>
             </div>
 
             <div class="tools-section-title">⚙️ زیرساخت‌های سایت و دامنه</div>
             <div class="tools-grid">
-                <!-- لینک پنل کنترل دیرین که خواسته بودی -->
                 <a href="https://diirin.ir/devdor/" target="_blank" class="tool-card control-tool">
-                    <span><span class="tool-icon">🛠️</span> پنل کنترل سایت دیرین (DirectAdmin)</span>
+                    <span><span class="tool-icon">🛠️</span> پنل کنترل سایت دیرین</span>
                     <span>↗</span>
                 </a>
-
                 <a href="https://diirin.ir/bio/admin.php" target="_blank" class="tool-card admin-tool">
-                    <span><span class="tool-icon">🔗</span> پنل مدیریت صفحه اختصاصی (Diirin)</span>
+                    <span><span class="tool-icon">🔗</span> پنل مدیریت صفحه اختصاصی</span>
                     <span>↗</span>
                 </a>
-                
                 <a href="https://diirin.ir:2096/" target="_blank" class="tool-card mail-tool">
                     <span><span class="tool-icon">📧</span> پنل ایمیل دیرین (Webmail)</span>
                     <span>↗</span>
                 </a>
-
                 <a href="https://vercel.com/dashboard" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">▲</span> داشبورد Vercel (هاست سایت)</span>
+                    <span><span class="tool-icon">▲</span> داشبورد Vercel</span>
                     <span>↗</span>
                 </a>
                 <a href="https://supabase.com/dashboard" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">⚡</span> داشبورد Supabase (دیتابیس)</span>
+                    <span><span class="tool-icon">⚡</span> داشبورد Supabase</span>
                     <span>↗</span>
                 </a>
                 <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">🐙</span> مخزن گیت‌هاب (کدهای پروژه)</span>
-                    <span>↗</span>
-                </a>
-            </div>
-
-            <div class="tools-section-title">🤖 هوش مصنوعی و سایر سرویس‌ها</div>
-            <div class="tools-grid">
-                <a href="https://aistudio.google.com/" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">✨</span> Google AI Studio (مدیریت کلیدهای هوش مصنوعی)</span>
-                    <span>↗</span>
-                </a>
-                <a href="https://www.remove.bg/" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">✂️</span> حذف پس‌زمینه عکس (Remove.bg)</span>
+                    <span><span class="tool-icon">🐙</span> مخزن گیت‌هاب</span>
                     <span>↗</span>
                 </a>
             </div>
@@ -166,6 +167,7 @@
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'block';
                 localStorage.setItem('isAdminLoggedIn', 'true');
+                loadAdminTasks(); // بارگذاری کارها بعد از لاگین
             } else { document.getElementById('loginError').style.display = 'block'; }
         }
         
@@ -177,6 +179,7 @@
         if (localStorage.getItem('isAdminLoggedIn') === 'true') {
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('dashboardBox').style.display = 'block';
+            loadAdminTasks();
         }
 
         function switchDashTab(tabId, btnElement) {
@@ -184,8 +187,11 @@
             document.querySelectorAll('.dash-tab').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
+            
+            if (tabId === 'tasks') loadAdminTasks();
         }
 
+        // --- بخش ثبت محصول ---
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
@@ -209,12 +215,7 @@
                 const response = await fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        title: title, 
-                        price: price, 
-                        image_url: imgUrl, 
-                        video_url: vidUrl 
-                    })
+                    body: JSON.stringify({ title: title, price: price, image_url: imgUrl, video_url: vidUrl })
                 });
 
                 if (response.ok) {
@@ -224,15 +225,45 @@
                     document.getElementById('prodPrice').value = '';
                     document.getElementById('prodImg').value = '';
                     document.getElementById('prodVid').value = '';
-                } else {
-                    throw new Error('خطا در ثبت نهایی در دیتابیس');
-                }
+                } else { throw new Error('خطا در ثبت نهایی در دیتابیس'); }
             } catch (error) {
                 statusMsg.className = 'status-msg error';
                 statusMsg.innerText = '❌ ' + error.message;
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = 'ثبت محصول';
+            }
+        }
+
+        // --- بخش مدیریت میکرو-کارها ---
+        async function loadAdminTasks() {
+            const tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت اطلاعات...</p>';
+            
+            try {
+                const response = await fetch('/api/tasks');
+                const tasks = await response.json();
+                
+                tasksList.innerHTML = '';
+                if (tasks.length === 0) {
+                    tasksList.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاری ثبت نشده است.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const card = document.createElement('div');
+                    card.className = 'manage-card';
+                    card.innerHTML = `
+                        <button class="delete-btn" onclick="alert('برای حذف، باید کد بک‌اند آپدیت شود.')">حذف</button>
+                        <h4>${task.title}</h4>
+                        <p><strong>توضیحات:</strong> ${task.description || 'ندارد'}</p>
+                        <p><strong>دستمزد:</strong> ${task.price || 'توافقی'}</p>
+                        <p><strong>تماس:</strong> ${task.contact}</p>
+                    `;
+                    tasksList.appendChild(card);
+                });
+            } catch (error) {
+                tasksList.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>';
             }
         }
     </script>
