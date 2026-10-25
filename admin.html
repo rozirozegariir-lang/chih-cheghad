@@ -6,10 +6,10 @@
     <title>پنل ادمین | همیار زندگی</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
-        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .login-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 350px; }
-        .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; text-align: center; box-sizing: border-box;}
+        .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; text-align: center; box-sizing: border-box; font-family: inherit;}
         .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: inherit;}
         
         .dashboard-container { display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
@@ -25,6 +25,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
         .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; font-family: inherit;}
         .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: inherit; font-weight: bold;}
         .submit-btn:disabled { opacity: 0.7; }
@@ -35,10 +36,16 @@
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; font-size: 12px; word-wrap: break-word;}
 
-        .tools-grid { display: flex; flex-direction: column; gap: 15px; }
-        .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--primary-dark); font-weight: bold; transition: all 0.2s; }
-        .tool-card:hover { background: var(--bg-color); border-color: var(--primary); }
-        .tool-icon { font-size: 24px; margin-left: 10px; }
+        /* استایل ابزارها */
+        .tools-section-title { color: var(--primary-dark); font-size: 15px; margin: 20px 0 10px 0; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .tools-grid { display: flex; flex-direction: column; gap: 10px; }
+        .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--text-main); font-weight: bold; transition: all 0.2s; font-size: 14px;}
+        .tool-card:hover { background: #f0f0f0; border-color: var(--primary); }
+        .tool-icon { font-size: 20px; margin-left: 10px; }
+        .highlight-tool { border-color: #a8e6cf; background: #e8f8f5; }
+        .admin-tool { border-color: #d4a574; background: #fff8f0; }
+        .mail-tool { border-color: #a3c2f0; background: #f0f5fc; }
+        .control-tool { border-color: #a3e4d7; background: #e8f8f5; }
     </style>
 </head>
 <body>
@@ -60,32 +67,92 @@
             <button class="dash-tab" onclick="switchDashTab('tools', this)">🛠️ ابزارهای مدیریتی</button>
         </div>
 
+        <!-- تب محصولات -->
         <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
             <div id="productStatusMsg" class="status-msg"></div>
 
-            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
-            <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
-            <div class="form-group"><label>انتخاب عکس * (حداکثر ۳ مگابایت)</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
+            <div class="form-group">
+                <label>عنوان محصول *</label>
+                <input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی...">
+            </div>
+            <div class="form-group">
+                <label>قیمت *</label>
+                <input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان">
+            </div>
+            <div class="form-group">
+                <label>لینک عکس (URL) *</label>
+                <input type="text" id="prodImg" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار...">
+            </div>
+            <div class="form-group">
+                <label>لینک ویدیو (اختیاری)</label>
+                <input type="text" id="prodVid" class="form-control" placeholder="از تب ابزارها لینک بگیر و اینجا بذار...">
+            </div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
+        <!-- تب ابزارهای مدیریتی -->
         <div id="tools" class="tab-panel">
             <h3 style="margin-top: 0; color: var(--primary-dark);">ابزارهای مدیریتی</h3>
-            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">با کلیک روی هر کدام، به تب جدیدی هدایت می‌شوید.</p>
+            <p style="font-size: 13px; color: #666;">از این ابزارها برای آپلود فایل، گرفتن لینک و مدیریت سایت استفاده کن.</p>
             
+            <div class="tools-section-title">📸 آپلود عکس و ویدیو (برای گرفتن لینک)</div>
             <div class="tools-grid">
+                <a href="https://postimages.org" target="_blank" class="tool-card highlight-tool">
+                    <span><span class="tool-icon">🖼️</span> آپلود عکس (PostImages)</span>
+                    <span>↗</span>
+                </a>
+                <a href="https://streamable.com" target="_blank" class="tool-card highlight-tool">
+                    <span><span class="tool-icon">🎬</span> آپلود ویدیو (Streamable)</span>
+                    <span>↗</span>
+                </a>
+                <a href="https://imgbb.com" target="_blank" class="tool-card highlight-tool">
+                    <span><span class="tool-icon">🌄</span> آپلود عکس (ImgBB)</span>
+                    <span>↗</span>
+                </a>
+            </div>
+
+            <div class="tools-section-title">⚙️ زیرساخت‌های سایت و دامنه</div>
+            <div class="tools-grid">
+                <!-- لینک پنل کنترل دیرین که خواسته بودی -->
+                <a href="https://diirin.ir/devdor/" target="_blank" class="tool-card control-tool">
+                    <span><span class="tool-icon">🛠️</span> پنل کنترل سایت دیرین (DirectAdmin)</span>
+                    <span>↗</span>
+                </a>
+
+                <a href="https://diirin.ir/bio/admin.php" target="_blank" class="tool-card admin-tool">
+                    <span><span class="tool-icon">🔗</span> پنل مدیریت صفحه اختصاصی (Diirin)</span>
+                    <span>↗</span>
+                </a>
+                
+                <a href="https://diirin.ir:2096/" target="_blank" class="tool-card mail-tool">
+                    <span><span class="tool-icon">📧</span> پنل ایمیل دیرین (Webmail)</span>
+                    <span>↗</span>
+                </a>
+
                 <a href="https://vercel.com/dashboard" target="_blank" class="tool-card">
                     <span><span class="tool-icon">▲</span> داشبورد Vercel (هاست سایت)</span>
                     <span>↗</span>
                 </a>
                 <a href="https://supabase.com/dashboard" target="_blank" class="tool-card">
-                    <span><span class="tool-icon">⚡</span> داشبورد Supabase (دیتابیس و عکس‌ها)</span>
+                    <span><span class="tool-icon">⚡</span> داشبورد Supabase (دیتابیس)</span>
                     <span>↗</span>
                 </a>
                 <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card">
                     <span><span class="tool-icon">🐙</span> مخزن گیت‌هاب (کدهای پروژه)</span>
+                    <span>↗</span>
+                </a>
+            </div>
+
+            <div class="tools-section-title">🤖 هوش مصنوعی و سایر سرویس‌ها</div>
+            <div class="tools-grid">
+                <a href="https://aistudio.google.com/" target="_blank" class="tool-card">
+                    <span><span class="tool-icon">✨</span> Google AI Studio (مدیریت کلیدهای هوش مصنوعی)</span>
+                    <span>↗</span>
+                </a>
+                <a href="https://www.remove.bg/" target="_blank" class="tool-card">
+                    <span><span class="tool-icon">✂️</span> حذف پس‌زمینه عکس (Remove.bg)</span>
                     <span>↗</span>
                 </a>
             </div>
@@ -119,70 +186,35 @@
             btnElement.classList.add('active');
         }
 
-        // تابع تبدیل فایل به Base64 و ارسال به سرور Vercel
-        async function uploadFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    const base64Data = e.target.result;
-                    try {
-                        const res = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                fileName: `${Date.now()}_${file.name.replace(/\s/g, '_')}`,
-                                fileType: file.type,
-                                base64Data: base64Data
-                            })
-                        });
-                        if (!res.ok) {
-                            const err = await res.json();
-                            throw new Error(err.error || 'خطا در آپلود از طریق سرور');
-                        }
-                        const data = await res.json();
-                        resolve(data.url); // لینک عمومی عکس
-                    } catch (error) {
-                        reject(error);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
-            const imgFile = document.getElementById('prodImgFile').files[0];
+            const imgUrl = document.getElementById('prodImg').value.trim();
+            const vidUrl = document.getElementById('prodVid').value.trim();
             
             const btn = document.getElementById('addProductBtn');
             const statusMsg = document.getElementById('productStatusMsg');
 
-            if (!title || !price || !imgFile) {
+            if (!title || !price || !imgUrl) {
                 statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.';
-                return;
-            }
-
-            if (imgFile.size > 3 * 1024 * 1024) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'حجم عکس بیش از ۳ مگابایت است. لطفا عکس کم‌حجم‌تری انتخاب کنید.';
+                statusMsg.innerText = 'لطفاً عنوان، قیمت و لینک عکس را وارد کنید.';
                 return;
             }
 
             btn.disabled = true;
-            btn.innerHTML = 'در حال آپلود... <div class="loader"></div>';
+            btn.innerHTML = 'در حال ذخیره... <div class="loader"></div>';
             statusMsg.style.display = 'none';
 
             try {
-                // ۱. ارسال عکس به سرور واسط ورکل
-                const image_url = await uploadFile(imgFile);
-
-                // ۲. ذخیره اطلاعات در دیتابیس
-                btn.innerHTML = 'ذخیره در دیتابیس... <div class="loader"></div>';
                 const response = await fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, price, image_url, video_url: "" })
+                    body: JSON.stringify({ 
+                        title: title, 
+                        price: price, 
+                        image_url: imgUrl, 
+                        video_url: vidUrl 
+                    })
                 });
 
                 if (response.ok) {
@@ -190,7 +222,8 @@
                     statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
                     document.getElementById('prodTitle').value = '';
                     document.getElementById('prodPrice').value = '';
-                    document.getElementById('prodImgFile').value = '';
+                    document.getElementById('prodImg').value = '';
+                    document.getElementById('prodVid').value = '';
                 } else {
                     throw new Error('خطا در ثبت نهایی در دیتابیس');
                 }
