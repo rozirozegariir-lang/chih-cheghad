@@ -40,8 +40,8 @@
         }
         header h1 { 
             color: var(--primary); 
-            font-size: 34px; /* سایز بزرگتر شد */
-            font-weight: 900; /* بولدتر شد */
+            font-size: 34px;
+            font-weight: 900; 
             margin: 0; 
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1); 
         }
@@ -89,7 +89,7 @@
         .modal-content h2 { color: var(--primary-dark); margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid var(--bg-color); padding-bottom: 10px; }
         .menu-list { list-style: none; padding: 0; margin: 0; }
         .menu-list li { margin-bottom: 12px; }
-        .menu-list a, .menu-list button { display: block; width: 100%; padding: 12px; background: var(--bg-color); color: var(--text-main); text-decoration: none; border-radius: 10px; font-weight: bold; font-family: inherit; font-size: 15px; border: none; cursor: pointer; transition: background 0.2s; box-sizing: border-box; }
+        .menu-list a, .menu-list button { display: block; width: 100%; padding: 12px; background: var(--bg-color); color: var(--text-main); text-decoration: none; border-radius: 10px; font-weight: bold; font-family: inherit; font-size: 15px; border: none; cursor: pointer; transition: background 0.2s; box-sizing: border-box; text-align: right; }
         .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
@@ -137,7 +137,6 @@
 
         .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; }
         
-        /* تغییرات در کارت محصول */
         .product-card { 
             background: var(--card-bg); 
             border-radius: 15px; 
@@ -145,8 +144,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
             text-align: center; 
             padding-bottom: 12px; 
-            width: 95%; /* نزدیک تر شدن به کناره ها */
-            max-width: 350px; /* افزایش عرض مجاز */
+            width: 95%;
+            max-width: 350px; 
             transition: transform 0.2s; 
         }
         
@@ -205,9 +204,8 @@
 
         .tab-btn.active { opacity: 1; transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
         
-        /* تنظیم اختصاصی فاصله در تب گالری */
         #gallery.active {
-            padding-bottom: 95px; /* کمتر شد تا کارت بیاد پایین ولی نچسبه */
+            padding-bottom: 95px; 
         }
 
         #teacher.active { 
@@ -353,7 +351,8 @@
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
-                <li><a href="YOUR_LINK_HERE" target="_blank"><i>📞</i> پشتیبانی: ۰۹۱۵۹۲۴۵۷۷۳</a></li>
+                <!-- دکمه پشتیبانی با دستور باز کردن در تب جدید -->
+                <li><button onclick="window.open('https://diirin.ir/bio/', '_blank');"><i>📞</i> پشتیبانی</button></li>
             </ul>
         </div>
     </div>
