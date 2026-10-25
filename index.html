@@ -26,7 +26,7 @@
             background-attachment: fixed;
             color: var(--text-main); 
             margin: 0; padding: 0; 
-            height: 100dvh; /* ارتفاع دقیق صفحه نمایش */
+            height: 100dvh; 
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
@@ -92,7 +92,7 @@
         .tab-content { 
             display: none; 
             flex-grow: 1; 
-            padding: 0 10px 100px 10px; /* فاصله 100 پیکسلی برای نوار پایین */
+            padding: 0 10px 100px 10px; 
             overflow-y: auto; 
             animation: fadeIn 0.4s; 
         }
@@ -194,8 +194,8 @@
         #teacher.active { 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
-            padding-bottom: 85px; /* فاصله دقیق برای نوار پایین */
+            overflow: hidden; 
+            padding-bottom: 85px; 
         }
         .teacher-chat-box { 
             display: flex; 
@@ -207,7 +207,7 @@
             margin: 5px 0; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             border: 2px dashed var(--teacher-color); 
-            min-height: 0; /*非常重要: برای اینکه چت اسکرول بخوره و باکس بزرگ نشه */
+            min-height: 0; 
         }
         #tutorChatMessages { 
             flex-grow: 1; 
@@ -238,9 +238,39 @@
         .tasks-input { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 12px; margin-bottom: 8px; box-sizing: border-box; }
         .tasks-upload-btn { background-color: var(--tasks-color); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.4); padding: 10px; font-size: 15px; }
 
-        .chef-upload-box { border-color: var(--chef-color); padding: 15px; }
+        /* ==== تنظیمات اختصاصی آشپز یار ==== */
+        #chef.active {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding-bottom: 85px;
+        }
+        .chef-upload-box { 
+            border-color: var(--chef-color); 
+            padding: 15px; 
+            flex-shrink: 0; 
+        }
         .chef-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; box-sizing: border-box; resize: vertical; min-height: 80px; }
         .chef-btn { background-color: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); padding: 10px; font-size: 15px; }
+        
+        /* باکس عکس آشپز (حالا شامل دو عکس) */
+        .chef-image-wrapper {
+            flex-grow: 1;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: stretch;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-top: 10px;
+            opacity: 0.85;
+        }
+        .chef-image-wrapper img {
+            width: 50%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
 
         .task-card { background: white; border-radius: 12px; padding: 10px; margin-bottom: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); text-align: right; border-right: 4px solid var(--tasks-color); }
         .task-title { color: var(--tasks-color); margin: 0 0 5px 0; font-size: 14px; }
@@ -446,6 +476,7 @@
         <div id="tasksList"></div>
     </div>
 
+    <!-- تب آشپز یار -->
     <div id="chef" class="tab-content">
         <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
         
@@ -456,6 +487,12 @@
             <button class="upload-btn chef-btn" id="chefSubmitBtn">
                 <span>🍳</span> چی بپزم؟
             </button>
+        </div>
+
+        <!-- عکس‌های آشپز برای پر کردن فضای خالی -->
+        <div class="chef-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=600&auto=format&fit=crop" alt="آشپز خانم">
+            <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=600&auto=format&fit=crop" alt="آشپز آقا">
         </div>
 
         <div id="chefResultCard" class="result-card chef-result-card">
@@ -1166,12 +1203,14 @@
             const errorBox = document.getElementById('chefErrorBox');
             const resultContent = document.getElementById('chefResultContent');
             const imgContainer = document.getElementById('chefImageContainer');
+            const chefImageWrapper = document.querySelector('.chef-image-wrapper');
 
             btn.innerHTML = 'در حال پختن... <div class="loader"></div>';
             btn.disabled = true;
             resultCard.style.display = 'none';
             errorBox.style.display = 'none';
             resultContent.style.display = 'block';
+            chefImageWrapper.style.display = 'none'; // مخفی کردن عکس آشپزها هنگام نمایش نتیجه
 
             try {
                 const response = await fetch('/api/chef', {
@@ -1201,12 +1240,14 @@
                     errorBox.style.display = 'block';
                     resultContent.style.display = 'none';
                     resultCard.style.display = 'block';
+                    chefImageWrapper.style.display = 'flex'; // برگرداندن عکس‌ها در صورت خطا
                 }
             } catch (error) {
                 errorBox.innerText = 'ارتباط با سرور برقرار نشد.';
                 errorBox.style.display = 'block';
                 resultContent.style.display = 'none';
                 resultCard.style.display = 'block';
+                chefImageWrapper.style.display = 'flex'; // برگرداندن عکس‌ها در صورت خطا
             } finally {
                 btn.innerHTML = '<span>🍳</span> چی بپزم؟';
                 btn.disabled = false;
