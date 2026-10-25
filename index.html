@@ -25,10 +25,11 @@
             background: linear-gradient(180deg, #FFF8F0 0%, var(--bg-color) 100%);
             background-attachment: fixed;
             color: var(--text-main); margin: 0; padding: 0; 
-            padding-bottom: 130px;
+            padding-bottom: 170px; /* فاصله زیاد برای جلوگیری از مخفی شدن دکمه‌ها */
         }
         
-        header { text-align: center; padding: 15px 10px 10px 10px; position: relative; }
+        /* هدر: فاصله بالا زیاد شد تا دکمه نصب روی عنوان نیفته */
+        header { text-align: center; padding: 65px 10px 15px 10px; position: relative; }
         header h1 { color: var(--primary); font-size: 32px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
         header p { margin: 5px 0 0 0; font-size: 14px; color: #665; font-weight: bold; }
         
@@ -42,17 +43,17 @@
             z-index: 100;
         }
 
-        /* ==== دکمه نصب اپلیکیشن سمت راست (جذاب) ==== */
+        /* ==== دکمه نصب اپلیکیشن سمت راست ==== */
         .install-btn {
             position: absolute;
             top: 15px; right: 15px;
-            background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%); /* گرادیانت قرمز-صورتی پرانرژی */
+            background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%);
             color: white;
             border: none;
             border-radius: 20px;
-            padding: 8px 12px;
+            padding: 6px 10px; /* کمی کوچک‌تر شد */
             font-family: inherit;
-            font-size: 13px;
+            font-size: 12px; /* فونت کمی کوچک‌تر */
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
@@ -60,7 +61,7 @@
             align-items: center;
             gap: 5px;
             z-index: 100;
-            animation: pulse-glow 2s infinite; /* انیمیشن جلب توجه */
+            animation: pulse-glow 2s infinite; 
         }
         .install-btn:active { transform: scale(0.95); }
 
@@ -110,7 +111,7 @@
         .result-text { margin: 5px 0 0 0; font-size: 14px; line-height: 1.6; color: #333; white-space: pre-wrap; }
         .disclaimer { font-size: 11px; color: #999; text-align: center; margin-top: 10px; background: #fafafa; padding: 8px; border-radius: 8px; }
         
-        .tab-content { display: none; padding: 0 12px 20px 12px; animation: fadeIn 0.4s; }
+        .tab-content { display: none; padding: 0 12px 30px 12px; animation: fadeIn 0.4s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -162,17 +163,27 @@
 
         .tab-btn.active { opacity: 1; transform: translateY(-6px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
         
-        .repair-upload-box { border-color: var(--repair-color); }
-        .repair-upload-box h2 { color: var(--repair-color); }
-        .repair-textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; resize: none; box-sizing: border-box; }
-        .repair-upload-btn { background-color: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4); }
+        /* بزرگتر شدن کادر تعمیرکار */
+        .repair-upload-box { border-color: var(--repair-color); padding: 25px 15px; }
+        .repair-upload-box h2 { color: var(--repair-color); font-size: 22px; margin-bottom: 15px; }
+        .repair-textarea { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 15px; margin-bottom: 20px; resize: none; box-sizing: border-box; min-height: 120px; }
+        .repair-upload-btn { background-color: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4); padding: 15px; font-size: 18px; }
         .repair-result-card { border-top-color: var(--repair-color); }
         .repair-result-title { color: var(--repair-color); }
+
+        /* بزرگتر شدن کادر آشپز یار */
+        .chef-upload-box { border-color: var(--chef-color); padding: 25px 15px; }
+        .chef-upload-box h2 { color: var(--chef-color); font-size: 22px; margin-bottom: 15px; }
+        .chef-input { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 15px; margin-bottom: 20px; box-sizing: border-box; resize: vertical; min-height: 150px; }
+        .chef-btn { background-color: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); padding: 15px; font-size: 18px; }
+        .chef-result-card { border-top-color: var(--chef-color); }
+        .chef-result-title { color: var(--chef-color); }
 
         .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-hint { text-align: center; font-size: 12px; color: #777; margin-bottom: 8px; }
         
-        .chat-messages { height: 450px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        /* ارتفاع چت کمی کم شد که کادر تایپ بیرون نزنه */
+        .chat-messages { height: 50vh; min-height: 350px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
         
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
@@ -198,13 +209,6 @@
         .explanation-card ul { list-style: none; padding: 0; margin: 8px 0 0 0; }
         .explanation-card li { margin-bottom: 6px; }
 
-        .chef-upload-box { border-color: var(--chef-color); }
-        .chef-upload-box h2 { color: var(--chef-color); }
-        .chef-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 10px; box-sizing: border-box; resize: vertical; min-height: 60px; }
-        .chef-btn { background-color: var(--chef-color); box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); }
-        .chef-result-card { border-top-color: var(--chef-color); }
-        .chef-result-title { color: var(--chef-color); }
-        
         .food-image-container { text-align: center; margin-bottom: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
         .food-image { width: 100%; max-height: 220px; object-fit: cover; display: block; }
 
@@ -234,7 +238,6 @@
 
     <header>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
-        <!-- دکمه نصب اپلیکیشن با انیمیشن جلب توجه -->
         <button class="install-btn" onclick="showInstallPrompt()"><span>📥</span> نصب اپلیکیشن</button>
         
         <h1>همیار زندگی</h1>
@@ -362,7 +365,7 @@
         <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
         <div class="upload-section repair-upload-box" style="margin: 10px 0;">
-            <textarea id="repairDescription" class="repair-textarea" rows="2" placeholder="چه مشکلی داره؟ (مثلاً روشن نمیشه، صدا میده...)"></textarea>
+            <textarea id="repairDescription" class="repair-textarea" rows="4" placeholder="چه مشکلی داره؟ (مثلاً روشن نمیشه، صدا میده...)"></textarea>
             <input type="file" id="repairImageInput" accept="image/*" style="display: none;">
             <button class="upload-btn repair-upload-btn" id="repairUploadBtn">
                 <span>🛠️</span> عکسش رو بذار
