@@ -7,24 +7,40 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.min.js"></script>
     <style>
-        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .login-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 350px; }
         .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; text-align: center; box-sizing: border-box;}
-        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: inherit;}
+        
         .dashboard-container { display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
-        .header-dash { display: flex; justify-content: space-between; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; }
-        .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
-        .tab-panel { background: white; padding: 20px; border-radius: 15px; }
+        .header-dash { display: flex; justify-content: space-between; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-family: inherit; }
+        
+        .dash-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .dash-tab { flex: 1; white-space: nowrap; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .dash-tab.active { background: var(--primary); color: white; }
+        
+        .tab-panel { display: none; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
         .form-group { margin-bottom: 15px; text-align: right; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; }
-        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; font-family: inherit;}
+        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: inherit; font-weight: bold;}
         .submit-btn:disabled { opacity: 0.7; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         .status-msg { text-align: center; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; }
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; font-size: 12px; word-wrap: break-word;}
+
+        /* استایل‌های تب ابزارها */
+        .tools-grid { display: flex; flex-direction: column; gap: 15px; }
+        .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--primary-dark); font-weight: bold; transition: all 0.2s; }
+        .tool-card:hover { background: var(--bg-color); border-color: var(--primary); }
+        .tool-icon { font-size: 24px; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -37,21 +53,49 @@
 
     <div id="dashboardBox" class="dashboard-container">
         <div class="header-dash">
-            <h2>پنل مدیریت</h2>
+            <h2>پنل مدیریت همیار</h2>
             <button class="logout-btn" onclick="logout()">خروج</button>
         </div>
 
-        <div class="tab-panel">
+        <div class="dash-tabs">
+            <button class="dash-tab active" onclick="switchDashTab('products', this)">📦 محصولات</button>
+            <button class="dash-tab" onclick="switchDashTab('tools', this)">🛠️ ابزارهای مدیریتی</button>
+        </div>
+
+        <!-- تب محصولات -->
+        <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
             <div id="productStatusMsg" class="status-msg"></div>
 
-            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control"></div>
-            <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control"></div>
+            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
+            <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
             <div class="form-group"><label>انتخاب عکس *</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
             <div class="form-group"><label>انتخاب ویدیو (اختیاری)</label><input type="file" id="prodVidFile" class="form-control" accept="video/*"></div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
+
+        <!-- تب ابزارهای مدیریتی (جدید) -->
+        <div id="tools" class="tab-panel">
+            <h3 style="margin-top: 0; color: var(--primary-dark);">ابزارهای مدیریتی</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">با کلیک روی هر کدام، به تب جدیدی هدایت می‌شوید.</p>
+            
+            <div class="tools-grid">
+                <a href="https://vercel.com/dashboard" target="_blank" class="tool-card">
+                    <span><span class="tool-icon">▲</span> داشبورد Vercel (هاست سایت)</span>
+                    <span>↗</span>
+                </a>
+                <a href="https://supabase.com/dashboard" target="_blank" class="tool-card">
+                    <span><span class="tool-icon">⚡</span> داشبورد Supabase (دیتابیس و عکس‌ها)</span>
+                    <span>↗</span>
+                </a>
+                <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card">
+                    <span><span class="tool-icon">🐙</span> مخزن گیت‌هاب (کدهای پروژه)</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -62,26 +106,44 @@
             if (document.getElementById('passwordInput').value === "admin123") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'block';
+                localStorage.setItem('isAdminLoggedIn', 'true');
             } else { document.getElementById('loginError').style.display = 'block'; }
         }
-        function logout() { location.reload(); }
+        
+        function logout() { 
+            localStorage.removeItem('isAdminLoggedIn');
+            location.reload(); 
+        }
+
+        if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('dashboardBox').style.display = 'block';
+        }
+
+        function switchDashTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-panel').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.dash-tab').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
 
         async function uploadFile(file, btnElement) {
             if (!file) return null;
             const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-            const endpoint = `${SUPABASE_URL}/storage/v1/upload/resumable`;
+            
+            // آدرس دقیق و اختصاصی برای آپلود تکه‌تکه (Resumable)
+            const endpoint = `https://grfeyftvktknbrphphafqf.storage.supabase.co/storage/v1/upload/resumable`;
 
             return new Promise((resolve, reject) => {
                 const upload = new tus.Upload(file, {
                     endpoint: endpoint,
-                    retryDelays: [0, 3000],
-                    headers: { authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'x-upsert': 'true' },
+                    retryDelays: [0, 3000, 5000],
+                    headers: { authorization: `Bearer ${SUPABASE_ANON_KEY}` },
                     uploadDataDuringCreation: true,
                     removeFingerprintOnSuccess: true,
                     metadata: { bucketName: 'products', objectName: fileName, contentType: file.type, cacheControl: '3600' },
-                    chunkSize: 6 * 1024 * 1024,
+                    chunkSize: 6 * 1024 * 1024, // حجم هر تکه ۶ مگابایت
                     onError: function (error) {
-                        // این خط دقیقا به ما میگه چه خبره
                         alert("خطای آپلود: " + (error.message || JSON.stringify(error)));
                         reject(new Error("خطا در آپلود"));
                     },
@@ -136,6 +198,8 @@
                     statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
                     document.getElementById('prodTitle').value = '';
                     document.getElementById('prodPrice').value = '';
+                    document.getElementById('prodImgFile').value = '';
+                    document.getElementById('prodVidFile').value = '';
                 } else { throw new Error('خطا در ثبت نهایی'); }
             } catch (error) {
                 statusMsg.className = 'status-msg error';
