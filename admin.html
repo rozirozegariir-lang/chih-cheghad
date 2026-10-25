@@ -66,7 +66,7 @@
 
             <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
             <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
-            <div class="form-group"><label>انتخاب عکس *</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
+            <div class="form-group"><label>انتخاب عکس * (حداکثر ۳ مگابایت)</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
@@ -94,9 +94,6 @@
     </div>
 
     <script>
-        const SUPABASE_URL = "https://grfeyftvktknbrphphafqf.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZmV5ZnR2a3RuYnJwaHBoYWZxZiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkyNTI3MDM4LCJleHAiOjIxMDgxMDMwMzh9.Pl7iuL3kJFNPGoW2NMPIm88jGBRYHiaJQuROjGdPZ-M";
-        
         function checkLogin() {
             if (document.getElementById('passwordInput').value === "admin123") {
                 document.getElementById('loginBox').style.display = 'none';
@@ -122,6 +119,36 @@
             btnElement.classList.add('active');
         }
 
+        // تابع تبدیل فایل به Base64 و ارسال به سرور Vercel
+        async function uploadFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const base64Data = e.target.result;
+                    try {
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                fileName: `${Date.now()}_${file.name.replace(/\s/g, '_')}`,
+                                fileType: file.type,
+                                base64Data: base64Data
+                            })
+                        });
+                        if (!res.ok) {
+                            const err = await res.json();
+                            throw new Error(err.error || 'خطا در آپلود از طریق سرور');
+                        }
+                        const data = await res.json();
+                        resolve(data.url); // لینک عمومی عکس
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
@@ -136,30 +163,21 @@
                 return;
             }
 
+            if (imgFile.size > 3 * 1024 * 1024) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = 'حجم عکس بیش از ۳ مگابایت است. لطفا عکس کم‌حجم‌تری انتخاب کنید.';
+                return;
+            }
+
             btn.disabled = true;
             btn.innerHTML = 'در حال آپلود... <div class="loader"></div>';
             statusMsg.style.display = 'none';
 
             try {
-                const fileName = `${Date.now()}_${imgFile.name.replace(/\s/g, '_')}`;
-                
-                // آپلود مستقیم و ساده
-                const res = await fetch(`${SUPABASE_URL}/storage/v1/object/products/${fileName}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Content-Type': imgFile.type
-                    },
-                    body: imgFile
-                });
+                // ۱. ارسال عکس به سرور واسط ورکل
+                const image_url = await uploadFile(imgFile);
 
-                if (!res.ok) {
-                    const err = await res.text();
-                    throw new Error(`خطای سوپابیس: ${err}`);
-                }
-
-                const image_url = `${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
-
+                // ۲. ذخیره اطلاعات در دیتابیس
                 btn.innerHTML = 'ذخیره در دیتابیس... <div class="loader"></div>';
                 const response = await fetch('/api/products', {
                     method: 'POST',
