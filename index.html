@@ -26,13 +26,13 @@
             background-attachment: fixed;
             color: var(--text-main); 
             margin: 0; padding: 0; 
-            height: 100vh; /* ارتفاع دقیق صفحه نمایش */
+            height: 100dvh; /* ارتفاع دقیق صفحه نمایش */
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
+            overflow: hidden; 
         }
         
-        /* هدر فشرده‌تر برای جا شدن در صفحه */
+        /* هدر */
         header { 
             text-align: center; 
             padding: 50px 10px 5px 10px; 
@@ -42,7 +42,6 @@
         header h1 { color: var(--primary); font-size: 26px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
         header p { margin: 2px 0 0 0; font-size: 12px; color: #665; font-weight: bold; }
         
-        /* دکمه منو */
         .menu-btn {
             position: absolute;
             top: 10px; left: 10px;
@@ -52,7 +51,6 @@
             z-index: 100;
         }
 
-        /* دکمه نصب اپلیکیشن */
         .install-btn {
             position: absolute;
             top: 10px; right: 10px;
@@ -90,20 +88,19 @@
         .menu-list a:hover, .menu-list button:hover { background: #e8d5bb; }
         .menu-list i { margin-left: 8px; font-style: normal; }
 
-        /* ==== بخش اصلی محتوا (تب‌ها) ==== */
+        /* ==== تنظیمات اصلی تب‌ها ==== */
         .tab-content { 
             display: none; 
-            flex-grow: 1; /* پر کردن فضای باقی‌مانده */
-            overflow-y: auto; /* فقط در صورت نیاز اسکرول شود */
-            padding: 0 10px 80px 10px; /* 80 پیکسل فاصله برای دکمه‌های پایین */
+            flex-grow: 1; 
+            padding: 0 10px 100px 10px; /* فاصله 100 پیکسلی برای نوار پایین */
+            overflow-y: auto; 
             animation: fadeIn 0.4s; 
         }
-        .tab-content.active { display: flex; flex-direction: column; } /* استفاده از فلکس برای مدیریت ارتفاع */
+        .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .section-title { text-align: center; font-size: 17px; font-weight: 900; margin: 10px 0 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
         
-        /* فشرده‌سازی کارت‌ها برای جا شدن در صفحه */
         .upload-section { background: var(--card-bg); border-radius: 15px; padding: 10px; margin: 5px 0 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border: 2px dashed var(--primary); }
         .upload-section h2 { font-size: 15px; margin: 0 0 5px 0; color: var(--primary-dark); }
         .upload-section p { font-size: 12px; color: #777; margin-bottom: 8px; margin-top: 0; }
@@ -176,7 +173,7 @@
             display: flex; 
             justify-content: space-between; 
             gap: 6px; 
-            padding: 8px 10px 15px 10px; /* پدینگ پایین برای گوشی‌های ناچ‌دار */
+            padding: 8px 10px 15px 10px;
             margin: 0; 
             box-shadow: 0 -4px 20px rgba(0,0,0,0.1); 
             z-index: 1000; 
@@ -193,26 +190,48 @@
 
         .tab-btn.active { opacity: 1; transform: translateY(-4px) scale(1.05); box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important; }
         
-        /* استایل اختصاصی برای معلم که کادر تایپ همیشه پایین باشد */
-        #teacher.active { display: flex; flex-direction: column; }
-        .teacher-chat-box { display: flex; flex-direction: column; flex-grow: 1; background: var(--card-bg); border-radius: 15px; padding: 10px; margin: 5px 0 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px dashed var(--teacher-color); min-height: 0; }
-        .chat-messages { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        /* ==== تنظیمات اختصاصی معلم برای ثابت ماندن کادر تایپ ==== */
+        #teacher.active { 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
+            padding-bottom: 85px; /* فاصله دقیق برای نوار پایین */
+        }
+        .teacher-chat-box { 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; 
+            background: var(--card-bg); 
+            border-radius: 15px; 
+            padding: 10px; 
+            margin: 5px 0; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            border: 2px dashed var(--teacher-color); 
+            min-height: 0; /*非常重要: برای اینکه چت اسکرول بخوره و باکس بزرگ نشه */
+        }
+        #tutorChatMessages { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            padding-right: 5px; 
+        }
+        .chat-input-area { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+        .chat-img-btn { background: #fef4e8; color: var(--repair-color); border: 1px solid #f5d2b0; border-radius: 8px; padding: 0 10px; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; }
+        .chat-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; outline: none; min-width: 0; }
+        .chat-send-btn { color: white; border: none; border-radius: 8px; padding: 0 12px; font-family: inherit; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
         
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
         .msg.assistant { background: #F5F5F5; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; white-space: pre-wrap; }
-        
-        .chat-input-area { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-        .chat-img-btn { background: #fef4e8; color: var(--repair-color); border: 1px solid #f5d2b0; border-radius: 8px; padding: 0 10px; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; }
-        .chat-img-btn:active { background: #fce1c8; }
-        .chat-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; outline: none; min-width: 0; }
-        .chat-send-btn { color: white; border: none; border-radius: 8px; padding: 0 12px; font-family: inherit; font-weight: bold; cursor: pointer; height: 40px; display: flex; justify-content: center; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
-        /* استایل اختصاصی تعمیرکار و میکروکار و آشپز */
+        /* استایل بقیه تب‌ها */
         .repair-upload-box { border-color: var(--repair-color); padding: 10px; }
         .repair-textarea { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; margin-bottom: 8px; resize: none; box-sizing: border-box; min-height: 60px; }
         .repair-upload-btn { background-color: var(--repair-color); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4); padding: 10px; font-size: 15px; }
-
+        
         .explanation-card { background: linear-gradient(135deg, #ffffff 0%, #f8f1fe 100%); border: 1px solid #E1CAF6; border-right: 4px solid var(--tasks-color); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; font-size: 11px; line-height: 1.5; color: #333; box-shadow: 0 3px 10px rgba(142, 68, 173, 0.08); }
         .explanation-card ul { list-style: none; padding: 0; margin: 5px 0 0 0; }
         .explanation-card li { margin-bottom: 3px; }
@@ -254,7 +273,6 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
-    <!-- منوی اصلی -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
@@ -266,7 +284,6 @@
         </div>
     </div>
 
-    <!-- ثبت نام -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
@@ -287,13 +304,11 @@
         </div>
     </div>
 
-    <!-- ویدیو -->
     <div id="videoModal">
         <span class="close-video" onclick="closeVideo()">&times;</span>
         <video id="storyVideo" controls playsinline></video>
     </div>
 
-    <!-- تب گالری -->
     <div id="gallery" class="tab-content active">
         <div id="mainValuation" class="upload-section">
             <p style="font-size: 13px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
@@ -352,12 +367,11 @@
         <div class="grid" id="galleryGrid"></div>
     </div>
 
-    <!-- تب معلم -->
     <div id="teacher" class="tab-content">
         <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
         
         <div class="teacher-chat-box">
-            <div id="tutorChatMessages" class="chat-messages">
+            <div id="tutorChatMessages">
                 <!-- پیام خوش‌آمدگویی اولیه -->
             </div>
             
@@ -370,7 +384,6 @@
         </div>
     </div>
 
-    <!-- تب تعمیرکار -->
     <div id="repair" class="tab-content">
         <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -396,7 +409,7 @@
 
         <div id="chatContainer" class="chat-container" style="display: none; background: var(--card-bg); border-radius: 15px; padding: 10px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-direction: column; flex-grow: 1;">
             <h4 style="text-align: center; color: var(--repair-color); margin-top: 0; margin-bottom: 10px;">💬 چت با تعمیرکار</h4>
-            <div id="chatMessages" class="chat-messages"></div>
+            <div id="chatMessages" class="chat-messages" style="flex-grow: 1; overflow-y: auto;"></div>
             <div class="chat-input-area">
                 <button id="chatImageBtn" class="chat-img-btn"><span>📷</span> عکس بده</button>
                 <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
@@ -406,7 +419,6 @@
         </div>
     </div>
 
-    <!-- تب میکروکار -->
     <div id="tasks" class="tab-content">
         <h3 class="section-title" style="color: var(--tasks-color);">کاری داری؟ اینجا ثبت کن 🤝</h3>
         
@@ -434,7 +446,6 @@
         <div id="tasksList"></div>
     </div>
 
-    <!-- تب آشپز یار -->
     <div id="chef" class="tab-content">
         <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
         
@@ -593,9 +604,6 @@
             btnElement.classList.add('active');
             
             if(tabId === 'tasks') loadTasks();
-            
-            // اگر میخواید صفحه به بالا برگرده، این خط رو نگه دارید
-            // window.scrollTo({ top: 0, behavior: 'smooth' }); 
         }
 
         function formatAIResponse(val) {
@@ -916,7 +924,7 @@
                                     { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] },
                                     { role: 'assistant', content: JSON.stringify(data) }
                                 ];
-                                chatContainer.style.display = 'flex'; // نمایش به صورت فلکس برای مدیریت ارتفاع
+                                chatContainer.style.display = 'flex'; 
                                 
                                 chatMessages.innerHTML = '';
                                 const welcomeMsg = document.createElement('div');
