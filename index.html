@@ -26,34 +26,6 @@
         .install-btn:active { transform: scale(0.95); }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(221, 36, 118, 0); } 100% { box-shadow: 0 0 0 0 rgba(221, 36, 118, 0); } }
 
-        /* استایل دکمه شناور اشتراک‌گذاری */
-        .float-share-btn {
-            position: fixed;
-            bottom: 85px; /* بالاتر از نوار تب‌ها */
-            left: 15px;   /* سمت چپ صفحه */
-            background: linear-gradient(135deg, #2A9D8F, #21867a);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            z-index: 990;
-            cursor: pointer;
-            animation: pulse-share 2.5s infinite;
-            transition: transform 0.2s;
-        }
-        .float-share-btn:active { transform: scale(0.9); }
-        @keyframes pulse-share {
-            0% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(42, 157, 143, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
-        }
-
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 85%; max-width: 350px; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; text-align: center; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #999; cursor: pointer; font-weight: bold; }
@@ -185,16 +157,19 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
-    <!-- دکمه شناور اشتراک‌گذاری که ترکیب رو به هم نمیزنه -->
-    <button class="float-share-btn" onclick="shareApp()" title="ارسال برای دوستان">📤</button>
-
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
-                <li><button onclick="shareApp()"><i>🔗</i> ارسال برای دوستان</button></li>
+                
+                <!-- دکمه نصب در منو (اگر نصب نکرده باشد نمایش داده می‌شود) -->
+                <li id="menuInstallLi"><button onclick="showInstallPrompt()"><i>📥</i> نصب اپلیکیشن</button></li>
+                
+                <!-- دکمه ارسال در منو (اگر نصب کرده باشد نمایش داده می‌شود) -->
+                <li id="menuShareLi" style="display: none;"><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
+                
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
         </div>
@@ -407,14 +382,28 @@
     </div>
 
     <script>
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+        // ==========================================
+        // منطق تشخیص نصب بودن اپلیکیشن و تغییر منو
+        // ==========================================
+        const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        
+        if (isAppInstalled) {
+            // اگر نصب کرده باشد:
             const installBtn = document.querySelector('.install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'none';
-            }
+            if (installBtn) installBtn.style.display = 'none'; // مخفی کردن دکمه نصب بالا
+            
+            document.getElementById('menuInstallLi').style.display = 'none'; // مخفی کردن نصب در منو
+            document.getElementById('menuShareLi').style.display = 'block'; // نمایش ارسال در منو
+        } else {
+            // اگر نصب نکرده باشد (اجرا در مرورگر):
+            document.getElementById('menuShareLi').style.display = 'none'; // مخفی کردن ارسال در منو
         }
 
+        // ==========================================
+        // بخش نصب اپلیکیشن (PWA)
+        // ==========================================
         let deferredPrompt;
+        
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -439,6 +428,9 @@
             });
         }
 
+        // ==========================================
+        // تابع ارسال به دیگران (Share)
+        // ==========================================
         async function shareApp() {
             const shareData = {
                 title: 'همیار زندگی',
@@ -457,6 +449,9 @@
             }
         }
 
+        // ==========================================
+        // بقیه کدهای سایت
+        // ==========================================
         let freeUses = parseInt(localStorage.getItem('valuationCount') || '0');
         let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
         let isCaptchaChecked = false;
