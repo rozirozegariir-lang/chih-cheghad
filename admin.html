@@ -7,167 +7,94 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.min.js"></script>
     <style>
-        :root {
-            --primary: #D4A574; --primary-dark: #b88655; --bg-color: #F5E6D3; --text-main: #4A3728; --danger: #E74C3C; --success: #2E8B57;
-        }
-        body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; color: var(--text-main); margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; }
+        body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .login-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 350px; }
-        .login-container h2 { color: var(--primary-dark); margin-bottom: 20px; }
-        .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 16px; box-sizing: border-box; margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
-        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .login-btn:hover { background: var(--primary-dark); }
-        .error-msg { color: var(--danger); font-size: 13px; display: none; margin-bottom: 10px; }
-        
+        .login-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; text-align: center; box-sizing: border-box;}
+        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .dashboard-container { display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
-        .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .header-dash h2 { margin: 0; color: var(--primary-dark); font-size: 20px; }
-        .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; }
-        
-        .dash-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .dash-tab { flex: 1; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s; }
-        .dash-tab.active { background: var(--primary); color: white; }
-        
-        .tab-panel { display: none; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .tab-panel.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+        .header-dash { display: flex; justify-content: space-between; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; }
+        .logout-btn { background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .tab-panel { background: white; padding: 20px; border-radius: 15px; }
         .form-group { margin-bottom: 15px; text-align: right; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; background: #f9f9f9; }
-        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-        
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #f9f9f9; }
+        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .submit-btn:disabled { opacity: 0.7; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .status-msg { text-align: center; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; }
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
-        .status-msg.error { background: #f8d7da; color: #721c24; display: block; }
+        .status-msg.error { background: #f8d7da; color: #721c24; display: block; font-size: 12px; word-wrap: break-word;}
     </style>
 </head>
 <body>
-
     <div id="loginBox" class="login-container">
-        <h2>🔐 ورود به پنل مدیریت</h2>
-        <div id="loginError" class="error-msg">رمز عبور اشتباه است!</div>
+        <h2>🔐 ورود</h2>
+        <div id="loginError" style="color: var(--danger); display: none; margin-bottom: 10px;">رمز اشتباه است!</div>
         <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور...">
         <button class="login-btn" onclick="checkLogin()">ورود</button>
     </div>
 
     <div id="dashboardBox" class="dashboard-container">
         <div class="header-dash">
-            <h2>پنل مدیریت همیار</h2>
+            <h2>پنل مدیریت</h2>
             <button class="logout-btn" onclick="logout()">خروج</button>
         </div>
 
-        <div class="dash-tabs">
-            <button class="dash-tab active" onclick="switchDashTab('products', this)">📦 محصولات</button>
-            <button class="dash-tab" onclick="switchDashTab('tasks', this)">🤝 میکرو-کارها</button>
-        </div>
-
-        <div id="products" class="tab-panel active">
+        <div class="tab-panel">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
             <div id="productStatusMsg" class="status-msg"></div>
 
-            <div class="form-group">
-                <label>عنوان محصول *</label>
-                <input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی...">
-            </div>
-            <div class="form-group">
-                <label>قیمت *</label>
-                <input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان">
-            </div>
-            <div class="form-group">
-                <label>انتخاب عکس از گالری *</label>
-                <input type="file" id="prodImgFile" class="form-control" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label>انتخاب ویدیو از گالری (اختیاری)</label>
-                <input type="file" id="prodVidFile" class="form-control" accept="video/*">
-            </div>
+            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="prodTitle" class="form-control"></div>
+            <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control"></div>
+            <div class="form-group"><label>انتخاب عکس *</label><input type="file" id="prodImgFile" class="form-control" accept="image/*"></div>
+            <div class="form-group"><label>انتخاب ویدیو (اختیاری)</label><input type="file" id="prodVidFile" class="form-control" accept="video/*"></div>
             
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
-        </div>
-
-        <div id="tasks" class="tab-panel">
-            <h3 style="margin-top: 0; color: var(--tasks-color);">لیست کارهای ثبت شده</h3>
-            <div style="text-align: center; padding: 20px; color: #aaa;">(این بخش در مرحله بعد به دیتابیس وصل می‌شود)</div>
         </div>
     </div>
 
     <script>
         const SUPABASE_URL = "https://grfeyftvktknbrphphafqf.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZmV5ZnR2a3RuYnJwaHBoYWZxZiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkyNTI3MDM4LCJleHAiOjIxMDgxMDMwMzh9.Pl7iuL3kJFNPGoW2NMPIm88jGBRYHiaJQuROjGdPZ-M";
-        const ADMIN_PASSWORD = "admin123"; 
-
+        
         function checkLogin() {
-            const input = document.getElementById('passwordInput').value;
-            if (input === ADMIN_PASSWORD) {
+            if (document.getElementById('passwordInput').value === "admin123") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'block';
-                localStorage.setItem('isAdminLoggedIn', 'true');
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
+            } else { document.getElementById('loginError').style.display = 'block'; }
         }
-
-        function logout() {
-            localStorage.removeItem('isAdminLoggedIn');
-            location.reload();
-        }
-
-        if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-            document.getElementById('loginBox').style.display = 'none';
-            document.getElementById('dashboardBox').style.display = 'block';
-        }
-
-        function switchDashTab(tabId, btnElement) {
-            document.querySelectorAll('.tab-panel').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.dash-tab').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-        }
+        function logout() { location.reload(); }
 
         async function uploadFile(file, btnElement) {
             if (!file) return null;
             const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
-            const projectId = 'grfeyftvktknbrphphafqf';
-            const endpoint = `https://${projectId}.storage.supabase.co/storage/v1/upload/resumable`;
+            const endpoint = `${SUPABASE_URL}/storage/v1/upload/resumable`;
 
             return new Promise((resolve, reject) => {
                 const upload = new tus.Upload(file, {
                     endpoint: endpoint,
-                    retryDelays: [0, 3000, 5000, 10000, 20000],
-                    headers: {
-                        authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                        'x-upsert': 'true',
-                    },
+                    retryDelays: [0, 3000],
+                    headers: { authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'x-upsert': 'true' },
                     uploadDataDuringCreation: true,
                     removeFingerprintOnSuccess: true,
-                    metadata: {
-                        bucketName: 'products',
-                        objectName: fileName,
-                        contentType: file.type,
-                        cacheControl: '3600',
-                    },
+                    metadata: { bucketName: 'products', objectName: fileName, contentType: file.type, cacheControl: '3600' },
                     chunkSize: 6 * 1024 * 1024,
                     onError: function (error) {
-                        console.log('Failed because: ' + error);
-                        reject(error);
+                        // این خط دقیقا به ما میگه چه خبره
+                        alert("خطای آپلود: " + (error.message || JSON.stringify(error)));
+                        reject(new Error("خطا در آپلود"));
                     },
-                    onProgress: function (bytesUploaded, bytesTotal) {
-                        const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(1);
-                        btnElement.innerHTML = `در حال آپلود: ${percentage}% <div class="loader"></div>`;
+                    onProgress: function (b, t) {
+                        btnElement.innerHTML = `در حال آپلود: ${((b / t) * 100).toFixed(1)}% <div class="loader"></div>`;
                     },
                     onSuccess: function () {
                         resolve(`${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`);
                     },
                 });
 
-                upload.findPreviousUploads().then(function (previousUploads) {
-                    if (previousUploads.length) {
-                        upload.resumeFromPreviousUpload(previousUploads[0]);
-                    }
+                upload.findPreviousUploads().then(function (prev) {
+                    if (prev.length) upload.resumeFromPreviousUpload(prev[0]);
                     upload.start();
                 });
             });
@@ -194,37 +121,22 @@
 
             try {
                 const image_url = await uploadFile(imgFile, btn);
-                
                 let video_url = "";
-                if (vidFile) {
-                    btn.innerHTML = 'آماده‌سازی ویدیو...';
-                    video_url = await uploadFile(vidFile, btn);
-                }
+                if (vidFile) video_url = await uploadFile(vidFile, btn);
 
-                btn.innerHTML = 'در حال ذخیره در دیتابیس... <div class="loader"></div>';
-                
-                const response = await fetch('/api/products', {
+                btn.innerHTML = 'ذخیره در دیتابیس... <div class="loader"></div>';
+                const res = await fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: title,
-                        price: price,
-                        image_url: image_url,
-                        video_url: video_url
-                    })
+                    body: JSON.stringify({ title, price, image_url, video_url })
                 });
 
-                if (response.ok) {
+                if (res.ok) {
                     statusMsg.className = 'status-msg success';
                     statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
-                    
                     document.getElementById('prodTitle').value = '';
                     document.getElementById('prodPrice').value = '';
-                    document.getElementById('prodImgFile').value = '';
-                    document.getElementById('prodVidFile').value = '';
-                } else {
-                    throw new Error('خطا در ثبت نهایی در دیتابیس');
-                }
+                } else { throw new Error('خطا در ثبت نهایی'); }
             } catch (error) {
                 statusMsg.className = 'status-msg error';
                 statusMsg.innerText = '❌ ' + error.message;
