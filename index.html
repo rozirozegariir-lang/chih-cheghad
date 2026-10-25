@@ -25,7 +25,7 @@
             background: linear-gradient(180deg, #FFF8F0 0%, var(--bg-color) 100%);
             background-attachment: fixed;
             color: var(--text-main); margin: 0; padding: 0; 
-            padding-bottom: 170px; /* فاصله زیاد برای جلوگیری از مخفی شدن دکمه‌ها */
+            /* فاصله از body برداشته شد و به tab-content منتقل شد */
         }
         
         /* هدر: فاصله بالا زیاد شد تا دکمه نصب روی عنوان نیفته */
@@ -33,7 +33,7 @@
         header h1 { color: var(--primary); font-size: 32px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
         header p { margin: 5px 0 0 0; font-size: 14px; color: #665; font-weight: bold; }
         
-        /* ==== دکمه منو سمت چپ ==== */
+        /* دکمه منو */
         .menu-btn {
             position: absolute;
             top: 15px; left: 15px;
@@ -43,7 +43,7 @@
             z-index: 100;
         }
 
-        /* ==== دکمه نصب اپلیکیشن سمت راست ==== */
+        /* دکمه نصب اپلیکیشن */
         .install-btn {
             position: absolute;
             top: 15px; right: 15px;
@@ -51,9 +51,9 @@
             color: white;
             border: none;
             border-radius: 20px;
-            padding: 6px 10px; /* کمی کوچک‌تر شد */
+            padding: 6px 10px;
             font-family: inherit;
-            font-size: 12px; /* فونت کمی کوچک‌تر */
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
@@ -111,7 +111,12 @@
         .result-text { margin: 5px 0 0 0; font-size: 14px; line-height: 1.6; color: #333; white-space: pre-wrap; }
         .disclaimer { font-size: 11px; color: #999; text-align: center; margin-top: 10px; background: #fafafa; padding: 8px; border-radius: 8px; }
         
-        .tab-content { display: none; padding: 0 12px 30px 12px; animation: fadeIn 0.4s; }
+        /* ==== تغییر اصلی: فاصله بزرگ درون تب‌ها ==== */
+        .tab-content { 
+            display: none; 
+            padding: 0 12px 180px 12px; /* 180 پیکسل فاصله در پایین هر تب */
+            animation: fadeIn 0.4s; 
+        }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -151,7 +156,21 @@
         #storyVideo { width: 95%; max-width: 400px; max-height: 80vh; border-radius: 15px; outline: none; }
         .close-video { position: absolute; top: 20px; right: 20px; color: white; font-size: 45px; font-weight: bold; cursor: pointer; z-index: 3001; }
 
-        .tabs { position: fixed; bottom: 10px; left: 10px; right: 10px; background-color: #ffffff; display: flex; justify-content: space-between; gap: 6px; padding: 8px 10px; margin: 0; box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 1000; border-radius: 18px; }
+        .tabs { 
+            position: fixed; 
+            bottom: 10px; 
+            left: 10px; 
+            right: 10px; 
+            background-color: #ffffff; 
+            display: flex; 
+            justify-content: space-between; 
+            gap: 6px; 
+            padding: 8px 10px; 
+            margin: 0; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15); 
+            z-index: 1000; 
+            border-radius: 18px; 
+        }
         .tab-btn { flex: 1; padding: 8px 2px; text-align: center; border: none; font-family: inherit; font-size: 13px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; opacity: 0.75; }
         .tab-btn span { font-size: 20px; }
         
@@ -182,8 +201,8 @@
         .chat-container { display: none; background: var(--card-bg); border-radius: 15px; padding: 15px; margin: 15px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-hint { text-align: center; font-size: 12px; color: #777; margin-bottom: 8px; }
         
-        /* ارتفاع چت کمی کم شد که کادر تایپ بیرون نزنه */
-        .chat-messages { height: 50vh; min-height: 350px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        /* ارتفاع چت تنظیم شد تا کادر تایپ پایین نزنه */
+        .chat-messages { height: 55vh; min-height: 350px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
         
         .msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; font-size: 13px; line-height: 1.5; }
         .msg.user { background: #E3F2FD; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; }
@@ -215,19 +234,9 @@
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid currentColor; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ==== استایل کپچا ثبت نام ==== */
-        .captcha-box { 
-            display: flex; align-items: center; justify-content: space-between; 
-            border: 1px solid #ccc; border-radius: 8px; padding: 12px 15px; 
-            background: #f9f9f9; cursor: pointer; margin-top: 15px; 
-            transition: all 0.2s;
-        }
+        .captcha-box { display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; border-radius: 8px; padding: 12px 15px; background: #f9f9f9; cursor: pointer; margin-top: 15px; transition: all 0.2s; }
         .captcha-box:hover { background: #f0f0f0; }
-        .captcha-checkbox { 
-            width: 24px; height: 24px; border: 2px solid #aaa; border-radius: 4px; 
-            background: white; display: flex; justify-content: center; align-items: center; 
-            transition: all 0.2s;
-        }
+        .captcha-checkbox { width: 24px; height: 24px; border: 2px solid #aaa; border-radius: 4px; background: white; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
         .captcha-checkbox.checked { background: var(--primary); border-color: var(--primary); }
         .captcha-checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 16px; }
         .captcha-text { font-size: 14px; font-weight: bold; color: #555; margin-right: 10px; }
@@ -244,20 +253,17 @@
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
 
-    <!-- منوی اصلی -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="toggleMenu()">&times;</span>
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
-                <!-- لینک پشتیبانی -->
                 <li><a href="YOUR_LINK_HERE" target="_blank"><i>📞</i> پشتیبانی: ۰۹۱۵۹۲۴۵۷۷۳</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- مودال ثبت نام سریع -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
@@ -283,7 +289,7 @@
         <video id="storyVideo" controls playsinline></video>
     </div>
 
-    <!-- تب گالری (شامل کارشناسی) -->
+    <!-- تب گالری -->
     <div id="gallery" class="tab-content active">
         <div id="mainValuation" class="upload-section">
             <p style="font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 0; margin-bottom: 5px;">🎁 ۳ تا کارشناسی رایگان داری!</p>
@@ -477,12 +483,10 @@
         const errorBox = document.getElementById('errorBox');
         const resultContent = document.getElementById('resultContent');
 
-        // --- نصب اپلیکیشن ---
         function showInstallPrompt() {
             alert('برای نصب اپلیکیشن، از منوی مرورگر خود گزینه «Add to Home Screen» (افزودن به صفحه اصلی) را انتخاب کنید. 📲');
         }
 
-        // --- بخش منو و ثبت نام ---
         function toggleMenu() {
             const modal = document.getElementById('menuModal');
             if (modal.style.display === 'flex') { modal.style.display = 'none'; } else { modal.style.display = 'flex'; }
@@ -535,7 +539,6 @@
             closeRegisterModal();
             updateMenuAfterLogin();
             
-            // ریست کردن فرم
             document.getElementById('regPhoneInput').value = '';
             isCaptchaChecked = false;
             document.getElementById('captchaBox').classList.remove('checked');
@@ -548,7 +551,6 @@
             if (event.target == regModal) { regModal.style.display = 'none'; }
         }
 
-        // --- بخش اشتراک ---
         function checkSubscription() {
             if (isSubscribed) {
                 mainValuation.style.display = 'block';
