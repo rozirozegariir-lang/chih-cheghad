@@ -164,11 +164,8 @@
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
                 
-                <!-- دکمه نصب در منو (اگر نصب نکرده باشد نمایش داده می‌شود) -->
-                <li id="menuInstallLi"><button onclick="showInstallPrompt()"><i>📥</i> نصب اپلیکیشن</button></li>
-                
-                <!-- دکمه ارسال در منو (اگر نصب کرده باشد نمایش داده می‌شود) -->
-                <li id="menuShareLi" style="display: none;"><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
+                <!-- دکمه ارسال به دیگران (همیشه در منو هست) -->
+                <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
                 
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
@@ -382,28 +379,15 @@
     </div>
 
     <script>
-        // ==========================================
-        // منطق تشخیص نصب بودن اپلیکیشن و تغییر منو
-        // ==========================================
-        const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        
-        if (isAppInstalled) {
-            // اگر نصب کرده باشد:
+        // مخفی کردن دکمه نصب در صورتی که اپلیکیشن نصب شده باشد
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             const installBtn = document.querySelector('.install-btn');
-            if (installBtn) installBtn.style.display = 'none'; // مخفی کردن دکمه نصب بالا
-            
-            document.getElementById('menuInstallLi').style.display = 'none'; // مخفی کردن نصب در منو
-            document.getElementById('menuShareLi').style.display = 'block'; // نمایش ارسال در منو
-        } else {
-            // اگر نصب نکرده باشد (اجرا در مرورگر):
-            document.getElementById('menuShareLi').style.display = 'none'; // مخفی کردن ارسال در منو
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
         }
 
-        // ==========================================
-        // بخش نصب اپلیکیشن (PWA)
-        // ==========================================
         let deferredPrompt;
-        
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -428,9 +412,6 @@
             });
         }
 
-        // ==========================================
-        // تابع ارسال به دیگران (Share)
-        // ==========================================
         async function shareApp() {
             const shareData = {
                 title: 'همیار زندگی',
@@ -449,9 +430,6 @@
             }
         }
 
-        // ==========================================
-        // بقیه کدهای سایت
-        // ==========================================
         let freeUses = parseInt(localStorage.getItem('valuationCount') || '0');
         let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
         let isCaptchaChecked = false;
