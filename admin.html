@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل ادمین | همیار زندگی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        :root {
+            --primary: #D4A574;
+            --primary-dark: #b88655;
+            --bg-color: #F5E6D3;
+            --text-main: #4A3728;
+            --card-bg: #FFFFFF;
+            --danger: #E74C3C;
+            --success: #2E8B57;
+        }
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            background-color: #f4f7f6;
+            color: var(--text-main);
+            margin: 0; padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* استایل صفحه لاگین */
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+        .login-container h2 { color: var(--primary-dark); margin-bottom: 20px; }
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-btn:hover { background: var(--primary-dark); }
+        .error-msg { color: var(--danger); font-size: 13px; display: none; margin-bottom: 10px; }
+
+        /* استایل داشبورد */
+        .dashboard-container {
+            display: none; /* مخفی تا زمانی که لاگین موفق باشه */
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header-dash {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .header-dash h2 { margin: 0; color: var(--primary-dark); font-size: 20px; }
+        .logout-btn {
+            background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer;
+        }
+
+        /* تب‌های داشبورد */
+        .dash-tabs {
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+        .dash-tab {
+            flex: 1; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s;
+        }
+        .dash-tab.active { background: var(--primary); color: white; }
+
+        .tab-panel { display: none; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
+        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- صفحه ورود -->
+    <div id="loginBox" class="login-container">
+        <h2>🔐 ورود به پنل مدیریت</h2>
+        <p style="font-size: 13px; color: #777; margin-bottom: 20px;">لطفاً رمز عبور خود را وارد کنید</p>
+        <div id="loginError" class="error-msg">رمز عبور اشتباه است!</div>
+        <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور...">
+        <button class="login-btn" onclick="checkLogin()">ورود</button>
+    </div>
+
+    <!-- داشبورد اصلی (بعد از لاگین) -->
+    <div id="dashboardBox" class="dashboard-container">
+        <div class="header-dash">
+            <h2>پنل مدیریت همیار</h2>
+            <button class="logout-btn" onclick="logout()">خروج</button>
+        </div>
+
+        <div class="dash-tabs">
+            <button class="dash-tab active" onclick="switchDashTab('products', this)">📦 محصولات</button>
+            <button class="dash-tab" onclick="switchDashTab('tasks', this)">🤝 میکرو-کارها</button>
+        </div>
+
+        <!-- بخش محصولات -->
+        <div id="products" class="tab-panel active">
+            <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
+            <div class="form-group">
+                <label>عنوان محصول</label>
+                <input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی...">
+            </div>
+            <div class="form-group">
+                <label>قیمت</label>
+                <input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان">
+            </div>
+            <div class="form-group">
+                <label>لینک عکس (URL)</label>
+                <input type="text" id="prodImg" class="form-control" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>لینک ویدیو (اختیاری)</label>
+                <input type="text" id="prodVid" class="form-control" placeholder="https://...">
+            </div>
+            <button class="submit-btn" onclick="alert('این دکمه در مرحله بعد به گوگل شیت وصل می‌شود.')">ثبت محصول</button>
+        </div>
+
+        <!-- بخش میکرو-کارها -->
+        <div id="tasks" class="tab-panel">
+            <h3 style="margin-top: 0; color: var(--tasks-color);">لیست کارهای ثبت شده</h3>
+            <p style="font-size: 13px; color: #777;">در این بخش لیست کارهای سوپابیس نمایش داده می‌شود.</p>
+            <div style="text-align: center; padding: 20px; color: #aaa;">
+                (این بخش در مرحله بعد به دیتابیس وصل می‌شود)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- بخش لاگین ---
+        // رمز عبور دلخواه خود را اینجا تغییر دهید
+        const ADMIN_PASSWORD = "admin123"; 
+
+        function checkLogin() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('dashboardBox').style.display = 'block';
+                document.getElementById('loginError').style.display = 'none';
+                localStorage.setItem('isAdminLoggedIn', 'true'); // ذخیره وضعیت ورود
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            location.reload();
+        }
+
+        // بررسی اینکه آیا قبلاً لاگین کرده یا نه
+        if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('dashboardBox').style.display = 'block';
+        }
+
+        // --- سوییچ کردن بین تب های داشبورد ---
+        function switchDashTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-panel').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.dash-tab').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>
