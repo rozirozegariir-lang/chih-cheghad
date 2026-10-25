@@ -26,74 +26,44 @@
             min-height: 100vh;
         }
 
-        /* استایل صفحه لاگین */
         .login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 350px;
+            background: white; padding: 30px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center;
+            width: 90%; max-width: 350px;
         }
         .login-container h2 { color: var(--primary-dark); margin-bottom: 20px; }
         .login-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 16px;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-            text-align: center;
-            letter-spacing: 2px;
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            font-family: inherit; font-size: 16px; box-sizing: border-box;
+            margin-bottom: 15px; text-align: center; letter-spacing: 2px;
         }
         .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
+            width: 100%; padding: 12px; background: var(--primary); color: white;
+            border: none; border-radius: 8px; font-family: inherit; font-size: 16px;
+            font-weight: bold; cursor: pointer; transition: background 0.2s;
         }
         .login-btn:hover { background: var(--primary-dark); }
         .error-msg { color: var(--danger); font-size: 13px; display: none; margin-bottom: 10px; }
 
-        /* استایل داشبورد */
         .dashboard-container {
-            display: none; /* مخفی تا زمانی که لاگین موفق باشه */
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            box-sizing: border-box;
+            display: none; width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box;
         }
         .header-dash {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; background: white; padding: 15px 20px;
+            border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .header-dash h2 { margin: 0; color: var(--primary-dark); font-size: 20px; }
         .logout-btn {
-            background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer;
+            background: #fce4e4; color: var(--danger); border: none; padding: 8px 15px;
+            border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer;
         }
 
-        /* تب‌های داشبورد */
-        .dash-tabs {
-            display: flex; gap: 10px; margin-bottom: 20px;
-        }
+        .dash-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
         .dash-tab {
-            flex: 1; padding: 12px; background: white; border: none; border-radius: 10px; font-family: inherit; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s;
+            flex: 1; padding: 12px; background: white; border: none; border-radius: 10px;
+            font-family: inherit; font-weight: bold; cursor: pointer; color: #777;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.3s;
         }
         .dash-tab.active { background: var(--primary); color: white; }
 
@@ -103,13 +73,24 @@
 
         .form-group { margin-bottom: 15px; text-align: right; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        .submit-btn { background: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; margin-top: 10px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; background: #f9f9f9; }
+        .submit-btn { 
+            background: var(--success); color: white; border: none; padding: 12px 20px; 
+            border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; 
+            width: 100%; font-size: 15px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid white; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-msg { text-align: center; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; }
+        .status-msg.success { background: #d4edda; color: #155724; display: block; }
+        .status-msg.error { background: #f8d7da; color: #721c24; display: block; }
     </style>
 </head>
 <body>
 
-    <!-- صفحه ورود -->
     <div id="loginBox" class="login-container">
         <h2>🔐 ورود به پنل مدیریت</h2>
         <p style="font-size: 13px; color: #777; margin-bottom: 20px;">لطفاً رمز عبور خود را وارد کنید</p>
@@ -118,7 +99,6 @@
         <button class="login-btn" onclick="checkLogin()">ورود</button>
     </div>
 
-    <!-- داشبورد اصلی (بعد از لاگین) -->
     <div id="dashboardBox" class="dashboard-container">
         <div class="header-dash">
             <h2>پنل مدیریت همیار</h2>
@@ -130,41 +110,43 @@
             <button class="dash-tab" onclick="switchDashTab('tasks', this)">🤝 میکرو-کارها</button>
         </div>
 
-        <!-- بخش محصولات -->
         <div id="products" class="tab-panel active">
             <h3 style="margin-top: 0; color: var(--primary-dark);">افزودن محصول جدید</h3>
+            
+            <div id="productStatusMsg" class="status-msg"></div>
+
             <div class="form-group">
-                <label>عنوان محصول</label>
+                <label>عنوان محصول *</label>
                 <input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی...">
             </div>
             <div class="form-group">
-                <label>قیمت</label>
+                <label>قیمت *</label>
                 <input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان">
             </div>
             <div class="form-group">
-                <label>لینک عکس (URL)</label>
-                <input type="text" id="prodImg" class="form-control" placeholder="https://...">
+                <label>انتخاب عکس از گالری *</label>
+                <input type="file" id="prodImgFile" class="form-control" accept="image/*">
             </div>
             <div class="form-group">
-                <label>لینک ویدیو (اختیاری)</label>
-                <input type="text" id="prodVid" class="form-control" placeholder="https://...">
+                <label>انتخاب ویدیو از گالری (اختیاری)</label>
+                <input type="file" id="prodVidFile" class="form-control" accept="video/*">
             </div>
-            <button class="submit-btn" onclick="alert('این دکمه در مرحله بعد به گوگل شیت وصل می‌شود.')">ثبت محصول</button>
+            
+            <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
-        <!-- بخش میکرو-کارها -->
         <div id="tasks" class="tab-panel">
             <h3 style="margin-top: 0; color: var(--tasks-color);">لیست کارهای ثبت شده</h3>
             <p style="font-size: 13px; color: #777;">در این بخش لیست کارهای سوپابیس نمایش داده می‌شود.</p>
-            <div style="text-align: center; padding: 20px; color: #aaa;">
-                (این بخش در مرحله بعد به دیتابیس وصل می‌شود)
-            </div>
+            <div style="text-align: center; padding: 20px; color: #aaa;">(این بخش در مرحله بعد به دیتابیس وصل می‌شود)</div>
         </div>
     </div>
 
     <script>
-        // --- بخش لاگین ---
-        // رمز عبور دلخواه خود را اینجا تغییر دهید
+        const SUPABASE_URL = "https://grfeyftvktknbrphphafqf.supabase.co";
+        // ⚠️⚠️ اینجا اون کلید طولانی (eyJ...) که کپی کردی رو پیست کن ⚠️⚠️
+        const SUPABASE_ANON_KEY = "کلید_کپی_شده_رو_اینجا_بذار"; 
+
         const ADMIN_PASSWORD = "admin123"; 
 
         function checkLogin() {
@@ -173,7 +155,7 @@
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('dashboardBox').style.display = 'block';
                 document.getElementById('loginError').style.display = 'none';
-                localStorage.setItem('isAdminLoggedIn', 'true'); // ذخیره وضعیت ورود
+                localStorage.setItem('isAdminLoggedIn', 'true');
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
@@ -184,19 +166,94 @@
             location.reload();
         }
 
-        // بررسی اینکه آیا قبلاً لاگین کرده یا نه
         if (localStorage.getItem('isAdminLoggedIn') === 'true') {
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('dashboardBox').style.display = 'block';
         }
 
-        // --- سوییچ کردن بین تب های داشبورد ---
         function switchDashTab(tabId, btnElement) {
             document.querySelectorAll('.tab-panel').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.dash-tab').forEach(btn => btn.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
+        }
+
+        async function uploadFile(file) {
+            if (!file) return null;
+            const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+            
+            const res = await fetch(`${SUPABASE_URL}/storage/v1/object/products/${fileName}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': file.type
+                },
+                body: file
+            });
+
+            if (!res.ok) {
+                throw new Error('خطا در آپلود فایل به سوپابیس');
+            }
+            
+            return `${SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
+        }
+
+        async function addProduct() {
+            const title = document.getElementById('prodTitle').value.trim();
+            const price = document.getElementById('prodPrice').value.trim();
+            const imgFile = document.getElementById('prodImgFile').files[0];
+            const vidFile = document.getElementById('prodVidFile').files[0];
+            
+            const btn = document.getElementById('addProductBtn');
+            const statusMsg = document.getElementById('productStatusMsg');
+
+            if (!title || !price || !imgFile) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = 'در حال آپلود و ثبت... <div class="loader"></div>';
+            statusMsg.style.display = 'none';
+
+            try {
+                const image_url = await uploadFile(imgFile);
+                
+                let video_url = "";
+                if (vidFile) {
+                    video_url = await uploadFile(vidFile);
+                }
+
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: title,
+                        price: price,
+                        image_url: image_url,
+                        video_url: video_url
+                    })
+                });
+
+                if (response.ok) {
+                    statusMsg.className = 'status-msg success';
+                    statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
+                    
+                    document.getElementById('prodTitle').value = '';
+                    document.getElementById('prodPrice').value = '';
+                    document.getElementById('prodImgFile').value = '';
+                    document.getElementById('prodVidFile').value = '';
+                } else {
+                    throw new Error('خطا در ثبت نهایی');
+                }
+            } catch (error) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = '❌ ' + error.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'ثبت محصول';
+            }
         }
     </script>
 </body>
