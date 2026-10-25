@@ -169,14 +169,14 @@
             background-color: #ffffff; 
             display: flex; 
             justify-content: space-between; 
-            gap: 6px; 
-            padding: 8px 10px 15px 10px;
+            gap: 4px; 
+            padding: 8px 8px 15px 8px;
             margin: 0; 
             box-shadow: 0 -4px 20px rgba(0,0,0,0.1); 
             z-index: 1000; 
             border-radius: 18px 18px 0 0; 
         }
-        .tab-btn { flex: 1; padding: 8px 2px; text-align: center; border: none; font-family: inherit; font-size: 12px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; opacity: 0.75; }
+        .tab-btn { flex: 1; padding: 8px 2px; text-align: center; border: none; font-family: inherit; font-size: 11px; font-weight: bold; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; opacity: 0.75; }
         .tab-btn span { font-size: 18px; }
         
         .tab-btn.gallery-btn { background: var(--gallery-color); box-shadow: 0 4px 10px rgba(42, 157, 143, 0.3); }
@@ -233,7 +233,6 @@
         .tasks-input { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 12px; margin-bottom: 8px; box-sizing: border-box; }
         .tasks-upload-btn { background-color: var(--tasks-color); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.4); padding: 10px; font-size: 15px; }
 
-        /* ==== تنظیمات اختصاصی آشپز یار ==== */
         #chef.active {
             display: flex;
             flex-direction: column;
@@ -252,12 +251,11 @@
             margin-bottom: 20px; 
         }
         .chef-image-wrapper img {
-            width: 42%; 
-            max-height: 140px; 
+            width: 45%; 
+            max-height: 120px; 
             object-fit: contain; 
         }
 
-        /* ==== تنظیمات اختصاصی تعمیرکار ==== */
         #repair.active {
             display: flex;
             flex-direction: column;
@@ -272,8 +270,8 @@
             margin-bottom: 20px; 
         }
         .repair-image-wrapper img {
-            width: 42%; 
-            max-height: 140px; 
+            width: 45%; 
+            max-height: 120px; 
             object-fit: contain; 
         }
 
@@ -419,7 +417,6 @@
         </div>
     </div>
 
-    <!-- تب تعمیرکار -->
     <div id="repair" class="tab-content">
         <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
         
@@ -432,10 +429,10 @@
             <img id="repairImagePreview" alt="عکس وسیله">
         </div>
 
-        <!-- عکس‌های کارتونی تعمیرکار -->
         <div class="repair-image-wrapper">
-            <img src="https://img.icons8.com/3d-fluency/480/technician.png" alt="تعمیرکار">
-            <img src="https://img.icons8.com/3d-fluency/480/washing-machine.png" alt="لوازم خانگی">
+            <!-- استفاده از لینک های بسیار پایدار و کارتونی برای تعمیرکار -->
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f527.svg" alt="تعمیرکار">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f527.svg" alt="ابزار">
         </div>
 
         <div id="repairResultCard" class="result-card repair-result-card">
@@ -488,7 +485,6 @@
         <div id="tasksList"></div>
     </div>
 
-    <!-- تب آشپز یار -->
     <div id="chef" class="tab-content">
         <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
         
@@ -501,10 +497,10 @@
             </button>
         </div>
 
-        <!-- عکس‌های کارتونی آشپز -->
         <div class="chef-image-wrapper">
-            <img src="https://img.icons8.com/color/480/chef-female.png" alt="آشپز خانم کارتونی">
-            <img src="https://img.icons8.com/color/480/chef-male.png" alt="آشپز آقا کارتونی">
+            <!-- استفاده از لینک های بسیار پایدار و کارتونی برای آشپزها -->
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f373.svg" alt="آشپز خانم کارتونی">
+            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f373.svg" alt="آشپز آقا کارتونی">
         </div>
 
         <div id="chefResultCard" class="result-card chef-result-card">
@@ -523,10 +519,10 @@
 
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
-        <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم خانه</button>
+        <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم</button>
         <button class="tab-btn repair-btn" onclick="switchTab('repair', this)"><span>🛠️</span> تعمیرکار</button>
-        <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکرو-کار</button>
-        <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز یار</button>
+        <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکروکار</button>
+        <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز</button>
     </div>
 
     <script>
@@ -1222,7 +1218,7 @@
             resultCard.style.display = 'none';
             errorBox.style.display = 'none';
             resultContent.style.display = 'block';
-            if(chefImageWrapper) chefImageWrapper.style.display = 'none'; // مخفی کردن عکس‌ها
+            if(chefImageWrapper) chefImageWrapper.style.display = 'none';
 
             try {
                 const response = await fetch('/api/chef', {
