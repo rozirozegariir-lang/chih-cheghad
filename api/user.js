@@ -1,106 +1,85 @@
+// api/user.js
+import { Pool } from 'pg';
+
+// ساخت یک اتصال Pool برای مدیریت بهتر درخواست‌ها در محیط Serverless
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // برای اتصال امن به دیتابیس Neon در Vercel
+  }
+});
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+  const { phone, referred_by } = req.body;
 
-  if (!supabaseUrl || !supabaseKey) {
-    return res.status(500).json({ error: 'تنظیمات سوپابیس یافت نشد.' });
+  if (!phone) {
+    return res.status(400).json({ error: 'شماره موبایل الزامی است' });
   }
 
-  const headers = {
-    'apikey': supabaseKey,
-    'Authorization': `Bearer ${supabaseKey}`,
-    'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
-  };
+  const client = await pool.connect();
 
-  if (req.method === 'POST') {
-    try {
-      const { phone, referred_by } = req.body;
-      if (!phone) return res.status(400).json({ error: 'شماره موبایل الزامی است' });
+  try {
+    // شروع یک تراکنش (Transaction) برای اینکه اگر خطایی پیش اومد، هیچ تغییری در دیتابیس ثبت نشه
+    await client.query('BEGIN');
 
-      // چک کردن کاربر
-      const checkRes = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${phone}`, { headers });
-      if (!checkRes.ok) throw new Error('API Error: ' + checkRes.status);
-      
-      const existingUsers = await checkRes.json();
-
-      if (existingUsers.length > 0) {
-        return res.status(200).json({ status: 'already_exists', message: 'کاربر قبلا ثبت نام کرده است', data: existingUsers[0] });
-      }
-
-      // ثبت نام
-      const insertRes = await fetch(`${supabaseUrl}/rest/v1/users`, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify({ phone: phone, referred_by: referred_by || null })
-      });
-
-      if (!insertRes.ok) {
-        const errData = await insertRes.json();
-        throw new Error('Insert Error: ' + JSON.stringify(errData));
-      }
-
-      // منطق دعوت
-      if (referred_by && referred_by !== phone) {
-        const referrerRes = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${referred_by}`, { headers });
-        const referrers = await referrerRes.json();
-
-        if (referrers.length > 0) {
-          const referrer = referrers[0];
-          let newInviteCount = (referrer.invite_count || 0) + 1;
-          let shouldSubscribe = referrer.is_subscribed;
-
-          if (newInviteCount >= 15) shouldSubscribe = true;
-
-          await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${referred_by}`, {
-            method: 'PATCH',
-            headers: headers,
-            body: JSON.stringify({ invite_count: newInviteCount, is_subscribed: shouldSubscribe })
-          });
-        }
-      }
-
-      return res.status(200).json({ status: 'success', message: 'ثبت نام با موفقیت انجام شد' });
-
-    } catch (error) {
-      // اینجا دلیل دقیق خطا رو برمی‌گردونیم
-      return res.status(500).json({ 
-        error: error.message, 
-        cause: error.cause ? error.cause.toString() : 'No cause' 
-      });
+    // ۱. چک کردن اینکه آیا کاربر قبلاً ثبت‌نام کرده یا نه
+    const userCheck = await client.query('SELECT * FROM users WHERE phone = $1', [phone]);
+    
+    if (userCheck.rows.length > 0) {
+      await client.query('ROLLBACK');
+      return res.status(200).json({ success: true, message: 'کاربر از قبل وجود دارد', user: userCheck.rows[0] });
     }
-  } 
-  
-  else if (req.method === 'GET') {
-    try {
-      const { phone } = req.query;
-      if (!phone) return res.status(400).json({ error: 'شماره موبایل الزامی است' });
 
-      const response = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${phone}`, { headers });
-      if (!response.ok) throw new Error('API Error: ' + response.status);
+    // ۲. ثبت‌نام کاربر جدید
+    await client.query(
+      'INSERT INTO users (phone, referred_by) VALUES ($1, $2)',
+      [phone, referred_by || null]
+    );
+
+    let referrerStatus = null;
+
+    // ۳. اگر با لینک دعوت اومده، تعداد دعوت‌های معرف رو زیاد کن
+    if (referred_by) {
+      const referrerCheck = await client.query('SELECT * FROM users WHERE phone = $1', [referred_by]);
       
-      const users = await response.json();
+      if (referrerCheck.rows.length > 0) {
+        const referrer = referrerCheck.rows[0];
+        const newInviteCount = referrer.invite_count + 1;
+        const shouldSubscribe = newInviteCount >= 15; // شرط ۱۵ نفر برای اشتراک رایگان
 
-      if (users.length > 0) {
-        return res.status(200).json(users[0]);
-      } else {
-        return res.status(404).json({ error: 'کاربر یافت نشد' });
+        await client.query(
+          'UPDATE users SET invite_count = $1, is_subscribed = $2 WHERE phone = $3',
+          [newInviteCount, shouldSubscribe, referred_by]
+        );
+
+        referrerStatus = {
+          phone: referred_by,
+          invite_count: newInviteCount,
+          is_subscribed: shouldSubscribe
+        };
       }
-    } catch (error) {
-      return res.status(500).json({ error: error.message, cause: error.cause ? error.cause.toString() : 'No cause' });
     }
-  } else {
-    res.setHeader('Allow', ['GET', 'POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    // پایان تراکنش و ذخیره تغییرات
+    await client.query('COMMIT');
+
+    return res.status(200).json({ 
+      success: true, 
+      message: 'ثبت‌نام با موفقیت انجام شد',
+      referrer: referrerStatus 
+    });
+
+  } catch (error) {
+    // در صورت بروز خطا، تمام تغییرات نیمه‌کاره لغو میشه
+    await client.query('ROLLBACK');
+    console.error('Database error:', error);
+    return res.status(500).json({ error: 'خطای دیتابیس', detail: error.message });
+  } finally {
+    // آزادسازی اتصال
+    client.release();
   }
 }
