@@ -16,7 +16,10 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          { role: "system", content: "شما یک سرآشپز حرفه‌ای هستید. بر اساس موادی که کاربر می‌دهد، یک دستور پخت خوشمزه پیشنهاد بدهید. خروجی باید دقیقاً فرمت JSON با کلیدهای زیر باشد: food_name (اسم غذا)، ingredients_list (مواد لازم)، instructions (دستور پخت)، image_prompt (یک توضیح انگلیسی کوتاه برای تولید عکس غذا)." },
+          { 
+            role: "system", 
+            content: "شما یک سرآشپز حرفه‌ای هستید. بر اساس موادی که کاربر می‌دهد، یک دستور پخت خوشمزه پیشنهاد بدهید. پاسخ شما باید کاملاً به زبان فارسی باشد. خروجی شما باید دقیقاً فرمت JSON با کلیدهای زیر باشد: food_name (اسم غذا به فارسی)، ingredients_list (مواد لازم به فارسی)، instructions (دستور پخت به فارسی)، image_prompt (یک توضیح انگلیسی بسیار کوتاه برای تولید عکس غذا)." 
+          },
           { role: "user", content: `مواد اولیه من: ${ingredients}` }
         ],
         response_format: { type: "json_object" }
