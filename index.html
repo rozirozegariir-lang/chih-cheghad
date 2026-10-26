@@ -147,6 +147,12 @@
         .captcha-text { font-size: 15px; font-weight: bold; color: #555; margin-right: 10px; }
         .captcha-icon { font-size: 28px; color: var(--gallery-color); }
         #phoneInputContainer { display: none; margin-top: 20px; animation: fadeIn 0.5s; }
+        
+        /* استایل باکس دعوت دوستان */
+        .invite-box { background: #e8f8f5; border: 2px dashed #2A9D8F; border-radius: 10px; padding: 15px; margin-top: 10px; text-align: center; display: none; }
+        .invite-box p { font-size: 12px; color: #333; margin: 0 0 10px 0; }
+        .invite-link-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: inherit; font-size: 12px; margin-bottom: 10px; direction: ltr; }
+        .copy-btn { background-color: #2A9D8F; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; }
     </style>
 </head>
 <body>
@@ -167,6 +173,14 @@
                 <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
+            
+            <!-- باکس دعوت دوستان (فقط وقتی لاگین کرده نمایش داده میشه) -->
+            <div id="inviteBox" class="invite-box">
+                <p>🎁 با دعوت ۱۵ نفر از دوستانت، <strong>۳ ماه اشتراک رایگان</strong> بگیر!</p>
+                <p id="inviteCountText" style="font-weight: bold; color: #E74C3C;">دعوت‌های موفق شما: 0 از 15</p>
+                <input type="text" id="inviteLinkInput" class="invite-link-input" readonly>
+                <button class="copy-btn" onclick="copyInviteLink()">📋 کپی لینک دعوت</button>
+            </div>
         </div>
     </div>
 
@@ -187,7 +201,7 @@
 
             <div id="phoneInputContainer">
                 <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px; margin-top: 0; padding: 12px;">
-                <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--success);">ثبت نام و ورود</button>
+                <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--success);" id="regSubmitBtn">ثبت نام و ورود</button>
             </div>
         </div>
     </div>
@@ -391,10 +405,9 @@
         let freeUsesTeacher = parseInt(localStorage.getItem('freeUsesTeacher') || '0');
         const MAX_FREE = 3;
         
-        let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
+        let isSubscribed = false; // وضعیت اشتراک از دیتابیس خونده میشه
         let isCaptchaChecked = false;
         
-        // متغیرهای ثبت نام برای پرداخت
         let pendingPlan = null;
         let pendingAmount = null;
 
@@ -403,6 +416,15 @@
         const resultCard = document.getElementById('resultCard');
         const errorBox = document.getElementById('errorBox');
         const resultContent = document.getElementById('resultContent');
+
+        // ==========================================
+        // بخش لینک دعوت (Ref)
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const referrerPhone = urlParams.get('ref');
+        if (referrerPhone) {
+            localStorage.setItem('referred_by', referrerPhone);
+        }
 
         // منطق نصب PWA
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
@@ -435,7 +457,6 @@
             });
         }
 
-        // ارسال به دیگران
         async function shareApp() {
             const shareData = {
                 title: 'همیار زندگی',
@@ -452,7 +473,9 @@
             } catch (err) { console.log('Error sharing:', err); }
         }
 
-        // منو و مودال‌ها
+        // ==========================================
+        // منطق کاربر و ثبت نام
+        // ==========================================
         function toggleMenu() {
             const modal = document.getElementById('menuModal');
             if (modal.style.display === 'flex') { modal.style.display = 'none'; } else { modal.style.display = 'flex'; }
@@ -466,9 +489,33 @@
             document.getElementById('subscriptionModal').style.display = 'none';
         }
 
-        function updateMenuAfterLogin() {
+        async function updateMenuAfterLogin() {
             const savedPhone = localStorage.getItem('userPhone');
-            if (savedPhone) { document.getElementById('menuRegisterBtn').innerHTML = `<i>👤</i> حساب کاربری: ${savedPhone}`; }
+            if (savedPhone) { 
+                document.getElementById('menuRegisterBtn').innerHTML = `<i>👤</i> حساب کاربری: ${savedPhone}`; 
+                
+                // نمایش باکس دعوت
+                document.getElementById('inviteBox').style.display = 'block';
+                const inviteLink = `${window.location.origin}/?ref=${savedPhone}`;
+                document.getElementById('inviteLinkInput').value = inviteLink;
+
+                // چک کردن وضعیت اشتراک از دیتابیس
+                try {
+                    const res = await fetch(`/api/user?phone=${savedPhone}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        isSubscribed = data.is_subscribed;
+                        
+                        // نمایش تعداد دعوت‌ها
+                        document.getElementById('inviteCountText').innerText = `دعوت‌های موفق شما: ${data.invite_count || 0} از 15`;
+
+                        if (isSubscribed) {
+                            document.getElementById('inviteCountText').innerText = '🎉 تبریک! اشتراک شما فعال است.';
+                            document.getElementById('inviteCountText').style.color = '#2E8B57';
+                        }
+                    }
+                } catch(e) { console.log('Error fetching user data', e); }
+            }
         }
 
         function openRegisterModal() {
@@ -489,26 +536,62 @@
             document.getElementById('phoneInputContainer').style.display = 'block';
         }
 
-        function submitRegistration() {
+        async function submitRegistration() {
             const phone = document.getElementById('regPhoneInput').value.trim();
             if (!phone || phone.length < 10) { alert('لطفا یک شماره موبایل معتبر وارد کنید.'); return; }
-            localStorage.setItem('userPhone', phone);
-            alert('ثبت نام با موفقیت انجام شد! خوش آمدید. 🌟');
-            closeRegisterModal();
-            updateMenuAfterLogin();
-            document.getElementById('regPhoneInput').value = '';
-            isCaptchaChecked = false;
-            document.getElementById('captchaBox').classList.remove('checked');
-            document.getElementById('phoneInputContainer').style.display = 'none';
 
-            // اگر کاربر برای خرید اومده بود، حالا به پرداخت هدایت بشه
-            if (pendingPlan && pendingAmount) {
-                setTimeout(() => {
-                    proceedToPayment(pendingPlan, pendingAmount);
-                    pendingPlan = null;
-                    pendingAmount = null;
-                }, 500);
+            const btn = document.getElementById('regSubmitBtn');
+            btn.innerHTML = 'در حال ثبت... <div class="loader"></div>';
+            btn.disabled = true;
+
+            const referred_by = localStorage.getItem('referred_by') || null;
+
+            try {
+                const response = await fetch('/api/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone, referred_by: referred_by })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('userPhone', phone);
+                    alert(data.message || 'ثبت نام با موفقیت انجام شد!');
+                    closeRegisterModal();
+                    updateMenuAfterLogin();
+                    
+                    document.getElementById('regPhoneInput').value = '';
+                    isCaptchaChecked = false;
+                    document.getElementById('captchaBox').classList.remove('checked');
+                    document.getElementById('phoneInputContainer').style.display = 'none';
+
+                    // اگر کاربر برای خرید اومده بود، حالا به پرداخت هدایت بشه
+                    if (pendingPlan && pendingAmount) {
+                        setTimeout(() => {
+                            proceedToPayment(pendingPlan, pendingAmount);
+                            pendingPlan = null;
+                            pendingAmount = null;
+                        }, 500);
+                    }
+                } else {
+                    alert('خطا: ' + (data.error || 'مشکلی پیش آمد'));
+                }
+            } catch (error) {
+                alert('ارتباط با سرور برقرار نشد.');
+            } finally {
+                btn.innerHTML = 'ثبت نام و ورود';
+                btn.disabled = false;
             }
+        }
+
+        function copyInviteLink() {
+            const link = document.getElementById('inviteLinkInput').value;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('لینک دعوت شما کپی شد! آن را برای دوستانتان بفرستید.');
+            }).catch(err => {
+                alert('خطا در کپی کردن لینک.');
+            });
         }
 
         window.onclick = function(event) {
@@ -520,18 +603,18 @@
             if (event.target == subModal) { subModal.style.display = 'none'; }
         }
 
-        // منطق پرداخت و اشتراک
+        // ==========================================
+        // منطق پرداخت
+        // ==========================================
         function selectGateway(planName, amount) {
             const savedPhone = localStorage.getItem('userPhone');
             if (!savedPhone) {
-                // اگر ثبت نام نکرده بود
                 pendingPlan = planName;
                 pendingAmount = amount;
                 closeSubscriptionModal();
                 alert('برای خرید اشتراک، ابتدا باید ثبت نام کنید. لطفا شماره موبایل خود را وارد کنید.');
                 openRegisterModal();
             } else {
-                // اگر ثبت نام کرده بود
                 proceedToPayment(planName, amount);
             }
         }
@@ -547,9 +630,10 @@
             }
         }
 
+        // فراخوانی در لود اولیه
         updateMenuAfterLogin();
 
-        // گالری (کاملاً آزاد و رایگان)
+        // گالری (کاملاً آزاد)
         document.getElementById('uploadBtn').addEventListener('click', () => { imageInput.click(); });
 
         function switchTab(tabId, btnElement) {
@@ -751,7 +835,7 @@
         
         tutorImageBtn.addEventListener('click', () => {
             if (!isSubscribed && freeUsesTeacher >= MAX_FREE) {
-                alert('سوالات متنی شما کاملاً رایگان است! 📝\n\nاما سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس و حل تصویری، لطفا از منو اشتراک تهیه کنید.');
+                alert('سوالات متنی شما کاملاً رایگان است! 📝\n\nاما سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس و حل تصویری، لطفا از منو اشتراک تهیه کنید یا دوستان خود را دعوت کنید.');
                 return;
             }
             tutorImageInput.click();
