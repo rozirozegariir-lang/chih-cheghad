@@ -1,69 +1,34 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const { ingredients } = req.body;
+  const apiKey = process.env.XAI_API_KEY;
+
+  if (!apiKey) return res.status(500).json({ error: 'API Key is not configured' });
 
   try {
-    const { ingredients } = req.body;
-
-    if (!ingredients) {
-      return res.status(400).json({ error: 'موادی رو وارد نکردی!' });
-    }
-
-    const apiKey = process.env.GROQ_API_KEY; 
-
-    const prompt = `
-تو یه آشپز ماهر و خوش‌اخلاق هستی که می‌خوای با مواد اولیه‌ای که کاربر توی خونه داره، یه غذای خوشمزه پیشنهاد بدی.
-کاربر این مواد رو داره: "${ingredients}"
-
-با لحن خودمونی و صمیمی اینا رو بگو:
-۱. «اسم غذا» → یه اسم جذاب فارسی.
-۲. «مواد لازم» → لیست موادی که لازمه.
-۳. «دستور پخت» → مرحله به مرحله و خیلی ساده.
-۴. «توضیح عکس» → یک توضیح خیلی کوتاه به زبان انگلیسی برای تولید عکس غذا (مثلاً: A delicious Persian omelette with tomatoes on a white plate, food photography).
-
-مهم‌ترین قانون: مقادیر تمام کلیدها باید حتما یک رشته متن (String) ساده باشند.
-خروجی رو دقیقا به صورت JSON بده:
-{
-  "food_name": "اسم غذا",
-  "ingredients_list": "لیست مواد لازم",
-  "instructions": "دستور پخت مرحله به مرحله",
-  "image_prompt": "English description for image generation"
-}
-`;
-
-    const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+    const response = await fetch('https://1xai.ir/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'pixtral-12b-2409',
+        model: "gpt-4o-mini",
         messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt }
-            ]
-          }
+          { role: "system", content: "شما یک سرآشپز حرفه‌ای هستید. بر اساس موادی که کاربر می‌دهد، یک دستور پخت خوشمزه پیشنهاد بدهید. خروجی باید دقیقاً فرمت JSON با کلیدهای زیر باشد: food_name (اسم غذا)، ingredients_list (مواد لازم)، instructions (دستور پخت)، image_prompt (یک توضیح انگلیسی کوتاه برای تولید عکس غذا)." },
+          { role: "user", content: `مواد اولیه من: ${ingredients}` }
         ],
-        response_format: { type: "json_object" },
-        temperature: 0.7
+        response_format: { type: "json_object" }
       })
     });
 
     const data = await response.json();
-    
-    if (data.error) {
-       return res.status(500).json({ error: data.error.message });
-    }
+    if (!response.ok) throw new Error(data.error?.message || 'Error from AI');
 
-    const result = JSON.parse(data.choices[0].message.content);
-    return res.status(200).json(result);
+    return res.status(200).json(JSON.parse(data.choices[0].message.content));
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'مشکلی پیش اومد، دوباره تلاش کن.' });
+    return res.status(500).json({ error: error.message });
   }
 }
