@@ -133,7 +133,7 @@
         .task-desc { font-size: 12px; color: #555; margin-bottom: 5px; line-height: 1.3; }
         .task-price { font-weight: bold; color: #333; margin-bottom: 5px; font-size: 13px; }
         .task-contact { font-size: 11px; color: #888; display: flex; align-items: center; gap: 5px; }
-        .food-image-container { text-align: center; margin-bottom: 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .food-image-container { text-align: center; margin-bottom: 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.1); display: none; }
         .food-image { width: 100%; max-height: 180px; object-fit: cover; display: block; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid currentColor; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -163,10 +163,7 @@
             <h2>منوی اصلی</h2>
             <ul class="menu-list">
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
-                
-                <!-- دکمه ارسال به دیگران (همیشه در منو هست) -->
                 <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
-                
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
         </div>
@@ -359,7 +356,7 @@
         <div id="chefResultCard" class="result-card chef-result-card">
             <div id="chefErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
             <div id="chefResultContent">
-                <div id="chefImageContainer" class="food-image-container" style="display: none;">
+                <div id="chefImageContainer" class="food-image-container">
                     <img id="chefImage" class="food-image" alt="عکس غذا">
                 </div>
                 
@@ -799,6 +796,12 @@
                                 document.getElementById('rep-cost').innerText = formatAIResponse(data.cost);
                                 document.getElementById('rep-warning').innerText = formatAIResponse(data.warning);
                                 repairResultCard.style.display = 'block';
+                                
+                                // اسکرول خودکار به نتیجه
+                                setTimeout(() => {
+                                    repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }, 300);
+
                                 currentChatHistory = [
                                     { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] },
                                     { role: 'assistant', content: JSON.stringify(data) }
@@ -1031,11 +1034,25 @@
                     document.getElementById('chef-name').innerText = formatAIResponse(data.food_name);
                     document.getElementById('chef-ingredients').innerText = formatAIResponse(data.ingredients_list);
                     document.getElementById('chef-instructions').innerText = formatAIResponse(data.instructions);
+                    
+                    // اصلاح مشکل عکس آشپز
                     if (data.image_prompt) {
                         const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(data.image_prompt + ', food photography, highly detailed')}?width=500&height=400&nologo=true`;
-                        document.getElementById('chefImage').src = imageUrl;
-                        imgContainer.style.display = 'block';
-                    } else { imgContainer.style.display = 'none'; }
+                        const chefImg = document.getElementById('chefImage');
+                        
+                        imgContainer.style.display = 'none'; // مخفی کردن اولیه
+                        chefImg.src = imageUrl;
+                        
+                        chefImg.onload = function() {
+                            imgContainer.style.display = 'block'; // نمایش فقط وقتی عکس لود شد
+                        };
+                        chefImg.onerror = function() {
+                            imgContainer.style.display = 'none'; // مخفی موندن در صورت خطا
+                        };
+                    } else { 
+                        imgContainer.style.display = 'none'; 
+                    }
+                    
                     resultCard.style.display = 'block';
                 } else {
                     errorBox.innerText = 'خطا: ' + (data.error || 'نامشخص');
