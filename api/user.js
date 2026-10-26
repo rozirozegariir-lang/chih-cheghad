@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // تنظیمات هدرها برای CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -24,38 +23,35 @@ export default async function handler(req, res) {
     'Prefer': 'return=representation'
   };
 
-  // ۱. ثبت نام کاربر جدید و بررسی سیستم دعوت
   if (req.method === 'POST') {
     try {
       const { phone, referred_by } = req.body;
-
       if (!phone) return res.status(400).json({ error: 'شماره موبایل الزامی است' });
 
-      // چک کردن اینکه آیا کاربر قبلا ثبت نام کرده یا نه
+      // چک کردن کاربر
       const checkRes = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${phone}`, { headers });
+      if (!checkRes.ok) throw new Error('API Error: ' + checkRes.status);
+      
       const existingUsers = await checkRes.json();
 
       if (existingUsers.length > 0) {
         return res.status(200).json({ status: 'already_exists', message: 'کاربر قبلا ثبت نام کرده است', data: existingUsers[0] });
       }
 
-      // ثبت نام کاربر جدید
-      const insertData = {
-        phone: phone,
-        referred_by: referred_by || null
-      };
-
+      // ثبت نام
       const insertRes = await fetch(`${supabaseUrl}/rest/v1/users`, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(insertData)
+        body: JSON.stringify({ phone: phone, referred_by: referred_by || null })
       });
 
-      if (!insertRes.ok) throw new Error('خطا در ثبت نام کاربر');
+      if (!insertRes.ok) {
+        const errData = await insertRes.json();
+        throw new Error('Insert Error: ' + JSON.stringify(errData));
+      }
 
-      // اگر با لینک دعوت اومده بود
+      // منطق دعوت
       if (referred_by && referred_by !== phone) {
-        // پیدا کردن معرف (کسی که لینکش رو داده)
         const referrerRes = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${referred_by}`, { headers });
         const referrers = await referrerRes.json();
 
@@ -64,19 +60,12 @@ export default async function handler(req, res) {
           let newInviteCount = (referrer.invite_count || 0) + 1;
           let shouldSubscribe = referrer.is_subscribed;
 
-          // اگر تعداد دعوت‌ها به ۱۵ رسید، اشتراکش رو فعال کن
-          if (newInviteCount >= 15) {
-            shouldSubscribe = true;
-          }
+          if (newInviteCount >= 15) shouldSubscribe = true;
 
-          // آپدیت کردن اطلاعات معرف در دیتابیس
           await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${referred_by}`, {
             method: 'PATCH',
             headers: headers,
-            body: JSON.stringify({
-              invite_count: newInviteCount,
-              is_subscribed: shouldSubscribe
-            })
+            body: JSON.stringify({ invite_count: newInviteCount, is_subscribed: shouldSubscribe })
           });
         }
       }
@@ -84,17 +73,22 @@ export default async function handler(req, res) {
       return res.status(200).json({ status: 'success', message: 'ثبت نام با موفقیت انجام شد' });
 
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      // اینجا دلیل دقیق خطا رو برمی‌گردونیم
+      return res.status(500).json({ 
+        error: error.message, 
+        cause: error.cause ? error.cause.toString() : 'No cause' 
+      });
     }
   } 
   
-  // ۲. دریافت اطلاعات کاربر (برای چک کردن اشتراک)
   else if (req.method === 'GET') {
     try {
       const { phone } = req.query;
       if (!phone) return res.status(400).json({ error: 'شماره موبایل الزامی است' });
 
       const response = await fetch(`${supabaseUrl}/rest/v1/users?phone=eq.${phone}`, { headers });
+      if (!response.ok) throw new Error('API Error: ' + response.status);
+      
       const users = await response.json();
 
       if (users.length > 0) {
@@ -103,7 +97,7 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'کاربر یافت نشد' });
       }
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: error.message, cause: error.cause ? error.cause.toString() : 'No cause' });
     }
   } else {
     res.setHeader('Allow', ['GET', 'POST']);
