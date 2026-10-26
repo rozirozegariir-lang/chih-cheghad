@@ -1,44 +1,41 @@
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { question, imageBase64 } = req.body;
-  const apiKey = process.env.HF_API_KEY;
+  const apiKey = process.env.XAI_API_KEY;
 
-  if (!apiKey) {
-    return res.status(500).json({ error: 'کلید API پیدا نشد. لطفا تنظیمات Environment Variables در ورسل را چک کنید.' });
-  }
+  if (!apiKey) return res.status(500).json({ error: 'API Key is not configured' });
 
   try {
-    let content = [];
-    if (question) content.push({ type: "text", text: question });
-    if (imageBase64) content.push({ type: "image_url", image_url: { url: imageBase64 } });
+    let userContent = [];
+    if (question) userContent.push({ type: "text", text: question });
+    if (imageBase64) userContent.push({ type: "image_url", image_url: { url: imageBase64 } });
 
-    if (content.length === 0) return res.status(400).json({ error: 'سوالی پرسیده نشده است' });
-
-    const response = await fetch('https://api-inference.huggingface.co/models/Qwen/Qwen2-VL-7B-Instruct/v1/chat/completions', {
+    const response = await fetch('https://1xai.ir/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "Qwen/Qwen2-VL-7B-Instruct",
+        model: "gpt-4o-mini",
         messages: [
-          { 
-            role: "system", 
-            content: "تو یک معلم خصوصی دلسوز و بسیار باهوش هستی. وظیفه تو حل مسائل درسی است. اگر عکسی فرستاده شد، متن و اعداد داخل عکس را بخوان و مسئله را قدم به قدم حل کن." 
-          },
-          { role: "user", content: content }
-        ],
-        max_tokens: 1000
+          { role: "system", content: "شما یک معلم خصوصی، بسیار صبور و دقیق هستید. به سوالات درسی دانش‌آموزان به زبان فارسی پاسخ دهید. اگر عکسی فرستادند، مسئله را حل کنید." },
+          { role: "user", content: userContent }
+        ]
       })
     });
 
     const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.error?.message || data.message || 'خطا در ارتباط با Hugging Face');
-    }
+    if (!response.ok) throw new Error(data.error?.message || 'Error from AI');
 
     return res.status(200).json({ text: data.choices[0].message.content });
 
