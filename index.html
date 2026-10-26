@@ -797,7 +797,6 @@
                                 document.getElementById('rep-warning').innerText = formatAIResponse(data.warning);
                                 repairResultCard.style.display = 'block';
                                 
-                                // اسکرول خودکار به نتیجه
                                 setTimeout(() => {
                                     repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                 }, 300);
@@ -1035,16 +1034,14 @@
                     document.getElementById('chef-ingredients').innerText = formatAIResponse(data.ingredients_list);
                     document.getElementById('chef-instructions').innerText = formatAIResponse(data.instructions);
                     
-                    // اصلاح مشکل عکس آشپز
-                    if (data.image_prompt) {
-                        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(data.image_prompt + ', food photography, highly detailed')}?width=500&height=400&nologo=true`;
+                    // نمایش عکس تولید شده توسط DALL-E
+                    if (data.image_url) {
                         const chefImg = document.getElementById('chefImage');
-                        
                         imgContainer.style.display = 'none'; // مخفی کردن اولیه
-                        chefImg.src = imageUrl;
+                        chefImg.src = data.image_url;
                         
                         chefImg.onload = function() {
-                            imgContainer.style.display = 'block'; // نمایش فقط وقتی عکس لود شد
+                            imgContainer.style.display = 'block'; // نمایش وقتی عکس لود شد
                         };
                         chefImg.onerror = function() {
                             imgContainer.style.display = 'none'; // مخفی موندن در صورت خطا
