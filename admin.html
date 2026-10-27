@@ -72,6 +72,11 @@
 
         .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 14px; margin-bottom: 10px;}
         .tool-card:active { background: #f0f0f0; }
+
+        /* استایل اختصاصی آمار */
+        .analytics-card { background: #f9f9f9; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .analytics-card h4 { margin: 0; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
+        .analytics-count { font-size: 18px; font-weight: bold; color: var(--primary-dark); background: #fff; padding: 5px 12px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
     </style>
 </head>
 <body>
@@ -89,6 +94,9 @@
         </div>
 
         <div id="mainMenu" class="menu-grid">
+            <button class="menu-card" onclick="openPanel('analyticsPanel')">
+                <span class="icon">📊</span><span class="title">آمار بازدید</span>
+            </button>
             <button class="menu-card" onclick="openPanel('usersPanel')">
                 <span class="icon">👥</span><span class="title">کاربران</span>
             </button>
@@ -107,6 +115,17 @@
             <button class="menu-card disabled">
                 <span class="icon">👨‍🍳</span><span class="title">آشپز (بزودی)</span>
             </button>
+        </div>
+
+        <!-- پنل آمار بازدید (جدید) -->
+        <div id="analyticsPanel" class="inner-panel">
+            <div class="panel-header">
+                <button class="back-btn" onclick="closePanel()">➔</button>
+                <h3>آمار بازدید صفحات</h3>
+            </div>
+            <div id="analyticsList">
+                <p style="text-align: center; color: #aaa;">در حال دریافت...</p>
+            </div>
         </div>
 
         <div id="usersPanel" class="inner-panel">
@@ -237,6 +256,7 @@
             const panel = document.getElementById(panelId);
             panel.style.display = 'block';
 
+            if (panelId === 'analyticsPanel') loadAnalytics();
             if (panelId === 'usersPanel') loadAdminUsers();
             if (panelId === 'tasksPanel') loadAdminTasks();
         }
@@ -244,6 +264,42 @@
         function closePanel() {
             document.querySelectorAll('.inner-panel').forEach(p => p.style.display = 'none');
             document.getElementById('mainMenu').style.display = 'grid';
+        }
+
+        // --- بخش آمار (جدید) ---
+        async function loadAnalytics() {
+            const list = document.getElementById('analyticsList');
+            list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+                
+                const tabNames = {
+                    'gallery': 'گالری 🏺',
+                    'teacher': 'معلم 🎓',
+                    'repair': 'تعمیرکار 🛠️',
+                    'tasks': 'میکروکار 🤝',
+                    'chef': 'آشپز 👨‍🍳',
+                    'shop': 'فروشگاه 🛍️'
+                };
+
+                list.innerHTML = '';
+                // مرتب‌سازی از بیشترین بازدید به کمترین
+                data.sort((a, b) => b.view_count - a.view_count);
+
+                data.forEach(item => {
+                    const name = tabNames[item.tab_name] || item.tab_name;
+                    const card = document.createElement('div');
+                    card.className = 'analytics-card';
+                    card.innerHTML = `
+                        <h4>${name}</h4>
+                        <span class="analytics-count">${item.view_count} بازدید</span>
+                    `;
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>';
+            }
         }
 
         // --- بخش محصولات گالری ---
@@ -442,7 +498,7 @@
             } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
-        // --- بخش میکرو-کارها (نمایش خطای دقیق) ---
+        // --- بخش میکرو-کارها ---
         async function loadAdminTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
@@ -464,7 +520,6 @@
                 tasks.forEach(task => {
                     const card = document.createElement('div');
                     card.className = 'manage-card';
-                    // جلوگیری از کرش در صورت خالی بودن فیلدها
                     const safeTitle = (task.title || '').replace(/'/g, "\\'");
                     const safeContact = (task.contact || '').replace(/'/g, "\\'");
                     
