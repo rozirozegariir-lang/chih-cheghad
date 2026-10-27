@@ -13,7 +13,7 @@
 
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
-        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; --bg: #f4f7f6; --card: #ffffff; --shop-color: #F39C12; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; --bg: #f4f7f6; --card: #ffffff; --shop-color: #F39C12; --chef-color: #E74C3C;}
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: var(--bg); margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
         
@@ -31,7 +31,6 @@
         .menu-card:active { transform: scale(0.96); }
         .menu-card .icon { font-size: 35px; margin-bottom: 10px; }
         .menu-card .title { font-weight: bold; color: var(--text-main); font-size: 14px; }
-        .menu-card.disabled { opacity: 0.5; pointer-events: none; }
 
         .inner-panel { display: none; background: var(--card); border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -71,12 +70,11 @@
         .badge.inactive { background: #fce4e4; color: #E74C3C; }
 
         .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 14px; margin-bottom: 10px;}
-        .tool-card:active { background: #f0f0f0; }
-
-        /* استایل اختصاصی آمار */
         .analytics-card { background: #f9f9f9; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .analytics-card h4 { margin: 0; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
         .analytics-count { font-size: 18px; font-weight: bold; color: var(--primary-dark); background: #fff; padding: 5px 12px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .list-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 8px; }
+        .list-item img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -84,7 +82,7 @@
         <h2 style="color: var(--primary-dark); margin-top: 0;">🔐 ورود به مدیریت</h2>
         <div id="loginError" style="color: var(--danger); display: none; margin-bottom: 10px; font-size: 13px;">رمز اشتباه است!</div>
         <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور...">
-        <button class="login-btn" onclick="checkLogin()">ورود</button>
+        <button class="login-btn" onclick="checkLogin()" id="loginBtn">ورود</button>
     </div>
 
     <div id="dashboardBox" class="dashboard-container">
@@ -94,171 +92,124 @@
         </div>
 
         <div id="mainMenu" class="menu-grid">
-            <button class="menu-card" onclick="openPanel('analyticsPanel')">
-                <span class="icon">📊</span><span class="title">آمار بازدید</span>
-            </button>
-            <button class="menu-card" onclick="openPanel('usersPanel')">
-                <span class="icon">👥</span><span class="title">کاربران</span>
-            </button>
-            <button class="menu-card" onclick="openPanel('productsPanel')">
-                <span class="icon">📦</span><span class="title">محصولات (گالری)</span>
-            </button>
-            <button class="menu-card" onclick="openPanel('shopPanel')">
-                <span class="icon">🛍️</span><span class="title">فروشگاه</span>
-            </button>
-            <button class="menu-card" onclick="openPanel('tasksPanel')">
-                <span class="icon">🤝</span><span class="title">میکرو-کارها</span>
-            </button>
-            <button class="menu-card" onclick="openPanel('toolsPanel')">
-                <span class="icon">🛠️</span><span class="title">ابزارها</span>
-            </button>
-            <button class="menu-card disabled">
-                <span class="icon">👨‍🍳</span><span class="title">آشپز (بزودی)</span>
-            </button>
+            <button class="menu-card" onclick="openPanel('analyticsPanel')"><span class="icon">📊</span><span class="title">آمار بازدید</span></button>
+            <button class="menu-card" onclick="openPanel('usersPanel')"><span class="icon">👥</span><span class="title">کاربران</span></button>
+            <button class="menu-card" onclick="openPanel('productsPanel')"><span class="icon">📦</span><span class="title">محصولات (گالری)</span></button>
+            <button class="menu-card" onclick="openPanel('shopPanel')"><span class="icon">🛍️</span><span class="title">فروشگاه</span></button>
+            <button class="menu-card" onclick="openPanel('chefPanel')"><span class="icon">👨‍🍳</span><span class="title">تنظیمات آشپز</span></button>
+            <button class="menu-card" onclick="openPanel('tasksPanel')"><span class="icon">🤝</span><span class="title">میکرو-کارها</span></button>
+            <button class="menu-card" onclick="openPanel('toolsPanel')"><span class="icon">🛠️</span><span class="title">ابزارها</span></button>
         </div>
 
-        <!-- پنل آمار بازدید (جدید) -->
         <div id="analyticsPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>آمار بازدید صفحات</h3>
-            </div>
-            <div id="analyticsList">
-                <p style="text-align: center; color: #aaa;">در حال دریافت...</p>
-            </div>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>آمار بازدید صفحات</h3></div>
+            <div id="analyticsList"><p style="text-align: center; color: #aaa;">در حال دریافت...</p></div>
         </div>
 
         <div id="usersPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>مدیریت کاربران</h3>
-            </div>
-            <div id="usersList">
-                <p style="text-align: center; color: #aaa;">در حال دریافت...</p>
-            </div>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>مدیریت کاربران</h3></div>
+            <div id="usersList"><p style="text-align: center; color: #aaa;">در حال دریافت...</p></div>
         </div>
 
         <div id="productsPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>افزودن محصول (گالری)</h3>
-            </div>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>مدیریت محصولات (گالری)</h3></div>
             <div id="productStatusMsg" class="status-msg"></div>
-
+            <h4 style="color: var(--primary-dark); font-size: 14px;">افزودن محصول جدید:</h4>
             <div class="form-group"><label>عنوان *</label><input type="text" id="prodTitle" class="form-control" placeholder="مثلاً: اسلاید روسی..."></div>
             <div class="form-group"><label>قیمت *</label><input type="text" id="prodPrice" class="form-control" placeholder="مثلاً: ۲.۸۰۰.۰۰۰ تومان"></div>
-            
             <div class="form-group">
                 <label>عکس محصول *</label>
                 <input type="file" id="prodImgFile" accept="image/*" class="form-control" style="background: white; margin-bottom: 5px;">
                 <div class="divider">یا لینک بده</div>
                 <input type="text" id="prodImgUrl" class="form-control" placeholder="لینک عکس را پیست کنید">
             </div>
-            
             <div class="form-group">
                 <label>ویدیو (اختیاری)</label>
                 <input type="file" id="prodVidFile" accept="video/*" class="form-control" style="background: white; margin-bottom: 5px;">
                 <div class="divider">یا لینک بده</div>
                 <input type="text" id="prodVidUrl" class="form-control" placeholder="لینک ویدیو را پیست کنید">
             </div>
-            
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
+            
+            <h4 style="color: var(--primary-dark); font-size: 14px; margin-top: 30px;">لیست محصولات موجود:</h4>
+            <div id="productsList"></div>
         </div>
 
         <div id="shopPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>افزودن محصول (فروشگاه)</h3>
-            </div>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>مدیریت فروشگاه</h3></div>
             <div id="shopStatusMsg" class="status-msg"></div>
-
+            <h4 style="color: var(--shop-color); font-size: 14px;">افزودن محصول جدید:</h4>
             <div class="form-group"><label>عنوان محصول *</label><input type="text" id="shopTitle" class="form-control" placeholder="مثلاً: ساعت هوشمند..."></div>
             <div class="form-group"><label>قیمت *</label><input type="text" id="shopPrice" class="form-control" placeholder="مثلاً: ۵۰۰,۰۰۰ تومان"></div>
-            <div class="form-group"><label>توضیحات کوتاه (اختیاری)</label><textarea id="shopDesc" class="form-control" placeholder="مثلاً: اورجینال با گارانتی..."></textarea></div>
-            
+            <div class="form-group"><label>توضیحات کوتاه</label><textarea id="shopDesc" class="form-control" placeholder="مثلاً: اورجینال با گارانتی..."></textarea></div>
             <div class="form-group">
                 <label>عکس محصول *</label>
                 <input type="file" id="shopImgFile" accept="image/*" class="form-control" style="background: white; margin-bottom: 5px;">
                 <div class="divider">یا لینک بده</div>
                 <input type="text" id="shopImgUrl" class="form-control" placeholder="لینک عکس را پیست کنید">
             </div>
-            
             <button class="submit-btn" id="addShopBtn" onclick="addShopProduct()" style="background-color: var(--shop-color);">ثبت محصول در فروشگاه</button>
+            <h4 style="color: var(--shop-color); font-size: 14px; margin-top: 30px;">لیست محصولات فروشگاه:</h4>
+            <div id="shopList"></div>
+        </div>
+
+        <div id="chefPanel" class="inner-panel">
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>تنظیمات هوش مصنوعی آشپز</h3></div>
+            <div id="chefStatusMsg" class="status-msg"></div>
+            <div class="form-group">
+                <label>دستورات اختصاصی برای آشپز (پرامپت سیستم) *</label>
+                <textarea id="chefPromptInput" class="form-control" rows="6" placeholder="مثلاً: فقط غذاهای ایرانی پیشنهاد بده و از گوشت قرمز استفاده نکن..."></textarea>
+            </div>
+            <button class="submit-btn" id="saveChefBtn" onclick="saveChefPrompt()" style="background-color: var(--chef-color);">ذخیره دستورات</button>
         </div>
 
         <div id="tasksPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>مدیریت میکرو-کارها</h3>
-            </div>
-            <div id="tasksList">
-                <p style="text-align: center; color: #aaa;">در حال دریافت...</p>
-            </div>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>مدیریت میکرو-کارها</h3></div>
+            <div id="tasksList"><p style="text-align: center; color: #aaa;">در حال دریافت...</p></div>
         </div>
 
         <div id="toolsPanel" class="inner-panel">
-            <div class="panel-header">
-                <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>ابزارهای مدیریتی</h3>
-            </div>
-            
-            <a href="https://console.neon.tech" target="_blank" class="tool-card">
-                <span>🐘 دیتابیس Neon</span><span>↗</span>
-            </a>
-            <a href="https://vercel.com/dashboard" target="_blank" class="tool-card">
-                <span>▲ داشبورد Vercel</span><span>↗</span>
-            </a>
-            <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card">
-                <span>🐙 مخزن گیت‌هاب</span><span>↗</span>
-            </a>
-            <a href="https://diirin.ir/devdor/" target="_blank" class="tool-card">
-                <span>🛠️ پنل کنترل دیرین</span><span>↗</span>
-            </a>
-            <a href="https://diirin.ir/bio/admin.php" target="_blank" class="tool-card">
-                <span>🔗 پنل صفحه اختصاصی</span><span>↗</span>
-            </a>
-            <a href="https://diirin.ir:2096/" target="_blank" class="tool-card">
-                <span>📧 پنل ایمیل دیرین</span><span>↗</span>
-            </a>
+            <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>ابزارهای مدیریتی</h3></div>
+            <a href="https://console.neon.tech" target="_blank" class="tool-card"><span>🐘 دیتابیس Neon</span><span>↗</span></a>
+            <a href="https://vercel.com/dashboard" target="_blank" class="tool-card"><span>▲ داشبورد Vercel</span><span>↗</span></a>
+            <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card"><span>🐙 مخزن گیت‌هاب</span><span>↗</span></a>
+            <a href="https://diirin.ir/devdor/" target="_blank" class="tool-card"><span>🛠️ پنل کنترل دیرین</span><span>↗</span></a>
         </div>
-
     </div>
 
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err));
-            });
+            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err)); });
         }
 
-        function checkLogin() {
-            if (document.getElementById('passwordInput').value === "admin123") {
-                document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('dashboardBox').style.display = 'block';
-                localStorage.setItem('isAdminLoggedIn', 'true');
-            } else { document.getElementById('loginError').style.display = 'block'; }
+        async function checkLogin() {
+            const pass = document.getElementById('passwordInput').value;
+            const btn = document.getElementById('loginBtn'); btn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; btn.disabled = true;
+            try {
+                const res = await fetch('/api/admin-auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass }) });
+                if (res.ok) {
+                    document.getElementById('loginBox').style.display = 'none'; document.getElementById('dashboardBox').style.display = 'block'; localStorage.setItem('isAdminLoggedIn', 'true');
+                } else { document.getElementById('loginError').style.display = 'block'; }
+            } catch (err) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = 'ورود'; btn.disabled = false; }
         }
         
-        function logout() { 
-            localStorage.removeItem('isAdminLoggedIn');
-            location.reload(); 
-        }
+        function logout() { localStorage.removeItem('isAdminLoggedIn'); location.reload(); }
 
         if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-            document.getElementById('loginBox').style.display = 'none';
-            document.getElementById('dashboardBox').style.display = 'block';
+            document.getElementById('loginBox').style.display = 'none'; document.getElementById('dashboardBox').style.display = 'block';
         }
 
         function openPanel(panelId) {
             document.getElementById('mainMenu').style.display = 'none';
             document.querySelectorAll('.inner-panel').forEach(p => p.style.display = 'none');
-            
-            const panel = document.getElementById(panelId);
-            panel.style.display = 'block';
+            document.getElementById(panelId).style.display = 'block';
 
             if (panelId === 'analyticsPanel') loadAnalytics();
             if (panelId === 'usersPanel') loadAdminUsers();
             if (panelId === 'tasksPanel') loadAdminTasks();
+            if (panelId === 'productsPanel') loadProductsList();
+            if (panelId === 'shopPanel') loadShopList();
+            if (panelId === 'chefPanel') loadChefSettings();
         }
 
         function closePanel() {
@@ -266,292 +217,129 @@
             document.getElementById('mainMenu').style.display = 'grid';
         }
 
-        // --- بخش آمار (جدید) ---
         async function loadAnalytics() {
-            const list = document.getElementById('analyticsList');
-            list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+            const list = document.getElementById('analyticsList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
-                const response = await fetch('/api/analytics');
-                const data = await response.json();
-                
-                const tabNames = {
-                    'gallery': 'گالری 🏺',
-                    'teacher': 'معلم 🎓',
-                    'repair': 'تعمیرکار 🛠️',
-                    'tasks': 'میکروکار 🤝',
-                    'chef': 'آشپز 👨‍🍳',
-                    'shop': 'فروشگاه 🛍️'
-                };
-
-                list.innerHTML = '';
-                // مرتب‌سازی از بیشترین بازدید به کمترین
-                data.sort((a, b) => b.view_count - a.view_count);
-
-                data.forEach(item => {
-                    const name = tabNames[item.tab_name] || item.tab_name;
-                    const card = document.createElement('div');
-                    card.className = 'analytics-card';
-                    card.innerHTML = `
-                        <h4>${name}</h4>
-                        <span class="analytics-count">${item.view_count} بازدید</span>
-                    `;
-                    list.appendChild(card);
+                const response = await fetch('/api/analytics'); const data = await response.json();
+                const tabNames = { 'gallery': 'گالری 🏺', 'teacher': 'معلم 🎓', 'repair': 'تعمیرکار 🛠️', 'tasks': 'میکروکار 🤝', 'chef': 'آشپز 👨‍🍳', 'shop': 'فروشگاه 🛍️' };
+                list.innerHTML = ''; data.sort((a, b) => b.view_count - a.view_count).forEach(item => {
+                    list.innerHTML += `<div class="analytics-card"><h4>${tabNames[item.tab_name] || item.tab_name}</h4><span class="analytics-count">${item.view_count} بازدید</span></div>`;
                 });
-            } catch (error) {
-                list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>';
-            }
+            } catch (error) { list.innerHTML = '<p style="text-align: center; color: red;">خطا.</p>'; }
         }
 
-        // --- بخش محصولات گالری ---
+        async function loadChefSettings() {
+            const input = document.getElementById('chefPromptInput'); input.value = 'در حال دریافت...';
+            try { const res = await fetch('/api/settings'); const data = await res.json(); input.value = data.chef_prompt; } catch (e) { input.value = ''; }
+        }
+
+        async function saveChefPrompt() {
+            const prompt = document.getElementById('chefPromptInput').value;
+            const btn = document.getElementById('saveChefBtn'); const statusMsg = document.getElementById('chefStatusMsg');
+            btn.disabled = true; btn.innerHTML = 'ذخیره... <div class="loader"></div>';
+            try {
+                const res = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chef_prompt: prompt }) });
+                if (res.ok) { statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ دستورات ذخیره شد!'; } else { throw new Error(); }
+            } catch (e) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ خطا در ذخیره.'; } finally { btn.disabled = false; btn.innerHTML = 'ذخیره دستورات'; }
+        }
+
+        async function loadProductsList() {
+            const list = document.getElementById('productsList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+            try {
+                const res = await fetch('/api/products'); const products = await res.json(); list.innerHTML = '';
+                if (products.length === 0) { list.innerHTML = '<p style="text-align:center;">محصولی یافت نشد.</p>'; return; }
+                products.forEach(p => {
+                    list.innerHTML += `<div class="list-item"><div style="display:flex; align-items:center;"><img src="${p.image_url}" alt="img"><div><strong style="font-size:12px;">${p.title}</strong><br><small>${p.price}</small></div></div><button class="action-btn btn-danger" onclick="deleteProduct('${p.id}')">حذف</button></div>`;
+                });
+            } catch (e) { list.innerHTML = '<p style="text-align:center; color:red;">خطا.</p>'; }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('حذف این محصول؟')) return;
+            try { const res = await fetch(`/api/products?id=${id}`, { method: 'DELETE' }); if (res.ok) loadProductsList(); } catch (e) { alert('خطا'); }
+        }
+
         async function addProduct() {
-            const title = document.getElementById('prodTitle').value.trim();
-            const price = document.getElementById('prodPrice').value.trim();
-            const imgFile = document.getElementById('prodImgFile').files[0];
-            const imgUrlInput = document.getElementById('prodImgUrl').value.trim();
-            const vidFile = document.getElementById('prodVidFile').files[0];
-            const vidUrlInput = document.getElementById('prodVidUrl').value.trim();
-            
-            const btn = document.getElementById('addProductBtn');
-            const statusMsg = document.getElementById('productStatusMsg');
-
-            if (!title || !price) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عنوان و قیمت را وارد کنید.';
-                return;
-            }
-
-            if (!imgFile && !imgUrlInput) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عکس محصول را آپلود کنید یا لینک آن را وارد کنید.';
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = 'در حال پردازش... <div class="loader"></div>';
-            statusMsg.style.display = 'none';
-
-            let finalImageUrl = imgUrlInput;
-            let finalVideoUrl = vidUrlInput;
-
+            const title = document.getElementById('prodTitle').value.trim(); const price = document.getElementById('prodPrice').value.trim();
+            const imgFile = document.getElementById('prodImgFile').files[0]; const imgUrlInput = document.getElementById('prodImgUrl').value.trim();
+            const vidFile = document.getElementById('prodVidFile').files[0]; const vidUrlInput = document.getElementById('prodVidUrl').value.trim();
+            const btn = document.getElementById('addProductBtn'); const statusMsg = document.getElementById('productStatusMsg');
+            if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
+            btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
+            let finalImageUrl = imgUrlInput; let finalVideoUrl = vidUrlInput;
             try {
-                if (imgFile) {
-                    btn.innerHTML = 'آپلود عکس... <div class="loader"></div>';
-                    const formData = new FormData();
-                    formData.append('file', imgFile);
-                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || 'خطا در آپلود عکس');
-                    finalImageUrl = data.url;
-                }
-
-                if (vidFile) {
-                    btn.innerHTML = 'آپلود ویدیو... <div class="loader"></div>';
-                    const formData = new FormData();
-                    formData.append('file', vidFile);
-                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || 'خطا در آپلود ویدیو');
-                    finalVideoUrl = data.url;
-                }
-
+                if (imgFile) { btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; const fd = new FormData(); fd.append('file', imgFile); const res = await fetch('/api/upload', { method: 'POST', body: fd }); const data = await res.json(); if (!res.ok) throw new Error(data.error); finalImageUrl = data.url; }
+                if (vidFile) { btn.innerHTML = 'آپلود ویدیو... <div class="loader"></div>'; const fd = new FormData(); fd.append('file', vidFile); const res = await fetch('/api/upload', { method: 'POST', body: fd }); const data = await res.json(); if (!res.ok) throw new Error(data.error); finalVideoUrl = data.url; }
                 btn.innerHTML = 'ذخیره... <div class="loader"></div>';
-                const response = await fetch('/api/products', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, price, image_url: finalImageUrl, video_url: finalVideoUrl })
-                });
-
-                if (response.ok) {
-                    statusMsg.className = 'status-msg success';
-                    statusMsg.innerText = '✅ محصول با موفقیت ثبت شد!';
-                    document.getElementById('prodTitle').value = '';
-                    document.getElementById('prodPrice').value = '';
-                    document.getElementById('prodImgFile').value = '';
-                    document.getElementById('prodImgUrl').value = '';
-                    document.getElementById('prodVidFile').value = '';
-                    document.getElementById('prodVidUrl').value = '';
-                } else { throw new Error('خطا در ثبت دیتابیس'); }
-            } catch (error) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = '❌ ' + error.message;
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = 'ثبت محصول';
-            }
+                const response = await fetch('/api/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, video_url: finalVideoUrl }) });
+                if (response.ok) { statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; document.getElementById('prodTitle').value = ''; document.getElementById('prodPrice').value = ''; document.getElementById('prodImgFile').value = ''; document.getElementById('prodImgUrl').value = ''; document.getElementById('prodVidFile').value = ''; document.getElementById('prodVidUrl').value = ''; loadProductsList(); } else { throw new Error(); }
+            } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول'; }
         }
 
-        // --- بخش فروشگاه ---
+        async function loadShopList() {
+            const list = document.getElementById('shopList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+            try {
+                const res = await fetch('/api/shop'); const products = await res.json(); list.innerHTML = '';
+                if (products.length === 0) { list.innerHTML = '<p style="text-align:center;">محصولی یافت نشد.</p>'; return; }
+                products.forEach(p => {
+                    list.innerHTML += `<div class="list-item"><div style="display:flex; align-items:center;"><img src="${p.image_url}" alt="img"><div><strong style="font-size:12px;">${p.title}</strong><br><small>${p.price}</small></div></div><button class="action-btn btn-danger" onclick="deleteShopProduct('${p.id}')">حذف</button></div>`;
+                });
+            } catch (e) { list.innerHTML = '<p style="text-align:center; color:red;">خطا.</p>'; }
+        }
+
+        async function deleteShopProduct(id) {
+            if (!confirm('حذف این محصول؟')) return;
+            try { const res = await fetch(`/api/shop?id=${id}`, { method: 'DELETE' }); if (res.ok) loadShopList(); } catch (e) { alert('خطا'); }
+        }
+
         async function addShopProduct() {
-            const title = document.getElementById('shopTitle').value.trim();
-            const price = document.getElementById('shopPrice').value.trim();
-            const desc = document.getElementById('shopDesc').value.trim();
-            const imgFile = document.getElementById('shopImgFile').files[0];
-            const imgUrlInput = document.getElementById('shopImgUrl').value.trim();
-            
-            const btn = document.getElementById('addShopBtn');
-            const statusMsg = document.getElementById('shopStatusMsg');
-
-            if (!title || !price) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عنوان و قیمت را وارد کنید.';
-                return;
-            }
-
-            if (!imgFile && !imgUrlInput) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = 'لطفاً عکس محصول را آپلود کنید یا لینک آن را وارد کنید.';
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = 'در حال پردازش... <div class="loader"></div>';
-            statusMsg.style.display = 'none';
-
+            const title = document.getElementById('shopTitle').value.trim(); const price = document.getElementById('shopPrice').value.trim(); const desc = document.getElementById('shopDesc').value.trim();
+            const imgFile = document.getElementById('shopImgFile').files[0]; const imgUrlInput = document.getElementById('shopImgUrl').value.trim();
+            const btn = document.getElementById('addShopBtn'); const statusMsg = document.getElementById('shopStatusMsg');
+            if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
+            btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
             let finalImageUrl = imgUrlInput;
-
             try {
-                if (imgFile) {
-                    btn.innerHTML = 'آپلود عکس... <div class="loader"></div>';
-                    const formData = new FormData();
-                    formData.append('file', imgFile);
-                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || 'خطا در آپلود عکس');
-                    finalImageUrl = data.url;
-                }
-
+                if (imgFile) { btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; const fd = new FormData(); fd.append('file', imgFile); const res = await fetch('/api/upload', { method: 'POST', body: fd }); const data = await res.json(); if (!res.ok) throw new Error(data.error); finalImageUrl = data.url; }
                 btn.innerHTML = 'ذخیره... <div class="loader"></div>';
-                const response = await fetch('/api/shop', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, price, image_url: finalImageUrl, description: desc })
-                });
-
-                if (response.ok) {
-                    statusMsg.className = 'status-msg success';
-                    statusMsg.innerText = '✅ محصول با موفقیت در فروشگاه ثبت شد!';
-                    document.getElementById('shopTitle').value = '';
-                    document.getElementById('shopPrice').value = '';
-                    document.getElementById('shopDesc').value = '';
-                    document.getElementById('shopImgFile').value = '';
-                    document.getElementById('shopImgUrl').value = '';
-                } else { throw new Error('خطا در ثبت دیتابیس'); }
-            } catch (error) {
-                statusMsg.className = 'status-msg error';
-                statusMsg.innerText = '❌ ' + error.message;
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = 'ثبت محصول در فروشگاه';
-            }
+                const response = await fetch('/api/shop', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, description: desc }) });
+                if (response.ok) { statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; document.getElementById('shopTitle').value = ''; document.getElementById('shopPrice').value = ''; document.getElementById('shopDesc').value = ''; document.getElementById('shopImgFile').value = ''; document.getElementById('shopImgUrl').value = ''; loadShopList(); } else { throw new Error(); }
+            } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول در فروشگاه'; }
         }
 
-        // --- بخش کاربران ---
         async function loadAdminUsers() {
-            const usersList = document.getElementById('usersList');
-            usersList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
-            
+            const list = document.getElementById('usersList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
-                const response = await fetch('/api/admin-users');
-                const users = await response.json();
-                
-                usersList.innerHTML = '';
-                if (users.length === 0) {
-                    usersList.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاربری یافت نشد.</p>';
-                    return;
-                }
-                
+                const response = await fetch('/api/admin-users'); const users = await response.json(); list.innerHTML = '';
+                if (users.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاربری یافت نشد.</p>'; return; }
                 users.forEach(user => {
-                    const isSub = user.is_subscribed;
-                    const badge = isSub 
-                        ? '<span class="badge active">فعال</span>' 
-                        : '<span class="badge inactive">غیرفعال</span>';
-
-                    const actionBtn = isSub 
-                        ? `<button class="action-btn btn-danger" onclick="toggleSubscription('${user.phone}', false)">لغو اشتراک</button>`
-                        : `<button class="action-btn btn-success" onclick="toggleSubscription('${user.phone}', true)">فعال‌سازی اشتراک</button>`;
-
-                    const card = document.createElement('div');
-                    card.className = 'manage-card';
-                    card.innerHTML = `
-                        <h4><span>📱 ${user.phone}</span> ${badge}</h4>
-                        <p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p>
-                        <p>معرف: ${user.referred_by || 'ندارد'}</p>
-                        <div style="margin-top: 12px;">${actionBtn}</div>
-                    `;
-                    usersList.appendChild(card);
+                    const isSub = user.is_subscribed; const badge = isSub ? '<span class="badge active">فعال</span>' : '<span class="badge inactive">غیرفعال</span>';
+                    const actionBtn = isSub ? `<button class="action-btn btn-danger" onclick="toggleSubscription('${user.phone}', false)">لغو اشتراک</button>` : `<button class="action-btn btn-success" onclick="toggleSubscription('${user.phone}', true)">فعال‌سازی اشتراک</button>`;
+                    list.innerHTML += `<div class="manage-card"><h4><span>📱 ${user.phone}</span> ${badge}</h4><p>عکس‌های ارسالی: <strong>${user.image_uses || 0}</strong></p><p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p><div style="margin-top: 12px;">${actionBtn}</div></div>`;
                 });
-            } catch (error) {
-                usersList.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>';
-            }
+            } catch (error) { list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>'; }
         }
 
         async function toggleSubscription(phone, status) {
             if (!confirm(`تغییر وضعیت کاربر ${phone}؟`)) return;
-            try {
-                const res = await fetch('/api/admin-users', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, status })
-                });
-                if (res.ok) { loadAdminUsers(); } 
-                else { alert('خطا در تغییر وضعیت'); }
-            } catch (error) { alert('ارتباط برقرار نشد.'); }
+            try { const res = await fetch('/api/admin-users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, status }) }); if (res.ok) { loadAdminUsers(); } } catch (error) { alert('خطا'); }
         }
 
-        // --- بخش میکرو-کارها ---
         async function loadAdminTasks() {
-            const tasksList = document.getElementById('tasksList');
-            tasksList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+            const list = document.getElementById('tasksList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
-                const response = await fetch('/api/tasks');
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || data.detail || 'خطای ناشناخته در سرور');
-                }
-
-                const tasks = data;
-                tasksList.innerHTML = '';
-                if (tasks.length === 0) {
-                    tasksList.innerHTML = '<p style="text-align: center; color: #777;">کاری ثبت نشده.</p>';
-                    return;
-                }
-                
-                tasks.forEach(task => {
-                    const card = document.createElement('div');
-                    card.className = 'manage-card';
-                    const safeTitle = (task.title || '').replace(/'/g, "\\'");
-                    const safeContact = (task.contact || '').replace(/'/g, "\\'");
-                    
-                    card.innerHTML = `
-                        <h4><span>${task.title || 'بدون عنوان'}</span></h4>
-                        <p>${task.description || 'بدون توضیح'}</p>
-                        <p>💰 ${task.price || 'توافقی'}</p>
-                        <p>📞 ${task.contact || 'بدون شماره'}</p>
-                        <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-                            <button class="action-btn btn-danger" onclick="deleteTask('${safeTitle}', '${safeContact}')">حذف کار</button>
-                        </div>
-                    `;
-                    tasksList.appendChild(card);
+                const response = await fetch('/api/tasks'); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'خطا'); list.innerHTML = '';
+                if (data.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">کاری ثبت نشده.</p>'; return; }
+                data.forEach(task => {
+                    const safeTitle = (task.title || '').replace(/'/g, "\\'"); const safeContact = (task.contact || '').replace(/'/g, "\\'");
+                    list.innerHTML += `<div class="manage-card"><h4><span>${task.title || 'بدون عنوان'}</span></h4><p>${task.description || 'بدون توضیح'}</p><p>💰 ${task.price || 'توافقی'}</p><p>📞 ${task.contact || 'بدون شماره'}</p><div style="margin-top: 10px; display: flex; justify-content: flex-end;"><button class="action-btn btn-danger" onclick="deleteTask('${safeTitle}', '${safeContact}')">حذف کار</button></div></div>`;
                 });
-            } catch (error) {
-                tasksList.innerHTML = `<p style="text-align: center; color: red; font-size: 12px; font-weight: bold;">خطا در دریافت: ${error.message}</p>`;
-            }
+            } catch (error) { list.innerHTML = `<p style="text-align: center; color: red; font-size: 12px;">خطا: ${error.message}</p>`; }
         }
 
         async function deleteTask(title, contact) {
-            if (!confirm('آیا از حذف این کار مطمئن هستید؟')) return;
-            try {
-                const res = await fetch(`/api/tasks?title=${encodeURIComponent(title)}&contact=${encodeURIComponent(contact)}`, { method: 'DELETE' });
-                if (res.ok) {
-                    loadAdminTasks();
-                } else {
-                    const data = await res.json();
-                    alert('خطا در حذف کار: ' + (data.error || 'ناشناخته'));
-                }
-            } catch (error) {
-                alert('ارتباط با سرور برقرار نشد.');
-            }
+            if (!confirm('حذف این کار؟')) return;
+            try { const res = await fetch(`/api/tasks?title=${encodeURIComponent(title)}&contact=${encodeURIComponent(contact)}`, { method: 'DELETE' }); if (res.ok) loadAdminTasks(); } catch (error) { alert('خطا'); }
         }
     </script>
 </body>
