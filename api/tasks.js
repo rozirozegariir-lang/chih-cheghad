@@ -9,13 +9,11 @@ module.exports = async function handler(req, res) {
   const client = await pool.connect();
 
   try {
-    // ۱. گرفتن لیست کارها
     if (req.method === 'GET') {
       const result = await client.query('SELECT * FROM tasks ORDER BY created_at DESC');
       return res.status(200).json(result.rows);
     } 
     
-    // ۲. ثبت کار جدید
     else if (req.method === 'POST') {
       const { title, description, price, contact } = req.body;
       if (!title || !contact) {
@@ -28,7 +26,6 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true, message: 'کار ثبت شد' });
     } 
     
-    // ۳. حذف کار (بر اساس عنوان و شماره تماس)
     else if (req.method === 'DELETE') {
       const { title, contact } = req.query;
       if (!title || !contact) {
@@ -42,7 +39,8 @@ module.exports = async function handler(req, res) {
 
   } catch (err) {
     console.error('Tasks API Error:', err);
-    return res.status(500).json({ error: err.message });
+    // نمایش دقیق خطا
+    return res.status(500).json({ error: err.message, detail: err.detail });
   } finally {
     client.release();
   }
