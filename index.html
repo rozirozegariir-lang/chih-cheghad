@@ -448,7 +448,7 @@
                 document.getElementById('inviteLinkInput').value = `${MAIN_SITE_URL}/?ref=${cleanPhone}`;
 
                 try {
-                    const res = await fetch(`/api/admin-users?phone=${savedPhone}`);
+                    const res = await fetch(`/api/admin?action=list-users`);
                     if (res.ok) {
                         const users = await res.json();
                         const user = users.find(u => u.phone === savedPhone);
@@ -497,9 +497,30 @@
             else { proceedToPayment(planName, amount); }
         }
 
-        function proceedToPayment(planName, amount) {
-            const confirmMsg = `شما پلن ${planName} را انتخاب کردید.\nمبلغ: ${amount} تومان\n\nبرای پرداخت، روی «تایید» بزنید تا به بله منتقل شوید.`;
-            if (confirm(confirmMsg)) { window.open(BALE_SUPPORT_LINK, '_blank'); setTimeout(() => { alert('پس از واریز، تصویر رسید را برای ربات ارسال کنید.'); }, 1000); }
+        async function proceedToPayment(planName, amount) {
+            const savedPhone = localStorage.getItem('userPhone');
+            if (!savedPhone) return;
+
+            const confirmMsg = `شما پلن ${planName} را انتخاب کردید.\nمبلغ: ${amount} تومان\n\nبرای پرداخت، روی «تایید» بزنید تا به درگاه بله منتقل شوید.`;
+            
+            if (confirm(confirmMsg)) {
+                try {
+                    const res = await fetch('/api/user?action=create-invoice', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone: savedPhone, amount: amount, planName: planName })
+                    });
+                    const data = await res.json();
+                    
+                    if (res.ok && data.link) {
+                        window.location.href = data.link; 
+                    } else {
+                        alert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
+                    }
+                } catch (error) {
+                    alert('ارتباط با سرور برقرار نشد.');
+                }
+            }
         }
 
         updateMenuAfterLogin();
@@ -509,7 +530,7 @@
             const phone = localStorage.getItem('userPhone');
             if (!phone) return true; 
             try {
-                const res = await fetch('/api/image-usage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+                const res = await fetch('/api/user?action=check-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
                 const data = await res.json();
                 if (!data.allowed) { alert('سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس بیشتر، لطفا اشتراک تهیه کنید.'); openSubscriptionModal(); return false; }
                 return true;
