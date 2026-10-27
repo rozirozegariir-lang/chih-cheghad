@@ -442,47 +442,57 @@
             } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
-        // --- بخش میکرو-کارها (با حذف بر اساس عنوان و شماره تماس) ---
+        // --- بخش میکرو-کارها (نمایش خطای دقیق) ---
         async function loadAdminTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
                 const response = await fetch('/api/tasks');
-                const tasks = await response.json();
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || data.detail || 'خطای ناشناخته در سرور');
+                }
+
+                const tasks = data;
                 tasksList.innerHTML = '';
                 if (tasks.length === 0) {
                     tasksList.innerHTML = '<p style="text-align: center; color: #777;">کاری ثبت نشده.</p>';
                     return;
                 }
+                
                 tasks.forEach(task => {
                     const card = document.createElement('div');
                     card.className = 'manage-card';
-                    // ارسال عنوان و شماره تماس برای حذف
+                    // جلوگیری از کرش در صورت خالی بودن فیلدها
+                    const safeTitle = (task.title || '').replace(/'/g, "\\'");
+                    const safeContact = (task.contact || '').replace(/'/g, "\\'");
+                    
                     card.innerHTML = `
-                        <h4><span>${task.title}</span></h4>
+                        <h4><span>${task.title || 'بدون عنوان'}</span></h4>
                         <p>${task.description || 'بدون توضیح'}</p>
                         <p>💰 ${task.price || 'توافقی'}</p>
-                        <p>📞 ${task.contact}</p>
+                        <p>📞 ${task.contact || 'بدون شماره'}</p>
                         <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-                            <button class="action-btn btn-danger" onclick="deleteTask('${task.title.replace(/'/g, "\\'")}', '${task.contact.replace(/'/g, "\\'")}')">حذف کار</button>
+                            <button class="action-btn btn-danger" onclick="deleteTask('${safeTitle}', '${safeContact}')">حذف کار</button>
                         </div>
                     `;
                     tasksList.appendChild(card);
                 });
             } catch (error) {
-                tasksList.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت.</p>';
+                tasksList.innerHTML = `<p style="text-align: center; color: red; font-size: 12px; font-weight: bold;">خطا در دریافت: ${error.message}</p>`;
             }
         }
 
         async function deleteTask(title, contact) {
             if (!confirm('آیا از حذف این کار مطمئن هستید؟')) return;
             try {
-                // حذف با پارامترهای عنوان و شماره تماس
                 const res = await fetch(`/api/tasks?title=${encodeURIComponent(title)}&contact=${encodeURIComponent(contact)}`, { method: 'DELETE' });
                 if (res.ok) {
                     loadAdminTasks();
                 } else {
-                    alert('خطا در حذف کار');
+                    const data = await res.json();
+                    alert('خطا در حذف کار: ' + (data.error || 'ناشناخته'));
                 }
             } catch (error) {
                 alert('ارتباط با سرور برقرار نشد.');
