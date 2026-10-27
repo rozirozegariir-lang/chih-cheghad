@@ -417,7 +417,6 @@
         </div>
     </div>
 
-    <!-- تب فروشگاه (داینامیک شد) -->
     <div id="shop" class="tab-content">
         <h3 class="section-title" style="color: var(--shop-color);">فروشگاه همیار 🛍️</h3>
         <div class="grid" id="shopGrid">
@@ -436,7 +435,7 @@
 
     <script>
         const BALE_SUPPORT_LINK = "https://ble.ir/diirinbot"; 
-        const MAIN_SITE_URL = "https://chih-cheghad.vercel.app"; 
+        const MAIN_SITE_URL = "https://ajnaseantik.ir"; 
 
         let freeUsesChef = parseInt(localStorage.getItem('freeUsesChef') || '0');
         let freeUsesTeacher = parseInt(localStorage.getItem('freeUsesTeacher') || '0');
@@ -681,6 +680,14 @@
             const targetTab = document.getElementById(tabId);
             targetTab.classList.add('active');
             btnElement.classList.add('active');
+            
+            // ثبت آمار بازدید
+            fetch('/api/analytics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tab: tabId })
+            }).catch(err => console.log('Analytics error', err));
+
             if(tabId === 'tasks') loadTasks();
             if(tabId === 'shop') loadShopProducts();
         }
@@ -734,7 +741,6 @@
             } catch (error) { console.error("Error loading products:", error); }
         }
 
-        // --- بارگذاری محصولات فروشگاه ---
         async function loadShopProducts() {
             const shopGrid = document.getElementById('shopGrid');
             shopGrid.innerHTML = '<div style="text-align:center; width:100%; padding: 20px;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>';
@@ -763,7 +769,7 @@
                                 <button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open('${product.bale_link || BALE_SUPPORT_LINK}', '_blank')">🛒 خرید از بله</button>
                             </div>
                         </div>`;
-                    shopGrid.innerHTML += cardHtml;
+                    shopGrid.innerHTML += cardHTML;
                 });
             } catch (error) {
                 shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:red; font-weight:bold;">خطا در دریافت محصولات.</p>';
@@ -1282,7 +1288,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadProducts();
             loadTasks();
-            // loadShopProducts(); // هنگام کلیک روی تب لود میشود
         });
     </script>
 </body>
