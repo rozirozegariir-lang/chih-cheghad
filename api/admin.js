@@ -3,17 +3,24 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejec
 
 module.exports = async function handler(req, res) {
   const { action } = req.query;
-  const client = await pool.connect();
 
-  try {
-    // ۱. لاگین ادمین
-    if (action === 'login') {
-      if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-      const { password } = req.body;
-      const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
-      if (password === adminPass) return res.status(200).json({ success: true });
-      return res.status(401).json({ error: 'رمز اشتباه است' });
+  // ۱. لاگین ادمین (این بخش نیازی به دیتابیس نداره تا کرش نکنه)
+  if (action === 'login') {
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const { password } = req.body;
+    const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
+    
+    if (password === adminPass) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(401).json({ error: 'رمز عبور اشتباه است' });
     }
+  }
+
+  // بقیه بخش‌ها نیاز به اتصال به دیتابیس دارن
+  let client;
+  try {
+    client = await pool.connect();
 
     // ۲. لیست کاربران
     if (action === 'list-users') {
@@ -41,7 +48,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true });
     }
 
-    // ۶. ارسال اعلان به بله
+    // ۶. ارسال اعلان به بله (البته این بخش الان مستقیم توی user.js هم هست)
     if (action === 'notify') {
       const { message } = req.body;
       const token = process.env.BALE_BOT_TOKEN;
@@ -59,9 +66,11 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(400).json({ error: 'Action not found' });
+    
   } catch (err) {
+    console.error('Admin API Error:', err);
     return res.status(500).json({ error: err.message });
   } finally {
-    client.release();
+    if (client) client.release();
   }
 };
