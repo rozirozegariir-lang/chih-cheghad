@@ -25,6 +25,38 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ allowed: true, remaining: 3 - (currentUses + 1) });
     }
 
+    // ساخت لینک پرداخت بله
+    if (action === 'create-invoice') {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+      const { phone, amount, planName } = req.body;
+      const token = process.env.BALE_BOT_TOKEN;
+      const providerToken = process.env.BALE_PAYMENT_TOKEN;
+
+      if (!token || !providerToken) return res.status(500).json({ error: 'توکن‌های پرداخت تنظیم نشده‌اند' });
+
+      const payload = {
+        title: `اشتراک ${planName} همیار زندگی`,
+        description: `پرداخت برای فعال‌سازی اشتراک ${planName}`,
+        payload: phone,
+        provider_token: providerToken,
+        currency: 'IRR',
+        prices: [{ label: planName, amount: parseInt(amount) * 10 }]
+      };
+
+      const baleRes = await fetch(`https://tapi.bale.ai/bot${token}/createInvoiceLink`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      const baleData = await baleRes.json();
+      if (baleData.ok) {
+        return res.status(200).json({ link: baleData.result });
+      } else {
+        return res.status(400).json({ error: baleData.description || 'خطا در ساخت فاکتور' });
+      }
+    }
+
     // ثبت نام کاربر
     if (req.method === 'POST') {
       const { phone, referred_by } = req.body;
@@ -43,24 +75,16 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      // ارسال اعلان مستقیم به بله (بدون واسطه)
       const token = process.env.BALE_BOT_TOKEN;
       const chatId = process.env.BALE_ADMIN_CHAT_ID;
-      
       if (token && chatId) {
         try {
-          const baleRes = await fetch(`https://tapi.bale.ai/bot${token}/sendMessage`, {
+          await fetch(`https://tapi.bale.ai/bot${token}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, text: `🔔 کاربر جدید!\nشماره: ${phone}\nمعرف: ${referred_by || 'ندارد'}` })
+            body: JSON.stringify({ chat_id: chatId, text: `🔔 کاربر جدید!\nشماره: ${phone}` })
           });
-          const baleData = await baleRes.json();
-          console.log('Bale Notify Response:', baleData); // برای دیباگ در Vercel
-        } catch (e) {
-          console.error('Bale Notify Error:', e);
-        }
-      } else {
-        console.log('Bale token or chat ID is missing in Env vars');
+        } catch (e) { console.log('Notify error', e); }
       }
 
       return res.status(200).json({ success: true, message: 'ثبت‌نام موفق' });
