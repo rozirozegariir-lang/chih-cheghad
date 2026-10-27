@@ -341,7 +341,9 @@
                 data.forEach(user => {
                     const isSub = user.is_subscribed; const badge = isSub ? '<span class="badge active">فعال</span>' : '<span class="badge inactive">غیرفعال</span>';
                     const actionBtn = isSub ? `<button class="action-btn btn-danger" onclick="toggleSubscription('${user.phone}', false)">لغو اشتراک</button>` : `<button class="action-btn btn-success" onclick="toggleSubscription('${user.phone}', true)">فعال‌سازی اشتراک</button>`;
-                    list.innerHTML += `<div class="manage-card"><h4><span>📱 ${user.phone}</span> ${badge}</h4><p>عکس‌های ارسالی: <strong>${user.image_uses || 0}</strong></p><p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p><div style="margin-top: 12px;">${actionBtn}</div></div>`;
+                    const deleteBtn = `<button class="action-btn btn-danger" onclick="deleteUser('${user.phone}')" style="background-color: #333;">حذف کاربر</button>`;
+                    
+                    list.innerHTML += `<div class="manage-card"><h4><span>📱 ${user.phone}</span> ${badge}</h4><p>عکس‌های ارسالی: <strong>${user.image_uses || 0}</strong></p><p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p><div style="margin-top: 12px; display: flex; gap: 10px;">${actionBtn} ${deleteBtn}</div></div>`;
                 });
             } catch (error) { list.innerHTML = `<p style="text-align: center; color: red; font-size:12px; font-weight:bold;">خطا: ${error.message}</p>`; }
         }
@@ -349,6 +351,15 @@
         async function toggleSubscription(phone, status) {
             if (!confirm(`تغییر وضعیت کاربر ${phone}؟`)) return;
             try { const res = await fetch('/api/admin?action=toggle-subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, status }) }); if (res.ok) { loadAdminUsers(); } } catch (error) { alert('خطا'); }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm(`آیا از حذف کامل کاربر ${phone} مطمئن هستید؟`)) return;
+            try { 
+                const res = await fetch(`/api/admin?action=delete-user&phone=${phone}`, { method: 'DELETE' }); 
+                if (res.ok) { loadAdminUsers(); } 
+                else { alert('خطا در حذف کاربر'); }
+            } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
         async function loadAdminTasks() {
