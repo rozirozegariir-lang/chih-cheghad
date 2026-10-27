@@ -1,45 +1,49 @@
-export default async function handler(req, res) {
-  const supabaseUrl = 'https://grfeyftvtknbrphpafqf.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZmV5ZnR2dGtuYnJwaHBhZnFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MjcwMzgsImV4cCI6MjEwODEwMzAzOH0.Pl7iuL3kJFNPGoW2NMPIm88jGBRYHiaJQuROjGdPZ-M';
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+module.exports = async function handler(req, res) {
+  const client = await pool.connect();
 
   try {
+    // ۱. گرفتن لیست کارها
     if (req.method === 'GET') {
-      const response = await fetch(`${supabaseUrl}/rest/v1/tasks?select=*&order=created_at.desc`, {
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`
-        }
-      });
-      const data = await response.json();
-      return res.status(200).json(data);
-    }
-
-    if (req.method === 'POST') {
+      const result = await client.query('SELECT * FROM tasks ORDER BY created_at DESC');
+      return res.status(200).json(result.rows);
+    } 
+    
+    // ۲. ثبت کار جدید
+    else if (req.method === 'POST') {
       const { title, description, price, contact } = req.body;
-      
-      const response = await fetch(`${supabaseUrl}/rest/v1/tasks`, {
-        method: 'POST',
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation'
-        },
-        body: JSON.stringify({ title, description, price, contact })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        return res.status(response.status).json({ error: 'خطا در ثبت کار', details: data });
+      if (!title || !contact) {
+        return res.status(400).json({ error: 'عنوان و شماره تماس الزامی است' });
       }
-      
-      return res.status(201).json(data);
+      await client.query(
+        'INSERT INTO tasks (title, description, price, contact) VALUES ($1, $2, $3, $4)',
+        [title, description, price, contact]
+      );
+      return res.status(200).json({ success: true, message: 'کار ثبت شد' });
+    } 
+    
+    // ۳. حذف کار (بر اساس عنوان و شماره تماس)
+    else if (req.method === 'DELETE') {
+      const { title, contact } = req.query;
+      if (!title || !contact) {
+        return res.status(400).json({ error: 'عنوان و شماره تماس برای حذف الزامی است' });
+      }
+      await client.query('DELETE FROM tasks WHERE title = $1 AND contact = $2', [title, contact]);
+      return res.status(200).json({ success: true, message: 'کار حذف شد' });
     }
-
+    
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'مشکلی پیش آمد' });
+
+  } catch (err) {
+    console.error('Tasks API Error:', err);
+    return res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
   }
-}
+};
