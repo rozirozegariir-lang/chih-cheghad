@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>پنل ادمین | همیار زندگی</title>
     
-    <!-- تنظیمات اپلیکیشن (PWA) برای پنل ادمین -->
     <link rel="manifest" href="/manifest-admin.json">
     <meta name="theme-color" content="#D4A574">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,16 +13,14 @@
 
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
-        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; --bg: #f4f7f6; --card: #ffffff; }
+        :root { --primary: #D4A574; --primary-dark: #b88655; --danger: #E74C3C; --success: #2E8B57; --info: #2980B9; --text-main: #4A3728; --bg: #f4f7f6; --card: #ffffff; --shop-color: #F39C12; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Vazirmatn', Tahoma, sans-serif; background-color: var(--bg); margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* --- صفحه ورود --- */
         .login-container { background: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; width: 90%; max-width: 350px; margin: auto; }
         .login-input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 15px; text-align: center; font-family: inherit; font-size: 16px;}
         .login-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 16px;}
         
-        /* --- داشبورد اصلی (منو) --- */
         .dashboard-container { display: none; width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; flex-grow: 1; }
         .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .header-dash h2 { margin: 0; color: var(--primary-dark); font-size: 20px; }
@@ -36,7 +33,6 @@
         .menu-card .title { font-weight: bold; color: var(--text-main); font-size: 14px; }
         .menu-card.disabled { opacity: 0.5; pointer-events: none; }
 
-        /* --- صفحات داخلی (پنل‌ها) --- */
         .inner-panel { display: none; background: var(--card); border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -45,7 +41,6 @@
         .back-btn:active { background: #e0e0e0; }
         .panel-header h3 { margin: 0; color: var(--primary-dark); font-size: 18px; }
 
-        /* --- فرم‌ها --- */
         .form-group { margin-bottom: 15px; text-align: right; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 13px; color: var(--text-main); }
         .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; background: #f9f9f9; font-size: 14px;}
@@ -65,7 +60,6 @@
         .status-msg.success { background: #d4edda; color: #155724; display: block; }
         .status-msg.error { background: #f8d7da; color: #721c24; display: block; }
 
-        /* --- کارت‌های لیست --- */
         .manage-card { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 12px; background: #fafafa; }
         .manage-card h4 { margin: 0 0 8px 0; color: var(--primary-dark); font-size: 15px; display: flex; justify-content: space-between; align-items: center;}
         .manage-card p { margin: 0 0 5px 0; font-size: 12px; color: #555;}
@@ -76,7 +70,6 @@
         .badge.active { background: #d4edda; color: #2E8B57; }
         .badge.inactive { background: #fce4e4; color: #E74C3C; }
 
-        /* --- ابزارها --- */
         .tool-card { display: flex; align-items: center; justify-content: space-between; background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 14px; margin-bottom: 10px;}
         .tool-card:active { background: #f0f0f0; }
     </style>
@@ -95,7 +88,6 @@
             <button class="logout-btn" onclick="logout()">خروج</button>
         </div>
 
-        <!-- منوی اصلی اپلیکیشن -->
         <div id="mainMenu" class="menu-grid">
             <button class="menu-card" onclick="openPanel('usersPanel')">
                 <span class="icon">👥</span><span class="title">کاربران</span>
@@ -103,22 +95,21 @@
             <button class="menu-card" onclick="openPanel('productsPanel')">
                 <span class="icon">📦</span><span class="title">محصولات (گالری)</span>
             </button>
+            <!-- فروشگاه فعال شد -->
+            <button class="menu-card" onclick="openPanel('shopPanel')">
+                <span class="icon">🛍️</span><span class="title">فروشگاه</span>
+            </button>
             <button class="menu-card" onclick="openPanel('tasksPanel')">
                 <span class="icon">🤝</span><span class="title">میکرو-کارها</span>
             </button>
             <button class="menu-card" onclick="openPanel('toolsPanel')">
                 <span class="icon">🛠️</span><span class="title">ابزارها</span>
             </button>
-            <!-- بخش‌های در حال توسعه -->
-            <button class="menu-card disabled">
-                <span class="icon">🛍️</span><span class="title">فروشگاه (بزودی)</span>
-            </button>
             <button class="menu-card disabled">
                 <span class="icon">👨‍🍳</span><span class="title">آشپز (بزودی)</span>
             </button>
         </div>
 
-        <!-- ۱. پنل کاربران -->
         <div id="usersPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
@@ -129,11 +120,11 @@
             </div>
         </div>
 
-        <!-- ۲. پنل محصولات -->
+        <!-- پنل محصولات گالری -->
         <div id="productsPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
-                <h3>افزودن محصول</h3>
+                <h3>افزودن محصول (گالری)</h3>
             </div>
             <div id="productStatusMsg" class="status-msg"></div>
 
@@ -157,7 +148,28 @@
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
-        <!-- ۳. پنل میکرو-کارها -->
+        <!-- پنل فروشگاه (جدید) -->
+        <div id="shopPanel" class="inner-panel">
+            <div class="panel-header">
+                <button class="back-btn" onclick="closePanel()">➔</button>
+                <h3>افزودن محصول (فروشگاه)</h3>
+            </div>
+            <div id="shopStatusMsg" class="status-msg"></div>
+
+            <div class="form-group"><label>عنوان محصول *</label><input type="text" id="shopTitle" class="form-control" placeholder="مثلاً: ساعت هوشمند..."></div>
+            <div class="form-group"><label>قیمت *</label><input type="text" id="shopPrice" class="form-control" placeholder="مثلاً: ۵۰۰,۰۰۰ تومان"></div>
+            <div class="form-group"><label>توضیحات کوتاه (اختیاری)</label><textarea id="shopDesc" class="form-control" placeholder="مثلاً: اورجینال با گارانتی..."></textarea></div>
+            
+            <div class="form-group">
+                <label>عکس محصول *</label>
+                <input type="file" id="shopImgFile" accept="image/*" class="form-control" style="background: white; margin-bottom: 5px;">
+                <div class="divider">یا لینک بده</div>
+                <input type="text" id="shopImgUrl" class="form-control" placeholder="لینک عکس را پیست کنید">
+            </div>
+            
+            <button class="submit-btn" id="addShopBtn" onclick="addShopProduct()" style="background-color: var(--shop-color);">ثبت محصول در فروشگاه</button>
+        </div>
+
         <div id="tasksPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
@@ -168,7 +180,6 @@
             </div>
         </div>
 
-        <!-- ۴. پنل ابزارها -->
         <div id="toolsPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
@@ -198,7 +209,6 @@
     </div>
 
     <script>
-        // ثبت سرویس ورکر برای فعال شدن قابلیت نصب اپلیکیشن
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err));
@@ -223,7 +233,6 @@
             document.getElementById('dashboardBox').style.display = 'block';
         }
 
-        // منطق باز و بسته کردن پنل‌ها (شبیه اپلیکیشن)
         function openPanel(panelId) {
             document.getElementById('mainMenu').style.display = 'none';
             document.querySelectorAll('.inner-panel').forEach(p => p.style.display = 'none');
@@ -240,7 +249,7 @@
             document.getElementById('mainMenu').style.display = 'grid';
         }
 
-        // --- بخش محصولات ---
+        // --- بخش محصولات (گالری) ---
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
@@ -318,6 +327,71 @@
             }
         }
 
+        // --- بخش فروشگاه (جدید) ---
+        async function addShopProduct() {
+            const title = document.getElementById('shopTitle').value.trim();
+            const price = document.getElementById('shopPrice').value.trim();
+            const desc = document.getElementById('shopDesc').value.trim();
+            const imgFile = document.getElementById('shopImgFile').files[0];
+            const imgUrlInput = document.getElementById('shopImgUrl').value.trim();
+            
+            const btn = document.getElementById('addShopBtn');
+            const statusMsg = document.getElementById('shopStatusMsg');
+
+            if (!title || !price) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = 'لطفاً عنوان و قیمت را وارد کنید.';
+                return;
+            }
+
+            if (!imgFile && !imgUrlInput) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = 'لطفاً عکس محصول را آپلود کنید یا لینک آن را وارد کنید.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = 'در حال پردازش... <div class="loader"></div>';
+            statusMsg.style.display = 'none';
+
+            let finalImageUrl = imgUrlInput;
+
+            try {
+                if (imgFile) {
+                    btn.innerHTML = 'آپلود عکس... <div class="loader"></div>';
+                    const formData = new FormData();
+                    formData.append('file', imgFile);
+                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'خطا در آپلود عکس');
+                    finalImageUrl = data.url;
+                }
+
+                btn.innerHTML = 'ذخیره... <div class="loader"></div>';
+                const response = await fetch('/api/shop', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, price, image_url: finalImageUrl, description: desc })
+                });
+
+                if (response.ok) {
+                    statusMsg.className = 'status-msg success';
+                    statusMsg.innerText = '✅ محصول با موفقیت در فروشگاه ثبت شد!';
+                    document.getElementById('shopTitle').value = '';
+                    document.getElementById('shopPrice').value = '';
+                    document.getElementById('shopDesc').value = '';
+                    document.getElementById('shopImgFile').value = '';
+                    document.getElementById('shopImgUrl').value = '';
+                } else { throw new Error('خطا در ثبت دیتابیس'); }
+            } catch (error) {
+                statusMsg.className = 'status-msg error';
+                statusMsg.innerText = '❌ ' + error.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'ثبت محصول در فروشگاه';
+            }
+        }
+
         // --- بخش کاربران ---
         async function loadAdminUsers() {
             const usersList = document.getElementById('usersList');
@@ -387,15 +461,32 @@
                     const card = document.createElement('div');
                     card.className = 'manage-card';
                     card.innerHTML = `
-                        <h4>${task.title}</h4>
+                        <h4><span>${task.title}</span></h4>
                         <p>${task.description || 'بدون توضیح'}</p>
                         <p>💰 ${task.price || 'توافقی'}</p>
                         <p>📞 ${task.contact}</p>
+                        <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                            <button class="action-btn btn-danger" onclick="deleteTask('${task.id}')">حذف کار</button>
+                        </div>
                     `;
                     tasksList.appendChild(card);
                 });
             } catch (error) {
                 tasksList.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت.</p>';
+            }
+        }
+
+        async function deleteTask(id) {
+            if (!confirm('آیا از حذف این کار مطمئن هستید؟')) return;
+            try {
+                const res = await fetch(`/api/tasks?id=${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    loadAdminTasks();
+                } else {
+                    alert('خطا در حذف کار');
+                }
+            } catch (error) {
+                alert('ارتباط با سرور برقرار نشد.');
             }
         }
     </script>
