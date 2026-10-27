@@ -157,6 +157,11 @@
         .invite-box p { font-size: 12px; color: #333; margin: 0 0 10px 0; }
         .invite-link-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: inherit; font-size: 12px; margin-bottom: 10px; direction: ltr; }
         .copy-btn { background-color: #2A9D8F; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; }
+
+        /* استایل اختصاصی متون قوانین */
+        .rules-text { text-align: right; font-size: 13px; line-height: 1.8; color: #333; max-height: 55vh; overflow-y: auto; padding-left: 5px; margin-bottom: 10px;}
+        .rules-text h4 { color: var(--primary-dark); margin: 15px 0 5px 0; font-size: 14px;}
+        .rules-text ul { padding-right: 20px; margin: 0;}
     </style>
 </head>
 <body>
@@ -175,6 +180,8 @@
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
                 <li><button onclick="toggleMenu(); openSubscriptionModal()"><i>💳</i> خرید اشتراک ویژه</button></li>
                 <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
+                <!-- دکمه قوانین و درباره ما -->
+                <li><button onclick="toggleMenu(); openRulesModal()"><i>📜</i> درباره ما و قوانین</button></li>
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
             
@@ -184,6 +191,27 @@
                 <input type="text" id="inviteLinkInput" class="invite-link-input" readonly>
                 <button class="copy-btn" onclick="copyInviteLink()">📋 کپی لینک دعوت</button>
             </div>
+        </div>
+    </div>
+
+    <!-- مودال قوانین و درباره ما -->
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRulesModal()">&times;</span>
+            <h2>📜 درباره ما و قوانین</h2>
+            
+            <div class="rules-text">
+                <p><strong>همیار زندگی</strong> یک دستیار هوشمند و همه‌کاره است که با استفاده از هوش مصنوعی به شما در کارهای روزمره کمک می‌کند. از کارشناسی عکس اشیاء قدیمی (گالری) و حل مسائل درسی (معلم)، تا تعمیر لوازم خانگی (تعمیرکار)، پیشنهاد غذا (آشپز) و پیدا کردن کارهای خرد (میکرو-کار). هدف ما ساده‌تر کردن زندگی شماست. 🏺✨</p>
+                
+                <h4>قوانین استفاده:</h4>
+                <ul>
+                    <li><strong>استفاده مسئولانه:</strong> پاسخ‌های هوش مصنوعی صرفاً جنبه راهنمایی دارند. در مسائل مهم (مثل تعمیرات خطرناک)، حتماً با متخصص مشورت کنید.</li>
+                    <li><strong>حریم خصوصی شما:</strong> چت‌های شما با هوش مصنوعی و عکس‌هایی که در بخش‌های مختلف ارسال می‌کنید، محرمانه است و کسی به آن‌ها دسترسی ندارد.</li>
+                    <li><strong>رعایت ادب:</strong> در بخش «میکرو-کارها» که محتوای آن برای همه قابل مشاهده است، لطفاً اطلاعات صحیح و محترمانه ثبت کنید. (مدیریت حق حذف کارهای نامناسب را دارد).</li>
+                    <li><strong>سیستم اشتراک:</strong> استفاده متنی از تمام بخش‌ها رایگان است. سهمیه رایگان ارسال/مشاهده عکس محدود است و برای استفاده نامحدود می‌توانید از منوی سایت اشتراک تهیه کنید یا با دعوت ۱۵ نفر از دوستانتان، اشتراک رایگان بگیرید.</li>
+                </ul>
+            </div>
+            <button class="upload-btn" onclick="closeRulesModal()" style="background-color: var(--primary);">متوجه شدم</button>
         </div>
     </div>
 
@@ -208,7 +236,6 @@
         </div>
     </div>
 
-    <!-- مودال خرید اشتراک (آپدیت شده) -->
     <div id="subscriptionModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeSubscriptionModal()">&times;</span>
@@ -382,7 +409,6 @@
                         ✅ دستور پخت با موفقیت آماده شد (متن در پایین).<br>
                         🌟 برای مشاهده عکس غذا، لطفا اشتراک تهیه کنید. 🌟
                         <br><br>
-                        <!-- رنگ دکمه خرید اشتراک تغییر کرد -->
                         <button class="upload-btn" onclick="openSubscriptionModal()" style="width: 90%; margin: 0 auto; font-size: 13px; background-color: var(--success);">خرید اشتراک</button>
                     </div>
                 </div>
@@ -394,7 +420,6 @@
         </div>
     </div>
 
-    <!-- تب جدید فروشگاه -->
     <div id="shop" class="tab-content">
         <h3 class="section-title" style="color: var(--shop-color);">فروشگاه همیار 🛍️</h3>
         
@@ -425,7 +450,6 @@
         </div>
     </div>
 
-    <!-- نوار تب‌های پایین (آپدیت شده با ۶ تب) -->
     <div class="tabs">
         <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
         <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم</button>
@@ -461,7 +485,6 @@
             localStorage.setItem('referred_by', referrerPhone);
         }
 
-        // مدیریت نصب PWA
         let deferredPrompt;
         const installBtn = document.querySelector('.install-btn');
 
@@ -472,11 +495,11 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'flex'; // نمایش دکمه وقتی آماده نصب است
+            installBtn.style.display = 'flex';
         });
 
         window.addEventListener('appinstalled', (evt) => {
-            installBtn.style.display = 'none'; // مخفی کردن دکمه پس از نصب
+            installBtn.style.display = 'none';
         });
 
         function showInstallPrompt() {
@@ -527,6 +550,14 @@
             document.getElementById('subscriptionModal').style.display = 'none';
         }
 
+        function openRulesModal() {
+            document.getElementById('rulesModal').style.display = 'flex';
+        }
+
+        function closeRulesModal() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+
         async function updateMenuAfterLogin() {
             const savedPhone = localStorage.getItem('userPhone');
             if (savedPhone) { 
@@ -534,7 +565,6 @@
                 
                 document.getElementById('inviteBox').style.display = 'block';
                 
-                // رفع باگ لینک دعوت: پاکسازی شماره از کاراکترهای اضافی
                 const cleanPhone = savedPhone.replace(/[^0-9]/g, ''); 
                 const inviteLink = `${MAIN_SITE_URL}/?ref=${cleanPhone}`; 
                 document.getElementById('inviteLinkInput').value = inviteLink;
@@ -635,9 +665,11 @@
             const menuModal = document.getElementById('menuModal');
             const regModal = document.getElementById('registerModal');
             const subModal = document.getElementById('subscriptionModal');
+            const rulesModal = document.getElementById('rulesModal');
             if (event.target == menuModal) { menuModal.style.display = 'none'; }
             if (event.target == regModal) { regModal.style.display = 'none'; }
             if (event.target == subModal) { subModal.style.display = 'none'; }
+            if (event.target == rulesModal) { rulesModal.style.display = 'none'; }
         }
 
         function selectGateway(planName, amount) {
