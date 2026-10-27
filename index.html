@@ -158,7 +158,6 @@
         .invite-link-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-family: inherit; font-size: 12px; margin-bottom: 10px; direction: ltr; }
         .copy-btn { background-color: #2A9D8F; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; width: 100%; }
 
-        /* استایل اختصاصی متون قوانین */
         .rules-text { text-align: right; font-size: 13px; line-height: 1.8; color: #333; max-height: 55vh; overflow-y: auto; padding-left: 5px; margin-bottom: 10px;}
         .rules-text h4 { color: var(--primary-dark); margin: 15px 0 5px 0; font-size: 14px;}
         .rules-text ul { padding-right: 20px; margin: 0;}
@@ -180,7 +179,6 @@
                 <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
                 <li><button onclick="toggleMenu(); openSubscriptionModal()"><i>💳</i> خرید اشتراک ویژه</button></li>
                 <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
-                <!-- دکمه قوانین و درباره ما -->
                 <li><button onclick="toggleMenu(); openRulesModal()"><i>📜</i> درباره ما و قوانین</button></li>
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
@@ -194,7 +192,6 @@
         </div>
     </div>
 
-    <!-- مودال قوانین و درباره ما -->
     <div id="rulesModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeRulesModal()">&times;</span>
@@ -207,7 +204,7 @@
                 <ul>
                     <li><strong>استفاده مسئولانه:</strong> پاسخ‌های هوش مصنوعی صرفاً جنبه راهنمایی دارند. در مسائل مهم (مثل تعمیرات خطرناک)، حتماً با متخصص مشورت کنید.</li>
                     <li><strong>حریم خصوصی شما:</strong> چت‌های شما با هوش مصنوعی و عکس‌هایی که در بخش‌های مختلف ارسال می‌کنید، محرمانه است و کسی به آن‌ها دسترسی ندارد.</li>
-                    <li><strong>رعایت ادب:</strong> در بخش «میکرو-کارها» که محتوای آن برای همه قابل مشاهده است، لطفاً اطلاعات صحیح و محترمانه ثبت کنید. (مدیریت حق حذف کارهای نامناسب را دارد).</li>
+                    <li><strong>رعایت ادب:</strong> در بخش «میکرو-کارها» که محتوای آن برای همه قابل مشاهده است، لطفاً اطلاعات صحیح و محترمانه ثبت کنید.</li>
                     <li><strong>سیستم اشتراک:</strong> استفاده متنی از تمام بخش‌ها رایگان است. سهمیه رایگان ارسال/مشاهده عکس محدود است و برای استفاده نامحدود می‌توانید از منوی سایت اشتراک تهیه کنید یا با دعوت ۱۵ نفر از دوستانتان، اشتراک رایگان بگیرید.</li>
                 </ul>
             </div>
@@ -420,33 +417,11 @@
         </div>
     </div>
 
+    <!-- تب فروشگاه (داینامیک شد) -->
     <div id="shop" class="tab-content">
         <h3 class="section-title" style="color: var(--shop-color);">فروشگاه همیار 🛍️</h3>
-        
-        <div class="grid">
-            <!-- محصول اول -->
-            <div class="product-card">
-                <div class="product-img-wrapper">
-                    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f381.svg" class="product-img" style="object-fit: contain; padding: 20px; background: #fdf2e9;" alt="محصول ۱">
-                </div>
-                <div class="product-info">
-                    <p class="product-title">نام محصول اول</p>
-                    <p class="product-price">قیمت: ۱۵۰,۰۰۰ تومان</p>
-                    <button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open(BALE_SUPPORT_LINK, '_blank')">🛒 خرید از بله</button>
-                </div>
-            </div>
-            
-            <!-- محصول دوم -->
-            <div class="product-card">
-                <div class="product-img-wrapper">
-                    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4e6.svg" class="product-img" style="object-fit: contain; padding: 20px; background: #e8f8f5;" alt="محصول ۲">
-                </div>
-                <div class="product-info">
-                    <p class="product-title">نام محصول دوم</p>
-                    <p class="product-price">قیمت: ۲۵۰,۰۰۰ تومان</p>
-                    <button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open(BALE_SUPPORT_LINK, '_blank')">🛒 خرید از بله</button>
-                </div>
-            </div>
+        <div class="grid" id="shopGrid">
+            <div style="text-align:center; width:100%;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>
         </div>
     </div>
 
@@ -707,6 +682,7 @@
             targetTab.classList.add('active');
             btnElement.classList.add('active');
             if(tabId === 'tasks') loadTasks();
+            if(tabId === 'shop') loadShopProducts();
         }
 
         function formatAIResponse(val) {
@@ -756,6 +732,42 @@
                     galleryGrid.innerHTML += cardHTML;
                 });
             } catch (error) { console.error("Error loading products:", error); }
+        }
+
+        // --- بارگذاری محصولات فروشگاه ---
+        async function loadShopProducts() {
+            const shopGrid = document.getElementById('shopGrid');
+            shopGrid.innerHTML = '<div style="text-align:center; width:100%; padding: 20px;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>';
+            
+            try {
+                const response = await fetch('/api/shop');
+                const products = await response.json();
+                shopGrid.innerHTML = '';
+                
+                if (products.length === 0) {
+                    shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-weight:bold;">هنوز محصولی در فروشگاه ثبت نشده است.</p>';
+                    return;
+                }
+
+                products.forEach(product => {
+                    const defaultImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
+                    const imgUrl = product.image_url ? product.image_url : defaultImg;
+                    
+                    const cardHTML = `
+                        <div class="product-card">
+                            <div class="product-img-wrapper"><img src="${imgUrl}" class="product-img" alt="${product.title}" style="object-fit: cover;"></div>
+                            <div class="product-info">
+                                <p class="product-title">${product.title}</p>
+                                <p class="product-price">${product.price}</p>
+                                ${product.description ? `<p style="font-size:12px; color:#777; margin-bottom:10px;">${product.description}</p>` : ''}
+                                <button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open('${product.bale_link || BALE_SUPPORT_LINK}', '_blank')">🛒 خرید از بله</button>
+                            </div>
+                        </div>`;
+                    shopGrid.innerHTML += cardHtml;
+                });
+            } catch (error) {
+                shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:red; font-weight:bold;">خطا در دریافت محصولات.</p>';
+            }
         }
 
         imageInput.addEventListener('change', async function(event) {
@@ -1270,6 +1282,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadProducts();
             loadTasks();
+            // loadShopProducts(); // هنگام کلیک روی تب لود میشود
         });
     </script>
 </body>
