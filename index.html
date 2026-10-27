@@ -172,80 +172,80 @@
     </style>
 </head>
 <body>
-  <header>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    <button class="install-btn" onclick="showInstallPrompt()"><span>📥</span> نصب اپلیکیشن</button>
-    <h1>همیار زندگی</h1>
-    <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
-</header>
+    <header>
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <button class="install-btn" onclick="showInstallPrompt()"><span>📥</span> نصب اپلیکیشن</button>
+        <h1>همیار زندگی</h1>
+        <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
+    </header>
 
-<div id="menuModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="toggleMenu()">&times;</span>
-        <h2>منوی اصلی</h2>
-        <ul class="menu-list">
-            <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
-            <li><button onclick="toggleMenu(); openSubscriptionModal()"><i>💳</i> خرید اشتراک ویژه</button></li>
-            <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
-            <li><button onclick="toggleMenu(); openRulesModal()"><i>📜</i> درباره ما و قوانین</button></li>
-            <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
-        </ul>
-        
-        <div id="inviteBox" class="invite-box">
-            <p>🎁 با دعوت ۱۵ نفر از دوستانت، <strong>۳ ماه اشتراک رایگان</strong> بگیر!</p>
-            <p id="inviteCountText" style="font-weight: bold; color: #E74C3C;">دعوت‌های موفق شما: 0 از 15</p>
-            <input type="text" id="inviteLinkInput" class="invite-link-input" readonly>
-            <button class="copy-btn" onclick="copyInviteLink()">📋 کپی لینک دعوت</button>
-        </div>
-    </div>
-</div>
-
-<div id="rulesModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeRulesModal()">&times;</span>
-        <h2>📜 درباره ما و قوانین</h2>
-        <div class="rules-text">
-            <p><strong>همیار زندگی</strong> یک دستیار هوشمند و همه‌کاره است که با استفاده از هوش مصنوعی به شما در کارهای روزمره کمک می‌کند. هدف ما ساده‌تر کردن زندگی شماست. 🏺✨</p>
-            <h4>قوانین استفاده:</h4>
-            <ul>
-                <li><strong>استفاده مسئولانه:</strong> پاسخ‌های هوش مصنوعی صرفاً جنبه راهنمایی دارند. در مسائل مهم حتماً با متخصص مشورت کنید.</li>
-                <li><strong>حریم خصوصی:</strong> چت‌های شما با هوش مصنوعی محرمانه است.</li>
-                <li><strong>رعایت ادب:</strong> در بخش «میکرو-کارها» اطلاعات صحیح و محترمانه ثبت کنید.</li>
-                <li><strong>سیستم اشتراک:</strong> برای استفاده نامحدود از عکس‌ها می‌توانید اشتراک تهیه کنید یا ۱۵ نفر را دعوت کنید.</li>
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleMenu()">&times;</span>
+            <h2>منوی اصلی</h2>
+            <ul class="menu-list">
+                <li><button id="menuRegisterBtn" onclick="openRegisterModal()"><i>📱</i> ثبت نام با موبایل</button></li>
+                <li><button onclick="toggleMenu(); openSubscriptionModal()"><i>💳</i> خرید اشتراک ویژه</button></li>
+                <li><button onclick="shareApp()"><i>🔗</i> ارسال به دیگران</button></li>
+                <li><button onclick="toggleMenu(); openRulesModal()"><i>📜</i> درباره ما و قوانین</button></li>
+                <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
-        </div>
-        <button class="upload-btn" onclick="closeRulesModal()" style="background-color: var(--primary);">متوجه شدم</button>
-    </div>
-</div>
-
-<div id="registerModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
-        <h2>ثبت نام سریع</h2>
-        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">برای ادامه، ابتدا تایید کنید که ربات نیستید</p>
-        <div class="captcha-box" id="captchaContainer" onclick="toggleCaptcha()">
-            <div style="display: flex; align-items: center;">
-                <div class="captcha-checkbox" id="captchaBox"></div>
-                <div class="captcha-text">من ربات نیستم</div>
+            
+            <div id="inviteBox" class="invite-box">
+                <p>🎁 با دعوت ۱۵ نفر از دوستانت، <strong>۳ ماه اشتراک رایگان</strong> بگیر!</p>
+                <p id="inviteCountText" style="font-weight: bold; color: #E74C3C;">دعوت‌های موفق شما: 0 از 15</p>
+                <input type="text" id="inviteLinkInput" class="invite-link-input" readonly>
+                <button class="copy-btn" onclick="copyInviteLink()">📋 کپی لینک دعوت</button>
             </div>
-            <div class="captcha-icon">🛡️</div>
-        </div>
-        <div id="phoneInputContainer">
-            <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px; margin-top: 0; padding: 12px;">
-            <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--success);" id="regSubmitBtn">ثبت نام و ورود</button>
         </div>
     </div>
-</div>
 
-<div id="subscriptionModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeSubscriptionModal()">&times;</span>
-        <h2>اشتراک ویژه همیار زندگی</h2>
-        <p style="font-size: 12px; color: #666; margin-bottom: 15px;">برای استفاده از تمام امکانات (عکس و متن)، یکی از پلن‌های زیر را انتخاب کنید:</p>
-        <div class="plan-card"><p class="plan-title">اشتراک ۱ ماهه</p><p class="plan-price">۳۰,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۱ ماهه', '30000')">💳 پرداخت با بله</button></div></div>
-        <div class="plan-card"><p class="plan-title">اشتراک ۳ ماهه</p><p class="plan-price">۹۵,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۳ ماهه', '95000')">💳 پرداخت با بله</button></div></div>
-        <div class="plan-card"><p class="plan-title">اشتراک ۶ ماهه <span class="plan-badge">پیشنهاد ویژه</span></p><p class="plan-price">۱۹۰,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۶ ماهه', '190000')">💳 پرداخت با بله</button></div></div>
-        <div class="plan-card"><p class="plan-title">اشتراک ۱ ساله</p><p class="plan-price">۲۷۰,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۱ ساله', '270000')">💳 پرداخت با بله</button></div></div>
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRulesModal()">&times;</span>
+            <h2>📜 درباره ما و قوانین</h2>
+            <div class="rules-text">
+                <p><strong>همیار زندگی</strong> یک دستیار هوشمند و همه‌کاره است که با استفاده از هوش مصنوعی به شما در کارهای روزمره کمک می‌کند. هدف ما ساده‌تر کردن زندگی شماست. 🏺✨</p>
+                <h4>قوانین استفاده:</h4>
+                <ul>
+                    <li><strong>استفاده مسئولانه:</strong> پاسخ‌های هوش مصنوعی صرفاً جنبه راهنمایی دارند. در مسائل مهم حتماً با متخصص مشورت کنید.</li>
+                    <li><strong>حریم خصوصی:</strong> چت‌های شما با هوش مصنوعی محرمانه است.</li>
+                    <li><strong>رعایت ادب:</strong> در بخش «میکرو-کارها» اطلاعات صحیح و محترمانه ثبت کنید.</li>
+                    <li><strong>سیستم اشتراک:</strong> برای استفاده نامحدود از عکس‌ها می‌توانید اشتراک تهیه کنید یا ۱۵ نفر را دعوت کنید.</li>
+                </ul>
+            </div>
+            <button class="upload-btn" onclick="closeRulesModal()" style="background-color: var(--primary);">متوجه شدم</button>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
+            <h2>ثبت نام سریع</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 5px;">برای ادامه، ابتدا تایید کنید که ربات نیستید</p>
+            <div class="captcha-box" id="captchaContainer" onclick="toggleCaptcha()">
+                <div style="display: flex; align-items: center;">
+                    <div class="captcha-checkbox" id="captchaBox"></div>
+                    <div class="captcha-text">من ربات نیستم</div>
+                </div>
+                <div class="captcha-icon">🛡️</div>
+            </div>
+            <div id="phoneInputContainer">
+                <input type="tel" id="regPhoneInput" class="tasks-input" placeholder="شماره موبایل (09123456789)" style="text-align: center; font-size: 16px; letter-spacing: 1px; margin-top: 0; padding: 12px;">
+                <button class="upload-btn" onclick="submitRegistration()" style="margin-top: 10px; background-color: var(--success);" id="regSubmitBtn">ثبت نام و ورود</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeSubscriptionModal()">&times;</span>
+            <h2>اشتراک ویژه همیار زندگی</h2>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">برای استفاده از تمام امکانات (عکس و متن)، یکی از پلن‌های زیر را انتخاب کنید:</p>
+            <div class="plan-card"><p class="plan-title">اشتراک ۱ ماهه</p><p class="plan-price">۳۰,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۱ ماهه', '30000')">💳 پرداخت با بله</button></div></div>
+            <div class="plan-card"><p class="plan-title">اشتراک ۳ ماهه</p><p class="plan-price">۹۵,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۳ ماهه', '95000')">💳 پرداخت با بله</button></div></div>
+            <div class="plan-card"><p class="plan-title">اشتراک ۶ ماهه <span class="plan-badge">
+                        <div class="plan-card"><p class="plan-title">اشتراک ۱ ساله</p><p class="plan-price">۲۷۰,۰۰۰ تومان</p><div class="gateway-buttons"><button class="gateway-btn" onclick="selectGateway('۱ ساله', '270000')">💳 پرداخت با بله</button></div></div>
         <p style="font-size: 10px; color: #e74c3c; margin-top: 15px;">⚠️ لطفاً برای پرداخت، فیلترشکن خود را موقتاً خاموش کنید.</p>
     </div>
 </div>
@@ -386,8 +386,8 @@
     <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکروکار</button>
     <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز</button>
     <button class="tab-btn shop-btn" onclick="switchTab('shop', this)"><span>🛍️</span> فروشگاه</button>
-          </div>
-          <script>
+</div>
+<script>
     const BALE_SUPPORT_LINK = "https://ble.ir/diirinbot"; 
     const MAIN_SITE_URL = "https://ajnaseantik.ir"; 
 
@@ -611,15 +611,35 @@
         }
     });
 
-    const tutorImageBtn = document.getElementById('tutorImageBtn'); const tutorImageInput = document.getElementById('tutorImageInput'); const tutorInput = document.getElementById('tutorInput'); const tutorSendBtn = document.getElementById('tutorSendBtn'); const tutorChatMessages = document.getElementById('tutorChatMessages');
+    const tutorImageBtn = document.getElementById('tutorImageBtn'); 
+    const tutorImageInput = document.getElementById('tutorImageInput'); 
+    const tutorInput = document.getElementById('tutorInput'); 
+    const tutorSendBtn = document.getElementById('tutorSendBtn'); 
+    const tutorChatMessages = document.getElementById('tutorChatMessages');
+    
     let tutorChatHistory = [{ role: 'assistant', content: 'سلام! من معلم هوشمند شما هستم. هر سوال درسی داری بپرس، یا عکس مسئله رو بفرست تا برات حل کنم. 😊' }];
+    
     function renderTutorChat() {
         tutorChatMessages.innerHTML = '';
         tutorChatHistory.forEach(msg => {
             if (msg.role === 'user' && Array.isArray(msg.content)) {
-                const textPart = msg.content.find(c => c.type === 'text'); const imgPart = msg.content.find(c => c.type === 'image_url'); const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : ''); tutorChatMessages.appendChild(userMsgDiv);
-            } else if (msg.role === 'user') { const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = msg.content; tutorChatMessages.appendChild(userMsgDiv); } 
-            else { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = msg.content; tutorChatMessages.appendChild(botMsgDiv); }
+                const textPart = msg.content.find(c => c.type === 'text'); 
+                const imgPart = msg.content.find(c => c.type === 'image_url'); 
+                const userMsgDiv = document.createElement('div'); 
+                userMsgDiv.className = 'msg user'; 
+                userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : ''); 
+                tutorChatMessages.appendChild(userMsgDiv);
+            } else if (msg.role === 'user') { 
+                const userMsgDiv = document.createElement('div'); 
+                userMsgDiv.className = 'msg user'; 
+                userMsgDiv.innerText = msg.content; 
+                tutorChatMessages.appendChild(userMsgDiv); 
+            } else { 
+                const botMsgDiv = document.createElement('div'); 
+                botMsgDiv.className = 'msg assistant'; 
+                botMsgDiv.innerText = msg.content; 
+                tutorChatMessages.appendChild(botMsgDiv); 
+            }
         });
         tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
     }
@@ -636,202 +656,157 @@
             const response = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text, imageBase64: imageBase64 }) });
             const data = await response.json(); tutorChatMessages.removeChild(loadingDiv);
             if (response.ok) { tutorChatHistory.push({ role: 'assistant', content: data.text }); renderTutorChat(); } 
-            const tutorImageBtn = document.getElementById('tutorImageBtn'); 
-        const tutorImageInput = document.getElementById('tutorImageInput'); 
-        const tutorInput = document.getElementById('tutorInput'); 
-        const tutorSendBtn = document.getElementById('tutorSendBtn'); 
-        const tutorChatMessages = document.getElementById('tutorChatMessages');
-        
-        let tutorChatHistory = [{ role: 'assistant', content: 'سلام! من معلم هوشمند شما هستم. هر سوال درسی داری بپرس، یا عکس مسئله رو بفرست تا برات حل کنم. 😊' }];
-        
-        function renderTutorChat() {
-            tutorChatMessages.innerHTML = '';
-            tutorChatHistory.forEach(msg => {
-                if (msg.role === 'user' && Array.isArray(msg.content)) {
-                    const textPart = msg.content.find(c => c.type === 'text'); 
-                    const imgPart = msg.content.find(c => c.type === 'image_url'); 
-                    const userMsgDiv = document.createElement('div'); 
-                    userMsgDiv.className = 'msg user'; 
-                    userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : ''); 
-                    tutorChatMessages.appendChild(userMsgDiv);
-                } else if (msg.role === 'user') { 
-                    const userMsgDiv = document.createElement('div'); 
-                    userMsgDiv.className = 'msg user'; 
-                    userMsgDiv.innerText = msg.content; 
-                    tutorChatMessages.appendChild(userMsgDiv); 
-                } else { 
-                    const botMsgDiv = document.createElement('div'); 
-                    botMsgDiv.className = 'msg assistant'; 
-                    botMsgDiv.innerText = msg.content; 
-                    tutorChatMessages.appendChild(botMsgDiv); 
-                }
+            else { const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'خطای سرور: ' + (data.error || 'نامشخص'); tutorChatMessages.appendChild(errorMsg); }
+        } catch (error) { tutorChatMessages.removeChild(loadingDiv); const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'ارتباط با سرور برقرار نشد.'; tutorChatMessages.appendChild(errorMsg); }
+    }
+
+    tutorSendBtn.addEventListener('click', () => { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } });
+    tutorInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } } });
+    
+    tutorImageBtn.addEventListener('click', async () => {
+        const canProceed = await checkImageQuota();
+        if (canProceed) tutorImageInput.click();
+    });
+
+    tutorImageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                    sendTutorMessage(tutorInput.value.trim(), base64Image); tutorInput.value = '';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        tutorImageInput.value = ''; 
+    });
+
+    const repairUploadBtn = document.getElementById('repairUploadBtn'); const repairImageInput = document.getElementById('repairImageInput'); const repairImagePreview = document.getElementById('repairImagePreview'); const repairResultCard = document.getElementById('repairResultCard'); const repairErrorBox = document.getElementById('repairErrorBox'); const repairResultContent = document.getElementById('repairResultContent'); const repairDescription = document.getElementById('repairDescription'); const chatContainer = document.getElementById('chatContainer'); const chatMessages = document.getElementById('chatMessages'); const chatInput = document.getElementById('chatInput'); const chatSendBtn = document.getElementById('chatSendBtn'); const chatImageBtn = document.getElementById('chatImageBtn'); const chatImageInput = document.getElementById('chatImageInput'); let currentChatHistory = [];
+
+    repairUploadBtn.addEventListener('click', () => { repairImageInput.click(); });
+    repairImageInput.addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const img = new Image();
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                    repairImagePreview.src = base64Image; repairImagePreview.style.display = 'block'; repairResultCard.style.display = 'none'; repairErrorBox.style.display = 'none'; repairResultContent.style.display = 'block'; chatContainer.style.display = 'none'; chatMessages.innerHTML = '';
+                    repairUploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; repairUploadBtn.disabled = true;
+                    try {
+                        const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image, description: repairDescription.value }) });
+                        const data = await response.json();
+                        if (response.ok) {
+                            document.getElementById('rep-problem').innerText = formatAIResponse(data.problem); document.getElementById('rep-action').innerText = formatAIResponse(data.initial_step); document.getElementById('rep-question').innerText = formatAIResponse(data.ask_user); document.getElementById('rep-cost').innerText = formatAIResponse(data.cost); document.getElementById('rep-warning').innerText = formatAIResponse(data.warning); repairResultCard.style.display = 'block';
+                            setTimeout(() => { repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+                            currentChatHistory = [ { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] }, { role: 'assistant', content: JSON.stringify(data) } ];
+                            chatContainer.style.display = 'flex'; chatMessages.innerHTML = ''; const welcomeMsg = document.createElement('div'); welcomeMsg.className = 'msg assistant'; welcomeMsg.innerText = 'سلام! من اینجام تا قدم به قدم کمکت کنم.'; chatMessages.appendChild(welcomeMsg);
+                        } else { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; }
+                    } catch (error) { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'ارتباط با سرور برقرار نشد.'; repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; } 
+                    finally { repairUploadBtn.innerHTML = '<span>🛠️</span> عکس دیگه‌ای بذار'; repairUploadBtn.disabled = false; }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    async function sendChatMessage() {
+        const question = chatInput.value.trim(); if (!question) return;
+        const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = question; chatMessages.appendChild(userMsgDiv); chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
+        currentChatHistory.push({ role: 'user', content: question });
+        const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال نوشتن...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+        try {
+            const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
+            const data = await response.json(); chatMessages.removeChild(loadingDiv);
+            if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
+            else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
+        } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    chatSendBtn.addEventListener('click', sendChatMessage);
+    chatInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
+    chatImageBtn.addEventListener('click', () => chatImageInput.click());
+    chatImageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const img = new Image();
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                    const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = '📷 (یک عکس فرستادید)'; chatMessages.appendChild(userMsgDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+                    currentChatHistory.push({ role: 'user', content: [ { type: 'text', text: 'عکس جدیدی از دستگاه فرستادم.' }, { type: 'image_url', image_url: { url: base64Image } } ] });
+                    const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال بررسی عکس...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+                    try {
+                        const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
+                        const data = await response.json(); chatMessages.removeChild(loadingDiv);
+                        if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
+                        else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
+                    } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        chatImageInput.value = '';
+    });
+
+    async function loadTasks() {
+        const tasksList = document.getElementById('tasksList');
+        tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
+        try {
+            const response = await fetch('/api/tasks'); const tasks = await response.json(); tasksList.innerHTML = '';
+            if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-size:12px;">هنوز کاری ثبت نشده. اولین نفر باش!</p>'; return; }
+            tasks.forEach(task => {
+                tasksList.innerHTML += `<div class="task-card"><h4 class="task-title">${task.title}</h4><p class="task-desc">${task.description || ''}</p><p class="task-price">💰 ${task.price || 'توافقی'}</p><p class="task-contact">📞 ${task.contact}</p></div>`;
             });
-            tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
-        }
-        renderTutorChat();
+        } catch (error) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:red; font-size:12px;">خطا در دریافت اطلاعات</p>'; }
+    }
 
-        async function sendTutorMessage(text, imageBase64 = null) {
-            if (!text && !imageBase64) return;
-            let userContent = [];
-            if (text) userContent.push({ type: 'text', text });
-            if (imageBase64) userContent.push({ type: 'image_url', image_url: { url: imageBase64 } });
-            tutorChatHistory.push({ role: 'user', content: userContent.length === 1 && userContent[0].type === 'text' ? text : userContent }); renderTutorChat();
-            const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال فکر کردن...'; tutorChatMessages.appendChild(loadingDiv); tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
-            try {
-                const response = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text, imageBase64: imageBase64 }) });
-                const data = await response.json(); tutorChatMessages.removeChild(loadingDiv);
-                if (response.ok) { tutorChatHistory.push({ role: 'assistant', content: data.text }); renderTutorChat(); } 
-                else { const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'خطای سرور: ' + (data.error || 'نامشخص'); tutorChatMessages.appendChild(errorMsg); }
-            } catch (error) { tutorChatMessages.removeChild(loadingDiv); const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'ارتباط با سرور برقرار نشد.'; tutorChatMessages.appendChild(errorMsg); }
-        }
+    document.getElementById('submitTaskBtn').addEventListener('click', async () => {
+        const title = document.getElementById('taskTitle').value; const description = document.getElementById('taskDescription').value; const price = document.getElementById('taskPrice').value; const contact = document.getElementById('taskContact').value;
+        if (!title || !contact) { return alert('عنوان کار و شماره تماس الزامی است!'); }
+        const btn = document.getElementById('submitTaskBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
+        try {
+            const response = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, price, contact }) });
+            if (response.ok) {
+                alert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
+            } else { alert('خطا در ثبت کار.'); }
+        } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
+    });
 
-        tutorSendBtn.addEventListener('click', () => { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } });
-        tutorInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } } });
-        
-        tutorImageBtn.addEventListener('click', async () => {
-            const canProceed = await checkImageQuota();
-            if (canProceed) tutorImageInput.click();
-        });
+    document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
+        const ingredients = document.getElementById('chefIngredients').value;
+        if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
+        const btn = document.getElementById('chefSubmitBtn'); const resultCard = document.getElementById('chefResultCard'); const errorBox = document.getElementById('chefErrorBox'); const resultContent = document.getElementById('chefResultContent'); const imgContainer = document.getElementById('chefImageContainer'); const chefImage = document.getElementById('chefImage'); const noImageMsg = document.getElementById('chefNoImageMsg'); const chefImageWrapper = document.querySelector('.chef-image-wrapper'); const chefMotivationalText = document.querySelector('.chef-motivational');
 
-        tutorImageInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                        sendTutorMessage(tutorInput.value.trim(), base64Image); tutorInput.value = '';
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-            tutorImageInput.value = ''; 
-        });
+        let generateImage = false;
+        const canProceed = await checkImageQuota();
+        if (canProceed) generateImage = true;
 
-        const repairUploadBtn = document.getElementById('repairUploadBtn'); const repairImageInput = document.getElementById('repairImageInput'); const repairImagePreview = document.getElementById('repairImagePreview'); const repairResultCard = document.getElementById('repairResultCard'); const repairErrorBox = document.getElementById('repairErrorBox'); const repairResultContent = document.getElementById('repairResultContent'); const repairDescription = document.getElementById('repairDescription'); const chatContainer = document.getElementById('chatContainer'); const chatMessages = document.getElementById('chatMessages'); const chatInput = document.getElementById('chatInput'); const chatSendBtn = document.getElementById('chatSendBtn'); const chatImageBtn = document.getElementById('chatImageBtn'); const chatImageInput = document.getElementById('chatImageInput'); let currentChatHistory = [];
-
-        repairUploadBtn.addEventListener('click', () => { repairImageInput.click(); });
-        repairImageInput.addEventListener('change', async function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const img = new Image();
-                    img.onload = async function() {
-                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                        repairImagePreview.src = base64Image; repairImagePreview.style.display = 'block'; repairResultCard.style.display = 'none'; repairErrorBox.style.display = 'none'; repairResultContent.style.display = 'block'; chatContainer.style.display = 'none'; chatMessages.innerHTML = '';
-                        repairUploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; repairUploadBtn.disabled = true;
-                        try {
-                            const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image, description: repairDescription.value }) });
-                            const data = await response.json();
-                            if (response.ok) {
-                                document.getElementById('rep-problem').innerText = formatAIResponse(data.problem); document.getElementById('rep-action').innerText = formatAIResponse(data.initial_step); document.getElementById('rep-question').innerText = formatAIResponse(data.ask_user); document.getElementById('rep-cost').innerText = formatAIResponse(data.cost); document.getElementById('rep-warning').innerText = formatAIResponse(data.warning); repairResultCard.style.display = 'block';
-                                setTimeout(() => { repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
-                                currentChatHistory = [ { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] }, { role: 'assistant', content: JSON.stringify(data) } ];
-                                chatContainer.style.display = 'flex'; chatMessages.innerHTML = ''; const welcomeMsg = document.createElement('div'); welcomeMsg.className = 'msg assistant'; welcomeMsg.innerText = 'سلام! من اینجام تا قدم به قدم کمکت کنم.'; chatMessages.appendChild(welcomeMsg);
-                            } else { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; }
-                        } catch (error) { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'ارتباط با سرور برقرار نشد.'; repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; } 
-                        finally { repairUploadBtn.innerHTML = '<span>🛠️</span> عکس دیگه‌ای بذار'; repairUploadBtn.disabled = false; }
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        async function sendChatMessage() {
-            const question = chatInput.value.trim(); if (!question) return;
-            const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = question; chatMessages.appendChild(userMsgDiv); chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
-            currentChatHistory.push({ role: 'user', content: question });
-            const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال نوشتن...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-            try {
-                const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
-                const data = await response.json(); chatMessages.removeChild(loadingDiv);
-                if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
-                else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
-            } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        chatSendBtn.addEventListener('click', sendChatMessage);
-        chatInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
-        chatImageBtn.addEventListener('click', () => chatImageInput.click());
-        chatImageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const img = new Image();
-                    img.onload = async function() {
-                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                        const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = '📷 (یک عکس فرستادید)'; chatMessages.appendChild(userMsgDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-                        currentChatHistory.push({ role: 'user', content: [ { type: 'text', text: 'عکس جدیدی از دستگاه فرستادم.' }, { type: 'image_url', image_url: { url: base64Image } } ] });
-                        const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال بررسی عکس...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-                        try {
-                            const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
-                            const data = await response.json(); chatMessages.removeChild(loadingDiv);
-                            if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
-                            else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
-                        } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-            chatImageInput.value = '';
-        });
-
-        async function loadTasks() {
-            const tasksList = document.getElementById('tasksList');
-            tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
-            try {
-                const response = await fetch('/api/tasks'); const tasks = await response.json(); tasksList.innerHTML = '';
-                if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-size:12px;">هنوز کاری ثبت نشده. اولین نفر باش!</p>'; return; }
-                tasks.forEach(task => {
-                    tasksList.innerHTML += `<div class="task-card"><h4 class="task-title">${task.title}</h4><p class="task-desc">${task.description || ''}</p><p class="task-price">💰 ${task.price || 'توافقی'}</p><p class="task-contact">📞 ${task.contact}</p></div>`;
-                });
-            } catch (error) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:red; font-size:12px;">خطا در دریافت اطلاعات</p>'; }
-        }
-
-        document.getElementById('submitTaskBtn').addEventListener('click', async () => {
-            const title = document.getElementById('taskTitle').value; const description = document.getElementById('taskDescription').value; const price = document.getElementById('taskPrice').value; const contact = document.getElementById('taskContact').value;
-            if (!title || !contact) { return alert('عنوان کار و شماره تماس الزامی است!'); }
-            const btn = document.getElementById('submitTaskBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
-            try {
-                const response = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, price, contact }) });
-                if (response.ok) {
-                    alert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
-                } else { alert('خطا در ثبت کار.'); }
-            } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
-        });
-
-        document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
-            const ingredients = document.getElementById('chefIngredients').value;
-            if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
-            const btn = document.getElementById('chefSubmitBtn'); const resultCard = document.getElementById('chefResultCard'); const errorBox = document.getElementById('chefErrorBox'); const resultContent = document.getElementById('chefResultContent'); const imgContainer = document.getElementById('chefImageContainer'); const chefImage = document.getElementById('chefImage'); const noImageMsg = document.getElementById('chefNoImageMsg'); const chefImageWrapper = document.querySelector('.chef-image-wrapper'); const chefMotivationalText = document.querySelector('.chef-motivational');
-
-            let generateImage = false;
-            const canProceed = await checkImageQuota();
-            if (canProceed) generateImage = true;
-
-            btn.innerHTML = 'در حال پختن... <div class="loader"></div>'; btn.disabled = true; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
-            if(chefImageWrapper) chefImageWrapper.style.display = 'none'; if(chefMotivationalText) chefMotivationalText.style.display = 'none';
-            try {
-                const response = await fetch('/api/chef', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: ingredients, generate_image: generateImage }) });
-                const data = await response.json();
-                if (response.ok) {
-                    document.getElementById('chef-name').innerText = formatAIResponse(data.food_name); document.getElementById('chef-ingredients').innerText = formatAIResponse(data.ingredients_list); document.getElementById('chef-instructions').innerText = formatAIResponse(data.instructions);
-                    if (data.image_url) { imgContainer.style.display = 'block'; chefImage.style.display = 'block'; noImageMsg.style.display = 'none'; chefImage.src = data.image_url; } 
-                    else { imgContainer.style.display = 'block'; chefImage.style.display = 'none'; noImageMsg.style.display = 'block'; }
-                    resultCard.style.display = 'block';
-                } else { errorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); errorBox.style.display = 'block'; resultContent.style.display = 'none'; resultCard.style.display = 'block'; if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; if(chefMotivationalText) chefMotivationalText.style.display = 'block'; }
-            } catch (error) { errorBox.innerText = 'ارتباط با سرور برقرار نشد.'; errorBox.style.display = 'block'; resultContent.style.display = 'none'; resultCard.style.display = 'block'; if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; if(chefMotivationalText) chefMotivationalText.style.display = 'block'; } 
-            finally { btn.innerHTML = '<span>🍳</span> چی بپزم؟'; btn.disabled = false; }
+        btn.innerHTML = 'در حال پختن... <div class="loader"></div>'; btn.disabled = true; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
+        if(chefImageWrapper) chefImageWrapper.style.display = 'none'; if(chefMotivationalText) chefMotivationalText.style.display = 'none';
+        try {
+            const response = await fetch('/api/chef', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: ingredients, generate_image: generateImage }) });
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('chef-name').innerText
+                                } else {
+                    errorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); errorBox.style.display = 'block'; resultContent.style.display = 'none'; resultCard.style.display = 'block'; if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; if(chefMotivationalText) chefMotivationalText.style.display = 'block';
+                }
+            } catch (error) {
+                errorBox.innerText = 'ارتباط با سرور برقرار نشد.'; errorBox.style.display = 'block'; resultContent.style.display = 'none'; resultCard.style.display = 'block'; if(chefImageWrapper) chefImageWrapper.style.display = 'flex'; if(chefMotivationalText) chefMotivationalText.style.display = 'block';
+            } finally { btn.innerHTML = '<span>🍳</span> چی بپزم؟'; btn.disabled = false; }
         });
 
         document.addEventListener('DOMContentLoaded', () => { loadProducts(); loadTasks(); });
