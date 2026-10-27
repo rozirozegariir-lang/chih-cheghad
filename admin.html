@@ -187,16 +187,12 @@
             const btn = document.getElementById('loginBtn'); 
             btn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; 
             btn.disabled = true;
-            
             document.getElementById('loginError').style.display = 'none';
 
             try {
                 const res = await fetch('/api/admin?action=login', { 
                     method: 'POST', 
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    }, 
+                    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }, 
                     body: JSON.stringify({ password: pass }) 
                 });
                 
@@ -207,12 +203,7 @@
                 } else { 
                     document.getElementById('loginError').style.display = 'block'; 
                 }
-            } catch (err) { 
-                alert('ارتباط با سرور برقرار نشد.'); 
-            } finally { 
-                btn.innerHTML = 'ورود'; 
-                btn.disabled = false; 
-            }
+            } catch (err) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = 'ورود'; btn.disabled = false; }
         }
         
         function logout() { localStorage.removeItem('isAdminLoggedIn'); location.reload(); }
@@ -356,9 +347,17 @@
         async function deleteUser(phone) {
             if (!confirm(`آیا از حذف کامل کاربر ${phone} مطمئن هستید؟`)) return;
             try { 
-                const res = await fetch(`/api/admin?action=delete-user&phone=${phone}`, { method: 'DELETE' }); 
-                if (res.ok) { loadAdminUsers(); } 
-                else { alert('خطا در حذف کاربر'); }
+                const res = await fetch(`/api/admin?action=delete-user`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone }) 
+                }); 
+                if (res.ok) { 
+                    loadAdminUsers(); 
+                } else {
+                    const data = await res.json();
+                    alert('خطا در حذف کاربر: ' + (data.error || 'ناشناخته'));
+                }
             } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
