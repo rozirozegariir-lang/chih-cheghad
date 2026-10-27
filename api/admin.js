@@ -4,51 +4,52 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejec
 module.exports = async function handler(req, res) {
   const { action } = req.query;
 
-  // ۱. لاگین ادمین (این بخش نیازی به دیتابیس نداره تا کرش نکنه)
+  // ۱. لاگین ادمین
   if (action === 'login') {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-    const { password } = req.body;
-    const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
     
-    if (password === adminPass) {
+    const inputPassword = (req.body.password || '').trim();
+    const adminPassword = (process.env.ADMIN_PASSWORD || 'admin123').trim();
+    
+    // این دو خط، دقیقاً چیزی که مرورگر فرستاده و چیزی که سرور انتظار دارد را در لاگ‌های Vercel چاپ می‌کنند
+    console.log('--- LOGIN ATTEMPT ---');
+    console.log('Password from Chrome:', JSON.stringify(inputPassword));
+    console.log('Password from Vercel:', JSON.stringify(adminPassword));
+
+    if (inputPassword === adminPassword) {
       return res.status(200).json({ success: true });
     } else {
       return res.status(401).json({ error: 'رمز عبور اشتباه است' });
     }
   }
 
-  // بقیه بخش‌ها نیاز به اتصال به دیتابیس دارن
+  // بقیه بخش‌ها
   let client;
   try {
     client = await pool.connect();
 
-    // ۲. لیست کاربران
     if (action === 'list-users') {
       const result = await client.query('SELECT * FROM users ORDER BY created_at DESC');
       return res.status(200).json(result.rows);
     }
 
-    // ۳. تغییر وضعیت اشتراک کاربر
     if (action === 'toggle-subscription') {
       const { phone, status } = req.body;
       await client.query('UPDATE users SET is_subscribed = $1 WHERE phone = $2', [status, phone]);
       return res.status(200).json({ success: true });
     }
 
-    // ۴. دریافت تنظیمات آشپز
     if (action === 'get-settings') {
       const result = await client.query('SELECT value_text FROM app_settings WHERE key_name = $1', ['chef_prompt']);
       return res.status(200).json({ chef_prompt: result.rows[0]?.value_text || '' });
     }
 
-    // ۵. ذخیره تنظیمات آشپز
     if (action === 'update-settings') {
       const { chef_prompt } = req.body;
       await client.query('UPDATE app_settings SET value_text = $1 WHERE key_name = $2', [chef_prompt, 'chef_prompt']);
       return res.status(200).json({ success: true });
     }
 
-    // ۶. ارسال اعلان به بله (البته این بخش الان مستقیم توی user.js هم هست)
     if (action === 'notify') {
       const { message } = req.body;
       const token = process.env.BALE_BOT_TOKEN;
