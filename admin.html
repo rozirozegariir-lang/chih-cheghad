@@ -95,7 +95,6 @@
             <button class="menu-card" onclick="openPanel('productsPanel')">
                 <span class="icon">📦</span><span class="title">محصولات (گالری)</span>
             </button>
-            <!-- فروشگاه فعال شد -->
             <button class="menu-card" onclick="openPanel('shopPanel')">
                 <span class="icon">🛍️</span><span class="title">فروشگاه</span>
             </button>
@@ -120,7 +119,6 @@
             </div>
         </div>
 
-        <!-- پنل محصولات گالری -->
         <div id="productsPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
@@ -148,7 +146,6 @@
             <button class="submit-btn" id="addProductBtn" onclick="addProduct()">ثبت محصول</button>
         </div>
 
-        <!-- پنل فروشگاه (جدید) -->
         <div id="shopPanel" class="inner-panel">
             <div class="panel-header">
                 <button class="back-btn" onclick="closePanel()">➔</button>
@@ -249,7 +246,7 @@
             document.getElementById('mainMenu').style.display = 'grid';
         }
 
-        // --- بخش محصولات (گالری) ---
+        // --- بخش محصولات گالری ---
         async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim();
             const price = document.getElementById('prodPrice').value.trim();
@@ -327,7 +324,7 @@
             }
         }
 
-        // --- بخش فروشگاه (جدید) ---
+        // --- بخش فروشگاه ---
         async function addShopProduct() {
             const title = document.getElementById('shopTitle').value.trim();
             const price = document.getElementById('shopPrice').value.trim();
@@ -445,7 +442,7 @@
             } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
-        // --- بخش میکرو-کارها ---
+        // --- بخش میکرو-کارها (با حذف بر اساس عنوان و شماره تماس) ---
         async function loadAdminTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
@@ -460,13 +457,14 @@
                 tasks.forEach(task => {
                     const card = document.createElement('div');
                     card.className = 'manage-card';
+                    // ارسال عنوان و شماره تماس برای حذف
                     card.innerHTML = `
                         <h4><span>${task.title}</span></h4>
                         <p>${task.description || 'بدون توضیح'}</p>
                         <p>💰 ${task.price || 'توافقی'}</p>
                         <p>📞 ${task.contact}</p>
                         <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-                            <button class="action-btn btn-danger" onclick="deleteTask('${task.id}')">حذف کار</button>
+                            <button class="action-btn btn-danger" onclick="deleteTask('${task.title.replace(/'/g, "\\'")}', '${task.contact.replace(/'/g, "\\'")}')">حذف کار</button>
                         </div>
                     `;
                     tasksList.appendChild(card);
@@ -476,10 +474,11 @@
             }
         }
 
-        async function deleteTask(id) {
+        async function deleteTask(title, contact) {
             if (!confirm('آیا از حذف این کار مطمئن هستید؟')) return;
             try {
-                const res = await fetch(`/api/tasks?id=${id}`, { method: 'DELETE' });
+                // حذف با پارامترهای عنوان و شماره تماس
+                const res = await fetch(`/api/tasks?title=${encodeURIComponent(title)}&contact=${encodeURIComponent(contact)}`, { method: 'DELETE' });
                 if (res.ok) {
                     loadAdminTasks();
                 } else {
