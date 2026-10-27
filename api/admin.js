@@ -7,23 +7,12 @@ module.exports = async function handler(req, res) {
   // ۱. لاگین ادمین
   if (action === 'login') {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-    
     const inputPassword = (req.body.password || '').trim();
     const adminPassword = (process.env.ADMIN_PASSWORD || 'admin123').trim();
-    
-    // این دو خط، دقیقاً چیزی که مرورگر فرستاده و چیزی که سرور انتظار دارد را در لاگ‌های Vercel چاپ می‌کنند
-    console.log('--- LOGIN ATTEMPT ---');
-    console.log('Password from Chrome:', JSON.stringify(inputPassword));
-    console.log('Password from Vercel:', JSON.stringify(adminPassword));
-
-    if (inputPassword === adminPassword) {
-      return res.status(200).json({ success: true });
-    } else {
-      return res.status(401).json({ error: 'رمز عبور اشتباه است' });
-    }
+    if (inputPassword === adminPassword) return res.status(200).json({ success: true });
+    return res.status(401).json({ error: 'رمز عبور اشتباه است' });
   }
 
-  // بقیه بخش‌ها
   let client;
   try {
     client = await pool.connect();
@@ -36,6 +25,15 @@ module.exports = async function handler(req, res) {
     if (action === 'toggle-subscription') {
       const { phone, status } = req.body;
       await client.query('UPDATE users SET is_subscribed = $1 WHERE phone = $2', [status, phone]);
+      return res.status(200).json({ success: true });
+    }
+
+    // حذف کامل هر کاربری که شماره‌اش فرستاده شود
+    if (action === 'delete-user') {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+      const { phone } = req.body;
+      if (!phone) return res.status(400).json({ error: 'شماره الزامی است' });
+      await client.query('DELETE FROM users WHERE phone = $1', [phone]);
       return res.status(200).json({ success: true });
     }
 
@@ -67,7 +65,6 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(400).json({ error: 'Action not found' });
-    
   } catch (err) {
     console.error('Admin API Error:', err);
     return res.status(500).json({ error: err.message });
