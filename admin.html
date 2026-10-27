@@ -81,7 +81,7 @@
     <div id="loginBox" class="login-container">
         <h2 style="color: var(--primary-dark); margin-top: 0;">🔐 ورود به مدیریت</h2>
         <div id="loginError" style="color: var(--danger); display: none; margin-bottom: 10px; font-size: 13px;">رمز اشتباه است!</div>
-        <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور...">
+        <input type="password" id="passwordInput" class="login-input" placeholder="رمز عبور..." autocomplete="new-password">
         <button class="login-btn" onclick="checkLogin()" id="loginBtn">ورود</button>
     </div>
 
@@ -183,14 +183,36 @@
         }
 
         async function checkLogin() {
-            const pass = document.getElementById('passwordInput').value;
-            const btn = document.getElementById('loginBtn'); btn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; btn.disabled = true;
+            const pass = document.getElementById('passwordInput').value.trim();
+            const btn = document.getElementById('loginBtn'); 
+            btn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; 
+            btn.disabled = true;
+            
+            document.getElementById('loginError').style.display = 'none';
+
             try {
-                const res = await fetch('/api/admin-auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass }) });
+                const res = await fetch('/api/admin?action=login', { 
+                    method: 'POST', 
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }, 
+                    body: JSON.stringify({ password: pass }) 
+                });
+                
                 if (res.ok) {
-                    document.getElementById('loginBox').style.display = 'none'; document.getElementById('dashboardBox').style.display = 'block'; localStorage.setItem('isAdminLoggedIn', 'true');
-                } else { document.getElementById('loginError').style.display = 'block'; }
-            } catch (err) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = 'ورود'; btn.disabled = false; }
+                    document.getElementById('loginBox').style.display = 'none'; 
+                    document.getElementById('dashboardBox').style.display = 'block'; 
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                } else { 
+                    document.getElementById('loginError').style.display = 'block'; 
+                }
+            } catch (err) { 
+                alert('ارتباط با سرور برقرار نشد.'); 
+            } finally { 
+                btn.innerHTML = 'ورود'; 
+                btn.disabled = false; 
+            }
         }
         
         function logout() { localStorage.removeItem('isAdminLoggedIn'); location.reload(); }
@@ -220,7 +242,8 @@
         async function loadAnalytics() {
             const list = document.getElementById('analyticsList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
-                const response = await fetch('/api/analytics'); const data = await response.json();
+                const response = await fetch('/api/analytics'); 
+                const data = await response.json();
                 const tabNames = { 'gallery': 'گالری 🏺', 'teacher': 'معلم 🎓', 'repair': 'تعمیرکار 🛠️', 'tasks': 'میکروکار 🤝', 'chef': 'آشپز 👨‍🍳', 'shop': 'فروشگاه 🛍️' };
                 list.innerHTML = ''; data.sort((a, b) => b.view_count - a.view_count).forEach(item => {
                     list.innerHTML += `<div class="analytics-card"><h4>${tabNames[item.tab_name] || item.tab_name}</h4><span class="analytics-count">${item.view_count} بازدید</span></div>`;
@@ -230,7 +253,7 @@
 
         async function loadChefSettings() {
             const input = document.getElementById('chefPromptInput'); input.value = 'در حال دریافت...';
-            try { const res = await fetch('/api/settings'); const data = await res.json(); input.value = data.chef_prompt; } catch (e) { input.value = ''; }
+            try { const res = await fetch('/api/admin?action=get-settings'); const data = await res.json(); input.value = data.chef_prompt; } catch (e) { input.value = ''; }
         }
 
         async function saveChefPrompt() {
@@ -238,7 +261,7 @@
             const btn = document.getElementById('saveChefBtn'); const statusMsg = document.getElementById('chefStatusMsg');
             btn.disabled = true; btn.innerHTML = 'ذخیره... <div class="loader"></div>';
             try {
-                const res = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chef_prompt: prompt }) });
+                const res = await fetch('/api/admin?action=update-settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chef_prompt: prompt }) });
                 if (res.ok) { statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ دستورات ذخیره شد!'; } else { throw new Error(); }
             } catch (e) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ خطا در ذخیره.'; } finally { btn.disabled = false; btn.innerHTML = 'ذخیره دستورات'; }
         }
@@ -310,19 +333,33 @@
         async function loadAdminUsers() {
             const list = document.getElementById('usersList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
-                const response = await fetch('/api/admin-users'); const users = await response.json(); list.innerHTML = '';
-                if (users.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاربری یافت نشد.</p>'; return; }
-                users.forEach(user => {
+                const response = await fetch('/api/admin?action=list-users'); 
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'خطا');
+                list.innerHTML = '';
+                if (data.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاربری یافت نشد.</p>'; return; }
+                data.forEach(user => {
                     const isSub = user.is_subscribed; const badge = isSub ? '<span class="badge active">فعال</span>' : '<span class="badge inactive">غیرفعال</span>';
                     const actionBtn = isSub ? `<button class="action-btn btn-danger" onclick="toggleSubscription('${user.phone}', false)">لغو اشتراک</button>` : `<button class="action-btn btn-success" onclick="toggleSubscription('${user.phone}', true)">فعال‌سازی اشتراک</button>`;
-                    list.innerHTML += `<div class="manage-card"><h4><span>📱 ${user.phone}</span> ${badge}</h4><p>عکس‌های ارسالی: <strong>${user.image_uses || 0}</strong></p><p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p><div style="margin-top: 12px;">${actionBtn}</div></div>`;
+                    const deleteBtn = `<button class="action-btn btn-danger" onclick="deleteUser('${user.phone}')" style="background-color: #333;">حذف کاربر</button>`;
+                    
+                    list.innerHTML += `<div class="manage-card"><h4><span>📱 ${user.phone}</span> ${badge}</h4><p>عکس‌های ارسالی: <strong>${user.image_uses || 0}</strong></p><p>دعوت‌ها: <strong>${user.invite_count || 0}</strong> از 15</p><div style="margin-top: 12px; display: flex; gap: 10px;">${actionBtn} ${deleteBtn}</div></div>`;
                 });
-            } catch (error) { list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>'; }
+            } catch (error) { list.innerHTML = `<p style="text-align: center; color: red; font-size:12px; font-weight:bold;">خطا: ${error.message}</p>`; }
         }
 
         async function toggleSubscription(phone, status) {
             if (!confirm(`تغییر وضعیت کاربر ${phone}؟`)) return;
-            try { const res = await fetch('/api/admin-users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, status }) }); if (res.ok) { loadAdminUsers(); } } catch (error) { alert('خطا'); }
+            try { const res = await fetch('/api/admin?action=toggle-subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, status }) }); if (res.ok) { loadAdminUsers(); } } catch (error) { alert('خطا'); }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm(`آیا از حذف کامل کاربر ${phone} مطمئن هستید؟`)) return;
+            try { 
+                const res = await fetch(`/api/admin?action=delete-user&phone=${phone}`, { method: 'DELETE' }); 
+                if (res.ok) { loadAdminUsers(); } 
+                else { alert('خطا در حذف کاربر'); }
+            } catch (error) { alert('ارتباط برقرار نشد.'); }
         }
 
         async function loadAdminTasks() {
