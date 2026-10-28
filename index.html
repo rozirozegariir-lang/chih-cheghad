@@ -159,6 +159,20 @@
         .rules-text { text-align: right; font-size: 13px; line-height: 1.8; color: #333; max-height: 55vh; overflow-y: auto; padding-left: 5px; margin-bottom: 10px;}
         .rules-text h4 { color: var(--primary-dark); margin: 15px 0 5px 0; font-size: 14px;}
         .rules-text ul { padding-right: 20px; margin: 0;}
+
+        /* استایل مودال اختصاصی پرداخت */
+        #customConfirmModal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 5000; justify-content: center; align-items: center; }
+        .custom-confirm-content { background: var(--card-bg); width: 85%; max-width: 340px; border-radius: 20px; padding: 25px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.4s; border: 2px solid var(--primary); }
+        .custom-confirm-content h3 { color: var(--primary-dark); margin-top: 0; font-size: 18px; margin-bottom: 15px; font-weight: 900; }
+        .custom-confirm-content p { color: var(--text-main); font-size: 14px; margin-bottom: 10px; line-height: 1.6; }
+        .custom-confirm-price { background: #fdfaf6; padding: 10px; border-radius: 10px; border: 1px dashed var(--primary); margin-bottom: 20px; }
+        .custom-confirm-price strong { color: var(--subscription-color); font-size: 18px; display: block; margin-top: 5px; }
+        .confirm-buttons { display: flex; gap: 10px; }
+        .confirm-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .confirm-btn-yes { background-color: var(--success); color: white; box-shadow: 0 4px 10px rgba(46, 139, 87, 0.3); }
+        .confirm-btn-yes:active { transform: scale(0.95); }
+        .confirm-btn-no { background-color: #f0f0f0; color: #666; }
+        .confirm-btn-no:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -243,6 +257,21 @@
     <div id="videoModal">
         <span class="close-video" onclick="closeVideo()">&times;</span>
         <video id="storyVideo" controls playsinline></video>
+    </div>
+
+    <div id="customConfirmModal">
+        <div class="custom-confirm-content">
+            <h3>💳 تایید پرداخت</h3>
+            <p id="confirmPlanText"></p>
+            <div class="custom-confirm-price">
+                مبلغ قابل پرداخت:
+                <strong id="confirmPriceText"></strong>
+            </div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn-yes" id="confirmPayBtn">تایید و انتقال به بله</button>
+                <button class="confirm-btn-no" onclick="closeCustomConfirm()">لغو</button>
+            </div>
+        </div>
     </div>
     <div id="gallery" class="tab-content active">
     <div class="upload-section">
@@ -384,6 +413,8 @@
     let isCaptchaChecked = false;
     let pendingPlan = null;
     let pendingAmount = null;
+    let currentPayPlan = null;
+    let currentPayAmount = null;
 
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
@@ -426,6 +457,10 @@
     function closeSubscriptionModal() { document.getElementById('subscriptionModal').style.display = 'none'; }
     function openRulesModal() { document.getElementById('rulesModal').style.display = 'flex'; }
     function closeRulesModal() { document.getElementById('rulesModal').style.display = 'none'; }
+
+    function closeCustomConfirm() {
+        document.getElementById('customConfirmModal').style.display = 'none';
+    }
 
     async function updateMenuAfterLogin() {
         const savedPhone = localStorage.getItem('userPhone');
@@ -481,96 +516,118 @@
 
     function selectGateway(planName, amount) {
         const savedPhone = localStorage.getItem('userPhone');
-        if (!savedPhone) { pendingPlan = planName; pendingAmount = amount; closeSubscriptionModal(); alert('برای خرید اشتراک، ابتدا باید ثبت نام کنید.'); openRegisterModal(); } 
-        else { proceedToPayment(planName, amount); }
-    }
-
-    async function proceedToPayment(planName, amount) {
-        const savedPhone = localStorage.getItem('userPhone');
-        if (!savedPhone) return;
-
-        const confirmMsg = `شما پلن ${planName} را انتخاب کردید.\nمبلغ: ${amount} تومان\n\nبرای پرداخت، روی «تایید» بزنید تا به درگاه بله منتقل شوید.`;
-        
-        if (confirm(confirmMsg)) {
-            try {
-                const res = await fetch('/api/user?action=create-invoice', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: savedPhone, amount: amount, planName: planName })
-                });
-                const data = await res.json();
-                
-                if (res.ok && data.link) {
-                    window.location.href = data.link; 
-                } else {
-                    alert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
-                }
-            } catch (error) {
-                alert('ارتباط با سرور برقرار نشد.');
-            }
+        if (!savedPhone) { 
+            pendingPlan = planName; pendingAmount = amount; 
+            closeSubscriptionModal(); alert('برای خرید اشتراک، ابتدا باید ثبت نام کنید.'); 
+            openRegisterModal(); 
+        } else { 
+            proceedToPayment(planName, amount); 
         }
     }
 
-    updateMenuAfterLogin();
-    document.getElementById('uploadBtn').addEventListener('click', () => { imageInput.click(); });
+    function proceedToPayment(planName, amount) {
+        const savedPhone = localStorage.getItem('userPhone');
+        if (!savedPhone) return;
 
-    async function checkImageQuota() {
-        const phone = localStorage.getItem('userPhone');
-        if (!phone) return true; 
+        currentPayPlan = planName;
+        currentPayAmount = amount;
+        document.getElementById('confirmPlanText').innerText = `شما پلن ${planName} را انتخاب کرده‌اید.`;
+        document.getElementById('confirmPriceText').innerText = `${amount} تومان`;
+        
+        document.getElementById('subscriptionModal').style.display = 'none';
+        document.getElementById('customConfirmModal').style.display = 'flex';
+    }
+
+    document.getElementById('confirmPayBtn').addEventListener('click', async () => {
+        const savedPhone = localStorage.getItem('userPhone');
+        const btn = document.getElementById('confirmPayBtn');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = 'در حال انتقال... <div class="loader"></div>';
+        btn.disabled = true;
+
         try {
-            const res = await fetch('/api/user?action=check-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+            const res = await fetch('/api/user?action=create-invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: savedPhone, amount: currentPayAmount, planName: currentPayPlan })
+            });
             const data = await res.json();
-            if (!data.allowed) { alert('سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس بیشتر، لطفا اشتراک تهیه کنید.'); openSubscriptionModal(); return false; }
-            return true;
-        } catch (e) { console.log('Error checking quota', e); return true; }
-    }
+            
+            if (res.ok && data.link) {
+                window.location.href = data.link; 
+            } else {
+                alert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            alert('ارتباط با سرور برقرار نشد.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+            updateMenuAfterLogin();
+        document.getElementById('uploadBtn').addEventListener('click', () => { imageInput.click(); });
 
-    function switchTab(tabId, btnElement) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
-        fetch('/api/analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tab: tabId }) }).catch(err => console.log('Analytics error', err));
-        if(tabId === 'tasks') loadTasks();
-        if(tabId === 'shop') loadShopProducts();
-    }
+        async function checkImageQuota() {
+            const phone = localStorage.getItem('userPhone');
+            if (!phone) return true; 
+            try {
+                const res = await fetch('/api/user?action=check-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+                const data = await res.json();
+                if (!data.allowed) { alert('سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس بیشتر، لطفا اشتراک تهیه کنید.'); openSubscriptionModal(); return false; }
+                return true;
+            } catch (e) { console.log('Error checking quota', e); return true; }
+        }
 
-    function formatAIResponse(val) {
-        if (!val) return 'نامشخص';
-        if (Array.isArray(val)) return val.map((item, index) => `${index + 1}. ${item}`).join('\n');
-        if (typeof val === 'object') return Object.values(val).join('\n');
-        return val.toString();
-    }
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
+            fetch('/api/analytics', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tab: tabId }) }).catch(err => console.log('Analytics error', err));
+            if(tabId === 'tasks') loadTasks();
+            if(tabId === 'shop') loadShopProducts();
+        }
 
-    function openVideo(url) { const modal = document.getElementById('videoModal'); const video = document.getElementById('storyVideo'); video.src = url; modal.style.display = 'flex'; video.play(); }
-    function closeVideo() { const modal = document.getElementById('videoModal'); const video = document.getElementById('storyVideo'); video.pause(); video.currentTime = 0; modal.style.display = 'none'; }
+        function formatAIResponse(val) {
+            if (!val) return 'نامشخص';
+            if (Array.isArray(val)) return val.map((item, index) => `${index + 1}. ${item}`).join('\n');
+            if (typeof val === 'object') return Object.values(val).join('\n');
+            return val.toString();
+        }
 
-    async function loadProducts() {
-        try {
-            const response = await fetch('/api/products'); const products = await response.json(); const galleryGrid = document.getElementById('galleryGrid');
-            if (products.length === 0) { galleryGrid.innerHTML = '<p style="text-align:center; width:100%;">محصولی یافت نشد.</p>'; return; }
-            products.forEach(product => {
-                const imgUrl = product.image_url ? product.image_url : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
-                const hasVideo = product.video_url && product.video_url.trim() !== '';
-                const videoBtnHTML = hasVideo ? `<button class="watch-video-btn" onclick="openVideo('${product.video_url}')">🎬 فیلم و استوری رو ببین</button>` : '';
-                galleryGrid.innerHTML += `<div class="product-card"><div class="product-img-wrapper"><img src="${imgUrl}" class="product-img" alt="${product.title}"></div><div class="product-info"><p class="product-title">${product.title}</p><p class="product-price">${product.price}</p>${videoBtnHTML}</div></div>`;
-            });
-        } catch (error) { console.error("Error loading products:", error); }
-    }
+        function openVideo(url) { const modal = document.getElementById('videoModal'); const video = document.getElementById('storyVideo'); video.src = url; modal.style.display = 'flex'; video.play(); }
+        function closeVideo() { const modal = document.getElementById('videoModal'); const video = document.getElementById('storyVideo'); video.pause(); video.currentTime = 0; modal.style.display = 'none'; }
 
-    async function loadShopProducts() {
-        const shopGrid = document.getElementById('shopGrid');
-        shopGrid.innerHTML = '<div style="text-align:center; width:100%; padding: 20px;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>';
-        try {
-            const response = await fetch('/api/shop'); const products = await response.json(); shopGrid.innerHTML = '';
-            if (products.length === 0) { shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-weight:bold;">هنوز محصولی در فروشگاه ثبت نشده است.</p>'; return; }
-            products.forEach(product => {
-                const defaultImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
-                const imgUrl = product.image_url ? product.image_url : defaultImg;
-                shopGrid.innerHTML += `<div class="product-card"><div class="product-img-wrapper"><img src="${imgUrl}" class="product-img" alt="${product.title}" style="object-fit: cover;"></div><div class="product-info"><p class="product-title">${product.title}</p><p class="product-price">${product.price}</p>${product.description ? `<p style="font-size:12px; color:#777; margin-bottom:10px;">${product.description}</p>` : ''}<button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open('${product.bale_link || BALE_SUPPORT_LINK}', '_blank')">🛒 خرید از بله</button></div></div>`;
-            });
-        } catch (error) { shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:red; font-weight:bold;">خطا در دریافت محصولات.</p>'; }
-    }
-            imageInput.addEventListener('change', async function(event) {
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products'); const products = await response.json(); const galleryGrid = document.getElementById('galleryGrid');
+                if (products.length === 0) { galleryGrid.innerHTML = '<p style="text-align:center; width:100%;">محصولی یافت نشد.</p>'; return; }
+                products.forEach(product => {
+                    const imgUrl = product.image_url ? product.image_url : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
+                    const hasVideo = product.video_url && product.video_url.trim() !== '';
+                    const videoBtnHTML = hasVideo ? `<button class="watch-video-btn" onclick="openVideo('${product.video_url}')">🎬 فیلم و استوری رو ببین</button>` : '';
+                    galleryGrid.innerHTML += `<div class="product-card"><div class="product-img-wrapper"><img src="${imgUrl}" class="product-img" alt="${product.title}"></div><div class="product-info"><p class="product-title">${product.title}</p><p class="product-price">${product.price}</p>${videoBtnHTML}</div></div>`;
+                });
+            } catch (error) { console.error("Error loading products:", error); }
+        }
+
+        async function loadShopProducts() {
+            const shopGrid = document.getElementById('shopGrid');
+            shopGrid.innerHTML = '<div style="text-align:center; width:100%; padding: 20px;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>';
+            try {
+                const response = await fetch('/api/shop'); const products = await response.json(); shopGrid.innerHTML = '';
+                if (products.length === 0) { shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-weight:bold;">هنوز محصولی در فروشگاه ثبت نشده است.</p>'; return; }
+                products.forEach(product => {
+                    const defaultImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>";
+                    const imgUrl = product.image_url ? product.image_url : defaultImg;
+                    shopGrid.innerHTML += `<div class="product-card"><div class="product-img-wrapper"><img src="${imgUrl}" class="product-img" alt="${product.title}" style="object-fit: cover;"></div><div class="product-info"><p class="product-title">${product.title}</p><p class="product-price">${product.price}</p>${product.description ? `<p style="font-size:12px; color:#777; margin-bottom:10px;">${product.description}</p>` : ''}<button class="watch-video-btn" style="background-color: var(--shop-color);" onclick="window.open('${product.bale_link || BALE_SUPPORT_LINK}', '_blank')">🛒 خرید از بله</button></div></div>`;
+                });
+            } catch (error) { shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:red; font-weight:bold;">خطا در دریافت محصولات.</p>'; }
+        }
+
+        imageInput.addEventListener('change', async function(event) {
             const file = event.target.files[0];
             if (file) {
                 const canProceed = await checkImageQuota();
