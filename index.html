@@ -5,18 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>همیار زندگی | دستیار هوشمند کارشناسی، تعمیرات و آشپزی</title>
     <meta name="description" content="همیار زندگی با هوش مصنوعی به شما در کارشناسی اشیاء قدیمی، حل مسائل درسی، تعمیر لوازم خانگی و پیشنهاد غذا کمک می‌کند.">
-    <meta name="keywords" content="کارشناسی عتیقه, قیمت گذاری آنتیک, تعمیر لوازم خانگی, دستیار آشپزی, هوش مصنوعی فارسی">
-    <meta property="og:title" content="همیار زندگی | دستیار هوشمند شما">
-    <meta property="og:description" content="کارشناسی عکس اشیاء، تعمیرات و آشپزی با هوش مصنوعی. همین الان امتحان کن!">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ajnaseantik.ir">
-    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/512/2602.png">
-    
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#D4A574">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="همیار">
-    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/192/2602.png">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     
     <style>
@@ -158,139 +148,138 @@
         <span class="close-video" onclick="closeVideo()">&times;</span>
         <video id="storyVideo" controls playsinline></video>
     </div>
-
     <div id="gallery" class="tab-content active">
-        <div class="upload-section">
-            <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
-            <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
-            <input type="file" id="imageInput" accept="image/*" style="display: none;">
-            <button class="upload-btn" id="uploadBtn"><span>📸</span> عکسش رو بذار</button>
-            <img id="imagePreview" alt="عکس شما">
-        </div>
-        <div id="resultCard" class="result-card">
-            <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
-            <div id="resultContent">
-                <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
-                <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
-                <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
-                <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
-                <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
-                <div class="disclaimer" id="res-disclaimer"></div>
-            </div>
-        </div>
-        <h3 class="section-title" style="color: var(--gallery-color);">اینا رو امروز گذاشتم برات ✨</h3>
-        <div class="grid" id="galleryGrid"></div>
+    <div class="upload-section">
+        <h2>عکس بده تا بهت بگم چقدر می ارزه</h2>
+        <p>عکس گنج خونه‌ت رو انتخاب کن تا برات تحلیلش کنم.</p>
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <button class="upload-btn" id="uploadBtn"><span>📸</span> عکسش رو بذار</button>
+        <img id="imagePreview" alt="عکس شما">
     </div>
-
-    <div id="teacher" class="tab-content">
-        <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
-        <div class="teacher-chat-box">
-            <div id="tutorChatMessages"></div>
-            <div class="chat-input-area">
-                <button id="tutorImageBtn" class="chat-img-btn" style="color: var(--teacher-color); border-color: #b5e0c8; background: #eefaf4;"><span>📷</span> عکس</button>
-                <input type="file" id="tutorImageInput" accept="image/*" style="display: none;">
-                <input type="text" id="tutorInput" class="chat-input" placeholder="سوال درسیت رو بنویس...">
-                <button id="tutorSendBtn" class="chat-send-btn" style="background: var(--teacher-color);"><span>✉️</span> بپرس</button>
-            </div>
+    <div id="resultCard" class="result-card">
+        <div id="errorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
+        <div id="resultContent">
+            <div class="result-item"><span class="result-title">🏷️ چیه این؟</span><p class="result-text" id="res-name"></p></div>
+            <div class="result-item"><span class="result-title">📅 مال کِیه؟</span><p class="result-text" id="res-period"></p></div>
+            <div class="result-item"><span class="result-title">💰 چقد می‌ارزه؟</span><p class="result-text" id="res-price"></p></div>
+            <div class="result-item"><span class="result-title">✅ اصله یا تقلبی؟</span><p class="result-text" id="res-auth"></p></div>
+            <div class="result-item"><span class="result-title">📖 داستانش</span><p class="result-text" id="res-story"></p></div>
+            <div class="disclaimer" id="res-disclaimer"></div>
         </div>
     </div>
+    <h3 class="section-title" style="color: var(--gallery-color);">اینا رو امروز گذاشتم برات ✨</h3>
+    <div class="grid" id="galleryGrid"></div>
+</div>
 
-    <div id="repair" class="tab-content">
-        <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
-        <div class="upload-section repair-upload-box" style="margin: 5px 0;">
-            <textarea id="repairDescription" class="repair-textarea" rows="3" placeholder="چه مشکلی داره؟ (مثلاً روشن نمیشه، صدا میده...)"></textarea>
-            <input type="file" id="repairImageInput" accept="image/*" style="display: none;">
-            <button class="upload-btn repair-upload-btn" id="repairUploadBtn"><span>🛠️</span> عکسش رو بذار</button>
-            <img id="repairImagePreview" alt="عکس وسیله">
-        </div>
-        <div class="repair-image-wrapper">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f527.svg" alt="تعمیرکار">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f527.svg" alt="ابزار">
-        </div>
-        <p class="motivational-text repair-motivational">قدم به قدم باهاتم تا وسیله خرابتو درست کنی! 💪🛠️</p>
-        <div id="repairResultCard" class="result-card repair-result-card">
-            <div id="repairErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
-            <div id="repairResultContent">
-                <div class="result-item"><span class="result-title repair-result-title">🔍 تشخیص اولیه</span><p class="result-text" id="rep-problem"></p></div>
-                <div class="result-item"><span class="result-title repair-result-title">🛠️ اقدام اولیه</span><p class="result-text" id="rep-action"></p></div>
-                <div class="result-item"><span class="result-title repair-result-title">📸 قدم بعدی چیه؟</span><p class="result-text" id="rep-question"></p></div>
-                <div class="result-item"><span class="result-title repair-result-title">💰 هزینه تقریبی</span><p class="result-text" id="rep-cost"></p></div>
-                <div class="result-item"><span class="result-title repair-result-title">⚠️ هشدار ایمنی</span><p class="result-text" id="rep-warning"></p></div>
-            </div>
-        </div>
-        <div id="chatContainer" class="chat-container" style="display: none; background: var(--card-bg); border-radius: 15px; padding: 10px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-direction: column; flex-grow: 1;">
-            <h4 style="text-align: center; color: var(--repair-color); margin-top: 0; margin-bottom: 10px;">💬 چت با تعمیرکار</h4>
-            <div id="chatMessages" class="chat-messages" style="flex-grow: 1; overflow-y: auto;"></div>
-            <div class="chat-input-area">
-                <button id="chatImageBtn" class="chat-img-btn"><span>📷</span> عکس بده</button>
-                <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
-                <input type="text" id="chatInput" class="chat-input" placeholder="یا اینجا بنویس...">
-                <button id="chatSendBtn" class="chat-send-btn" style="background: var(--repair-color);"><span>✉️</span> بپرس</button>
-            </div>
+<div id="teacher" class="tab-content">
+    <h3 class="section-title" style="color: var(--teacher-color);">معلم هوشمند 🎓</h3>
+    <div class="teacher-chat-box">
+        <div id="tutorChatMessages"></div>
+        <div class="chat-input-area">
+            <button id="tutorImageBtn" class="chat-img-btn" style="color: var(--teacher-color); border-color: #b5e0c8; background: #eefaf4;"><span>📷</span> عکس</button>
+            <input type="file" id="tutorImageInput" accept="image/*" style="display: none;">
+            <input type="text" id="tutorInput" class="chat-input" placeholder="سوال درسیت رو بنویس...">
+            <button id="tutorSendBtn" class="chat-send-btn" style="background: var(--teacher-color);"><span>✉️</span> بپرس</button>
         </div>
     </div>
+</div>
 
-    <div id="tasks" class="tab-content">
-        <h3 class="section-title" style="color: var(--tasks-color);">کاری داری؟ اینجا ثبت کن 🤝</h3>
-        <div class="explanation-card"><p style="margin-top: 0;">اینجا فضای همکاری و کمک به همسایه‌هاست! اگر کاری داری که خودت نمی‌تونی انجام بدی، همینجا ثبت کن تا یک <strong style="color: var(--tasks-color);">همیار</strong> پیدا بشه.</p></div>
-        <div class="upload-section tasks-upload-box" style="margin: 5px 0; padding: 10px;">
-            <input type="text" id="taskTitle" class="tasks-input" placeholder="عنوان کار (مثلاً: تعمیر پنکه)">
-            <textarea id="taskDescription" class="tasks-input" rows="2" placeholder="توضیحات بیشتر (اختیاری)..."></textarea>
-            <input type="text" id="taskPrice" class="tasks-input" placeholder="دستمزد (مثلاً: ۱۰۰ هزار تومان)">
-            <input type="text" id="taskContact" class="tasks-input" placeholder="شماره تماس یا آیدی تلگرام">
-            <button class="upload-btn tasks-upload-btn" id="submitTaskBtn"><span>📝</span> ثبت کار در سایت</button>
-        </div>
-        <h3 class="section-title" style="color: var(--tasks-color); margin-top: 5px;">کارهای ثبت شده 📋</h3>
-        <div id="tasksList"></div>
+<div id="repair" class="tab-content">
+    <h3 class="section-title" style="color: var(--repair-color);">چی خراب شده؟ بذار درستش کنیم 🛠️</h3>
+    <div class="upload-section repair-upload-box" style="margin: 5px 0;">
+        <textarea id="repairDescription" class="repair-textarea" rows="3" placeholder="چه مشکلی داره؟ (مثلاً روشن نمیشه، صدا میده...)"></textarea>
+        <input type="file" id="repairImageInput" accept="image/*" style="display: none;">
+        <button class="upload-btn repair-upload-btn" id="repairUploadBtn"><span>🛠️</span> عکسش رو بذار</button>
+        <img id="repairImagePreview" alt="عکس وسیله">
     </div>
+    <div class="repair-image-wrapper">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f527.svg" alt="تعمیرکار">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f527.svg" alt="ابزار">
+    </div>
+    <p class="motivational-text repair-motivational">قدم به قدم باهاتم تا وسیله خرابتو درست کنی! 💪🛠️</p>
+    <div id="repairResultCard" class="result-card repair-result-card">
+        <div id="repairErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
+        <div id="repairResultContent">
+            <div class="result-item"><span class="result-title repair-result-title">🔍 تشخیص اولیه</span><p class="result-text" id="rep-problem"></p></div>
+            <div class="result-item"><span class="result-title repair-result-title">🛠️ اقدام اولیه</span><p class="result-text" id="rep-action"></p></div>
+            <div class="result-item"><span class="result-title repair-result-title">📸 قدم بعدی چیه؟</span><p class="result-text" id="rep-question"></p></div>
+            <div class="result-item"><span class="result-title repair-result-title">💰 هزینه تقریبی</span><p class="result-text" id="rep-cost"></p></div>
+            <div class="result-item"><span class="result-title repair-result-title">⚠️ هشدار ایمنی</span><p class="result-text" id="rep-warning"></p></div>
+        </div>
+    </div>
+    <div id="chatContainer" class="chat-container" style="display: none; background: var(--card-bg); border-radius: 15px; padding: 10px; margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-direction: column; flex-grow: 1;">
+        <h4 style="text-align: center; color: var(--repair-color); margin-top: 0; margin-bottom: 10px;">💬 چت با تعمیرکار</h4>
+        <div id="chatMessages" class="chat-messages" style="flex-grow: 1; overflow-y: auto;"></div>
+        <div class="chat-input-area">
+            <button id="chatImageBtn" class="chat-img-btn"><span>📷</span> عکس بده</button>
+            <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
+            <input type="text" id="chatInput" class="chat-input" placeholder="یا اینجا بنویس...">
+            <button id="chatSendBtn" class="chat-send-btn" style="background: var(--repair-color);"><span>✉️</span> بپرس</button>
+        </div>
+    </div>
+</div>
 
-    <div id="chef" class="tab-content">
-        <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
-        <div class="upload-section chef-upload-box" style="margin: 5px 0;">
-            <h2>توی یخچالت چی داری؟</h2>
-            <p>مواد رو بنویس تا برات یه غذای خوشمزه پیشنهاد بدم.</p>
-            <textarea id="chefIngredients" class="chef-input" placeholder="مثلاً: تخم مرغ، گوجه، سیب زمینی، پیاز..."></textarea>
-            <button class="upload-btn chef-btn" id="chefSubmitBtn"><span>🍳</span> چی بپزم؟</button>
-        </div>
-        <div class="chef-image-wrapper">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f373.svg" alt="آشپز خانم کارتونی">
-            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f373.svg" alt="آشپز آقا کارتونی">
-        </div>
-        <p class="motivational-text chef-motivational">با هم بهترین آشپز میشیم! ✨👨‍🍳</p>
-        <div id="chefResultCard" class="result-card chef-result-card">
-            <div id="chefErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
-            <div id="chefResultContent">
-                <div id="chefImageContainer" class="food-image-container">
-                    <img id="chefImage" class="food-image" alt="عکس غذا">
-                    <div id="chefNoImageMsg" class="no-image-msg" style="display: none;">
-                        ✅ دستور پخت با موفقیت آماده شد (متن در پایین).<br>
-                        🌟 برای مشاهده عکس غذا، لطفا اشتراک تهیه کنید. 🌟
-                        <br><br>
-                        <button class="upload-btn" onclick="openSubscriptionModal()" style="width: 90%; margin: 0 auto; font-size: 13px; background-color: var(--success);">خرید اشتراک</button>
-                    </div>
+<div id="tasks" class="tab-content">
+    <h3 class="section-title" style="color: var(--tasks-color);">کاری داری؟ اینجا ثبت کن 🤝</h3>
+    <div class="explanation-card"><p style="margin-top: 0;">اینجا فضای همکاری و کمک به همسایه‌هاست! اگر کاری داری که خودت نمی‌تونی انجام بدی، همینجا ثبت کن تا یک <strong style="color: var(--tasks-color);">همیار</strong> پیدا بشه.</p></div>
+    <div class="upload-section tasks-upload-box" style="margin: 5px 0; padding: 10px;">
+        <input type="text" id="taskTitle" class="tasks-input" placeholder="عنوان کار (مثلاً: تعمیر پنکه)">
+        <textarea id="taskDescription" class="tasks-input" rows="2" placeholder="توضیحات بیشتر (اختیاری)..."></textarea>
+        <input type="text" id="taskPrice" class="tasks-input" placeholder="دستمزد (مثلاً: ۱۰۰ هزار تومان)">
+        <input type="text" id="taskContact" class="tasks-input" placeholder="شماره تماس یا آیدی تلگرام">
+        <button class="upload-btn tasks-upload-btn" id="submitTaskBtn"><span>📝</span> ثبت کار در سایت</button>
+    </div>
+    <h3 class="section-title" style="color: var(--tasks-color); margin-top: 5px;">کارهای ثبت شده 📋</h3>
+    <div id="tasksList"></div>
+</div>
+
+<div id="chef" class="tab-content">
+    <h3 class="section-title" style="color: var(--chef-color);">آشپز یار 👨‍🍳</h3>
+    <div class="upload-section chef-upload-box" style="margin: 5px 0;">
+        <h2>توی یخچالت چی داری؟</h2>
+        <p>مواد رو بنویس تا برات یه غذای خوشمزه پیشنهاد بدم.</p>
+        <textarea id="chefIngredients" class="chef-input" placeholder="مثلاً: تخم مرغ، گوجه، سیب زمینی، پیاز..."></textarea>
+        <button class="upload-btn chef-btn" id="chefSubmitBtn"><span>🍳</span> چی بپزم؟</button>
+    </div>
+    <div class="chef-image-wrapper">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f373.svg" alt="آشپز خانم کارتونی">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f468-200d-1f373.svg" alt="آشپز آقا کارتونی">
+    </div>
+    <p class="motivational-text chef-motivational">با هم بهترین آشپز میشیم! ✨👨‍🍳</p>
+    <div id="chefResultCard" class="result-card chef-result-card">
+        <div id="chefErrorBox" style="display:none; color: #d32f2f; text-align: center; font-weight: bold; margin-bottom: 10px; line-height: 1.5;"></div>
+        <div id="chefResultContent">
+            <div id="chefImageContainer" class="food-image-container">
+                <img id="chefImage" class="food-image" alt="عکس غذا">
+                <div id="chefNoImageMsg" class="no-image-msg" style="display: none;">
+                    ✅ دستور پخت با موفقیت آماده شد (متن در پایین).<br>
+                    🌟 برای مشاهده عکس غذا، لطفا اشتراک تهیه کنید. 🌟
+                    <br><br>
+                    <button class="upload-btn" onclick="openSubscriptionModal()" style="width: 90%; margin: 0 auto; font-size: 13px; background-color: var(--success);">خرید اشتراک</button>
                 </div>
-                <div class="result-item"><span class="result-title chef-result-title">🍽️ اسم غذا</span><p class="result-text" id="chef-name"></p></div>
-                <div class="result-item"><span class="result-title chef-result-title">🛒 مواد لازم</span><p class="result-text" id="chef-ingredients"></p></div>
-                <div class="result-item"><span class="result-title chef-result-title">👨‍🍳 دستور پخت</span><p class="result-text" id="chef-instructions"></p></div>
             </div>
+            <div class="result-item"><span class="result-title chef-result-title">🍽️ اسم غذا</span><p class="result-text" id="chef-name"></p></div>
+            <div class="result-item"><span class="result-title chef-result-title">🛒 مواد لازم</span><p class="result-text" id="chef-ingredients"></p></div>
+            <div class="result-item"><span class="result-title chef-result-title">👨‍🍳 دستور پخت</span><p class="result-text" id="chef-instructions"></p></div>
         </div>
     </div>
+</div>
 
-    <div id="shop" class="tab-content">
-        <h3 class="section-title" style="color: var(--shop-color);">فروشگاه همیار 🛍️</h3>
-        <div class="grid" id="shopGrid">
-            <div style="text-align:center; width:100%;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>
-        </div>
+<div id="shop" class="tab-content">
+    <h3 class="section-title" style="color: var(--shop-color);">فروشگاه همیار 🛍️</h3>
+    <div class="grid" id="shopGrid">
+        <div style="text-align:center; width:100%;"><div class="loader" style="width:30px; height:30px; border-width:4px; color: var(--shop-color);"></div></div>
     </div>
+</div>
 
-    <div class="tabs">
-        <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
-        <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم</button>
-        <button class="tab-btn repair-btn" onclick="switchTab('repair', this)"><span>🛠️</span> تعمیرکار</button>
-        <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکروکار</button>
-        <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز</button>
-        <button class="tab-btn shop-btn" onclick="switchTab('shop', this)"><span>🛍️</span> فروشگاه</button>
-    </div>
+<div class="tabs">
+    <button class="tab-btn gallery-btn active" onclick="switchTab('gallery', this)"><span>🏺</span> گالری</button>
+    <button class="tab-btn teacher-btn" onclick="switchTab('teacher', this)"><span>🎓</span> معلم</button>
+    <button class="tab-btn repair-btn" onclick="switchTab('repair', this)"><span>🛠️</span> تعمیرکار</button>
+    <button class="tab-btn tasks-btn" onclick="switchTab('tasks', this)"><span>🤝</span> میکروکار</button>
+    <button class="tab-btn chef-btn" onclick="switchTab('chef', this)"><span>👨‍🍳</span> آشپز</button>
+    <button class="tab-btn shop-btn" onclick="switchTab('shop', this)"><span>🛍️</span> فروشگاه</button>
+</div>
 <script>
     const BALE_SUPPORT_LINK = "https://ble.ir/diirinbot"; 
     const MAIN_SITE_URL = "https://ajnaseantik.ir"; 
@@ -485,225 +474,225 @@
             });
         } catch (error) { shopGrid.innerHTML = '<p style="text-align:center; width:100%; color:red; font-weight:bold;">خطا در دریافت محصولات.</p>'; }
     }
-imageInput.addEventListener('change', async function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const canProceed = await checkImageQuota();
-        if (!canProceed) { imageInput.value = ''; return; }
+            imageInput.addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const canProceed = await checkImageQuota();
+                if (!canProceed) { imageInput.value = ''; return; }
 
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const img = new Image();
-            img.onload = async function() {
-                const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                imagePreview.src = base64Image; imagePreview.style.display = 'block'; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
-                document.getElementById('uploadBtn').innerHTML = 'در حال بررسی... <div class="loader"></div>'; document.getElementById('uploadBtn').disabled = true;
-                try {
-                    const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image }) });
-                    const data = await response.json();
-                    if (response.ok) {
-                        document.getElementById('res-name').innerText = formatAIResponse(data.name); document.getElementById('res-period').innerText = formatAIResponse(data.period); document.getElementById('res-price').innerText = formatAIResponse(data.price_range); document.getElementById('res-auth').innerText = formatAIResponse(data.authenticity); document.getElementById('res-story').innerText = formatAIResponse(data.story); document.getElementById('res-disclaimer').innerText = formatAIResponse(data.disclaimer); resultCard.style.display = 'block';
-                    } else { resultContent.style.display = 'none'; errorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); errorBox.style.display = 'block'; resultCard.style.display = 'block'; }
-                } catch (error) { resultContent.style.display = 'none'; errorBox.innerText = 'ارتباط با سرور برقرار نشد.'; errorBox.style.display = 'block'; resultCard.style.display = 'block'; } 
-                finally { document.getElementById('uploadBtn').innerHTML = '<span>📸</span> عکس دیگه‌ای بذار'; document.getElementById('uploadBtn').disabled = false; }
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-const tutorImageBtn = document.getElementById('tutorImageBtn'); 
-const tutorImageInput = document.getElementById('tutorImageInput'); 
-const tutorInput = document.getElementById('tutorInput'); 
-const tutorSendBtn = document.getElementById('tutorSendBtn'); 
-const tutorChatMessages = document.getElementById('tutorChatMessages');
-
-let tutorChatHistory = [{ role: 'assistant', content: 'سلام! من معلم هوشمند شما هستم. هر سوال درسی داری بپرس، یا عکس مسئله رو بفرست تا برات حل کنم. 😊' }];
-
-function renderTutorChat() {
-    tutorChatMessages.innerHTML = '';
-    tutorChatHistory.forEach(msg => {
-        if (msg.role === 'user' && Array.isArray(msg.content)) {
-            const textPart = msg.content.find(c => c.type === 'text'); 
-            const imgPart = msg.content.find(c => c.type === 'image_url'); 
-            const userMsgDiv = document.createElement('div'); 
-            userMsgDiv.className = 'msg user'; 
-            userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : ''); 
-            tutorChatMessages.appendChild(userMsgDiv);
-        } else if (msg.role === 'user') { 
-            const userMsgDiv = document.createElement('div'); 
-            userMsgDiv.className = 'msg user'; 
-            userMsgDiv.innerText = msg.content; 
-            tutorChatMessages.appendChild(userMsgDiv); 
-        } else { 
-            const botMsgDiv = document.createElement('div'); 
-            botMsgDiv.className = 'msg assistant'; 
-            botMsgDiv.innerText = msg.content; 
-            tutorChatMessages.appendChild(botMsgDiv); 
-        }
-    });
-    tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
-}
-renderTutorChat();
-
-async function sendTutorMessage(text, imageBase64 = null) {
-    if (!text && !imageBase64) return;
-    let userContent = [];
-    if (text) userContent.push({ type: 'text', text });
-    if (imageBase64) userContent.push({ type: 'image_url', image_url: { url: imageBase64 } });
-    tutorChatHistory.push({ role: 'user', content: userContent.length === 1 && userContent[0].type === 'text' ? text : userContent }); renderTutorChat();
-    const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال فکر کردن...'; tutorChatMessages.appendChild(loadingDiv); tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
-    try {
-        const response = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text, imageBase64: imageBase64 }) });
-        const data = await response.json(); tutorChatMessages.removeChild(loadingDiv);
-        if (response.ok) { tutorChatHistory.push({ role: 'assistant', content: data.text }); renderTutorChat(); } 
-        else { const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'خطای سرور: ' + (data.error || 'نامشخص'); tutorChatMessages.appendChild(errorMsg); }
-    } catch (error) { tutorChatMessages.removeChild(loadingDiv); const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'ارتباط با سرور برقرار نشد.'; tutorChatMessages.appendChild(errorMsg); }
-}
-
-tutorSendBtn.addEventListener('click', () => { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } });
-tutorInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } } });
-
-tutorImageBtn.addEventListener('click', async () => {
-    const canProceed = await checkImageQuota();
-    if (canProceed) tutorImageInput.click();
-});
-
-tutorImageInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                sendTutorMessage(tutorInput.value.trim(), base64Image); tutorInput.value = '';
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-    tutorImageInput.value = ''; 
-});
-
-const repairUploadBtn = document.getElementById('repairUploadBtn'); const repairImageInput = document.getElementById('repairImageInput'); const repairImagePreview = document.getElementById('repairImagePreview'); const repairResultCard = document.getElementById('repairResultCard'); const repairErrorBox = document.getElementById('repairErrorBox'); const repairResultContent = document.getElementById('repairResultContent'); const repairDescription = document.getElementById('repairDescription'); const chatContainer = document.getElementById('chatContainer'); const chatMessages = document.getElementById('chatMessages'); const chatInput = document.getElementById('chatInput'); const chatSendBtn = document.getElementById('chatSendBtn'); const chatImageBtn = document.getElementById('chatImageBtn'); const chatImageInput = document.getElementById('chatImageInput'); let currentChatHistory = [];
-
-repairUploadBtn.addEventListener('click', () => { repairImageInput.click(); });
-repairImageInput.addEventListener('change', async function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const img = new Image();
-            img.onload = async function() {
-                const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                repairImagePreview.src = base64Image; repairImagePreview.style.display = 'block'; repairResultCard.style.display = 'none'; repairErrorBox.style.display = 'none'; repairResultContent.style.display = 'block'; chatContainer.style.display = 'none'; chatMessages.innerHTML = '';
-                repairUploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; repairUploadBtn.disabled = true;
-                try {
-                    const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image, description: repairDescription.value }) });
-                    const data = await response.json();
-                    if (response.ok) {
-                        document.getElementById('rep-problem').innerText = formatAIResponse(data.problem); document.getElementById('rep-action').innerText = formatAIResponse(data.initial_step); document.getElementById('rep-question').innerText = formatAIResponse(data.ask_user); document.getElementById('rep-cost').innerText = formatAIResponse(data.cost); document.getElementById('rep-warning').innerText = formatAIResponse(data.warning); repairResultCard.style.display = 'block';
-                        setTimeout(() => { repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
-                        currentChatHistory = [ { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] }, { role: 'assistant', content: JSON.stringify(data) } ];
-                        chatContainer.style.display = 'flex'; chatMessages.innerHTML = ''; const welcomeMsg = document.createElement('div'); welcomeMsg.className = 'msg assistant'; welcomeMsg.innerText = 'سلام! من اینجام تا قدم به قدم کمکت کنم.'; chatMessages.appendChild(welcomeMsg);
-                    } else { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; }
-                } catch (error) { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'ارتباط با سرور برقرار نشد.'; repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; } 
-                finally { repairUploadBtn.innerHTML = '<span>🛠️</span> عکس دیگه‌ای بذار'; repairUploadBtn.disabled = false; }
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-async function sendChatMessage() {
-    const question = chatInput.value.trim(); if (!question) return;
-    const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = question; chatMessages.appendChild(userMsgDiv); chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
-    currentChatHistory.push({ role: 'user', content: question });
-    const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال نوشتن...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-    try {
-        const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
-        const data = await response.json(); chatMessages.removeChild(loadingDiv);
-        if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
-        else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
-    } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
-chatImageBtn.addEventListener('click', () => chatImageInput.click());
-chatImageInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const img = new Image();
-            img.onload = async function() {
-                const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
-                const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = '📷 (یک عکس فرستادید)'; chatMessages.appendChild(userMsgDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-                currentChatHistory.push({ role: 'user', content: [ { type: 'text', text: 'عکس جدیدی از دستگاه فرستادم.' }, { type: 'image_url', image_url: { url: base64Image } } ] });
-                const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال بررسی عکس...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
-                try {
-                    const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
-                    const data = await response.json(); chatMessages.removeChild(loadingDiv);
-                    if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
-                    else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
-                } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-    chatImageInput.value = '';
-});
-
-async function loadTasks() {
-    const tasksList = document.getElementById('tasksList');
-    tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
-    try {
-        const response = await fetch('/api/tasks'); const tasks = await response.json(); tasksList.innerHTML = '';
-        if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-size:12px;">هنوز کاری ثبت نشده. اولین نفر باش!</p>'; return; }
-        tasks.forEach(task => {
-            tasksList.innerHTML += `<div class="task-card"><h4 class="task-title">${task.title}</h4><p class="task-desc">${task.description || ''}</p><p class="task-price">💰 ${task.price || 'توافقی'}</p><p class="task-contact">📞 ${task.contact}</p></div>`;
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const img = new Image();
+                    img.onload = async function() {
+                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        imagePreview.src = base64Image; imagePreview.style.display = 'block'; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
+                        document.getElementById('uploadBtn').innerHTML = 'در حال بررسی... <div class="loader"></div>'; document.getElementById('uploadBtn').disabled = true;
+                        try {
+                            const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image }) });
+                            const data = await response.json();
+                            if (response.ok) {
+                                document.getElementById('res-name').innerText = formatAIResponse(data.name); document.getElementById('res-period').innerText = formatAIResponse(data.period); document.getElementById('res-price').innerText = formatAIResponse(data.price_range); document.getElementById('res-auth').innerText = formatAIResponse(data.authenticity); document.getElementById('res-story').innerText = formatAIResponse(data.story); document.getElementById('res-disclaimer').innerText = formatAIResponse(data.disclaimer); resultCard.style.display = 'block';
+                            } else { resultContent.style.display = 'none'; errorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); errorBox.style.display = 'block'; resultCard.style.display = 'block'; }
+                        } catch (error) { resultContent.style.display = 'none'; errorBox.innerText = 'ارتباط با سرور برقرار نشد.'; errorBox.style.display = 'block'; resultCard.style.display = 'block'; } 
+                        finally { document.getElementById('uploadBtn').innerHTML = '<span>📸</span> عکس دیگه‌ای بذار'; document.getElementById('uploadBtn').disabled = false; }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
         });
-    } catch (error) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:red; font-size:12px;">خطا در دریافت اطلاعات</p>'; }
-}
 
-document.getElementById('submitTaskBtn').addEventListener('click', async () => {
-    const title = document.getElementById('taskTitle').value; const description = document.getElementById('taskDescription').value; const price = document.getElementById('taskPrice').value; const contact = document.getElementById('taskContact').value;
-    if (!title || !contact) { return alert('عنوان کار و شماره تماس الزامی است!'); }
-    const btn = document.getElementById('submitTaskBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
-    try {
-        const response = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, price, contact }) });
-        if (response.ok) {
-            alert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
-        } else { alert('خطا در ثبت کار.'); }
-    } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
-});
+        const tutorImageBtn = document.getElementById('tutorImageBtn'); 
+        const tutorImageInput = document.getElementById('tutorImageInput'); 
+        const tutorInput = document.getElementById('tutorInput'); 
+        const tutorSendBtn = document.getElementById('tutorSendBtn'); 
+        const tutorChatMessages = document.getElementById('tutorChatMessages');
 
-document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
-    const ingredients = document.getElementById('chefIngredients').value;
-    if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
-    const btn = document.getElementById('chefSubmitBtn'); const resultCard = document.getElementById('chefResultCard'); const errorBox = document.getElementById('chefErrorBox'); const resultContent = document.getElementById('chefResultContent'); const imgContainer = document.getElementById('chefImageContainer'); const chefImage = document.getElementById('chefImage'); const noImageMsg = document.getElementById('chefNoImageMsg'); const chefImageWrapper = document.querySelector('.chef-image-wrapper'); const chefMotivationalText = document.querySelector('.chef-motivational');
+        let tutorChatHistory = [{ role: 'assistant', content: 'سلام! من معلم هوشمند شما هستم. هر سوال درسی داری بپرس، یا عکس مسئله رو بفرست تا برات حل کنم. 😊' }];
 
-    let generateImage = false;
-    const canProceed = await checkImageQuota();
-    if (canProceed) generateImage = true;
+        function renderTutorChat() {
+            tutorChatMessages.innerHTML = '';
+            tutorChatHistory.forEach(msg => {
+                if (msg.role === 'user' && Array.isArray(msg.content)) {
+                    const textPart = msg.content.find(c => c.type === 'text'); 
+                    const imgPart = msg.content.find(c => c.type === 'image_url'); 
+                    const userMsgDiv = document.createElement('div'); 
+                    userMsgDiv.className = 'msg user'; 
+                    userMsgDiv.innerHTML = (textPart ? textPart.text + '<br>' : '') + (imgPart ? '📷 (عکس فرستاده شد)' : ''); 
+                    tutorChatMessages.appendChild(userMsgDiv);
+                } else if (msg.role === 'user') { 
+                    const userMsgDiv = document.createElement('div'); 
+                    userMsgDiv.className = 'msg user'; 
+                    userMsgDiv.innerText = msg.content; 
+                    tutorChatMessages.appendChild(userMsgDiv); 
+                } else { 
+                    const botMsgDiv = document.createElement('div'); 
+                    botMsgDiv.className = 'msg assistant'; 
+                    botMsgDiv.innerText = msg.content; 
+                    tutorChatMessages.appendChild(botMsgDiv); 
+                }
+            });
+            tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
+        }
+        renderTutorChat();
 
-    btn.innerHTML = 'در حال پختن... <div class="loader"></div>'; btn.disabled = true; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
-    if(chefImageWrapper) chefImageWrapper.style.display = 'none'; if(chefMotivationalText) chefMotivationalText.style.display = 'none';
-    try {
-        const response = await fetch('/api/chef', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: ingredients, generate_image: generateImage }) });
-        const data = await response.json();
-        if (response.ok) {
-                                document.getElementById('chef-name').innerText = formatAIResponse(data.food_name); 
+        async function sendTutorMessage(text, imageBase64 = null) {
+            if (!text && !imageBase64) return;
+            let userContent = [];
+            if (text) userContent.push({ type: 'text', text });
+            if (imageBase64) userContent.push({ type: 'image_url', image_url: { url: imageBase64 } });
+            tutorChatHistory.push({ role: 'user', content: userContent.length === 1 && userContent[0].type === 'text' ? text : userContent }); renderTutorChat();
+            const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال فکر کردن...'; tutorChatMessages.appendChild(loadingDiv); tutorChatMessages.scrollTop = tutorChatMessages.scrollHeight;
+            try {
+                const response = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: text, imageBase64: imageBase64 }) });
+                const data = await response.json(); tutorChatMessages.removeChild(loadingDiv);
+                if (response.ok) { tutorChatHistory.push({ role: 'assistant', content: data.text }); renderTutorChat(); } 
+                else { const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'خطای سرور: ' + (data.error || 'نامشخص'); tutorChatMessages.appendChild(errorMsg); }
+            } catch (error) { tutorChatMessages.removeChild(loadingDiv); const errorMsg = document.createElement('div'); errorMsg.className = 'msg assistant'; errorMsg.innerText = 'ارتباط با سرور برقرار نشد.'; tutorChatMessages.appendChild(errorMsg); }
+        }
+
+        tutorSendBtn.addEventListener('click', () => { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } });
+        tutorInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { const text = tutorInput.value.trim(); if (text) { sendTutorMessage(text); tutorInput.value = ''; } } });
+
+        tutorImageBtn.addEventListener('click', async () => {
+            const canProceed = await checkImageQuota();
+            if (canProceed) tutorImageInput.click();
+        });
+
+        tutorImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        sendTutorMessage(tutorInput.value.trim(), base64Image); tutorInput.value = '';
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            tutorImageInput.value = ''; 
+        });
+
+        const repairUploadBtn = document.getElementById('repairUploadBtn'); const repairImageInput = document.getElementById('repairImageInput'); const repairImagePreview = document.getElementById('repairImagePreview'); const repairResultCard = document.getElementById('repairResultCard'); const repairErrorBox = document.getElementById('repairErrorBox'); const repairResultContent = document.getElementById('repairResultContent'); const repairDescription = document.getElementById('repairDescription'); const chatContainer = document.getElementById('chatContainer'); const chatMessages = document.getElementById('chatMessages'); const chatInput = document.getElementById('chatInput'); const chatSendBtn = document.getElementById('chatSendBtn'); const chatImageBtn = document.getElementById('chatImageBtn'); const chatImageInput = document.getElementById('chatImageInput'); let currentChatHistory = [];
+
+        repairUploadBtn.addEventListener('click', () => { repairImageInput.click(); });
+        repairImageInput.addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const img = new Image();
+                    img.onload = async function() {
+                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        repairImagePreview.src = base64Image; repairImagePreview.style.display = 'block'; repairResultCard.style.display = 'none'; repairErrorBox.style.display = 'none'; repairResultContent.style.display = 'block'; chatContainer.style.display = 'none'; chatMessages.innerHTML = '';
+                        repairUploadBtn.innerHTML = 'در حال بررسی... <div class="loader"></div>'; repairUploadBtn.disabled = true;
+                        try {
+                            const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageBase64: base64Image, description: repairDescription.value }) });
+                            const data = await response.json();
+                            if (response.ok) {
+                                document.getElementById('rep-problem').innerText = formatAIResponse(data.problem); document.getElementById('rep-action').innerText = formatAIResponse(data.initial_step); document.getElementById('rep-question').innerText = formatAIResponse(data.ask_user); document.getElementById('rep-cost').innerText = formatAIResponse(data.cost); document.getElementById('rep-warning').innerText = formatAIResponse(data.warning); repairResultCard.style.display = 'block';
+                                setTimeout(() => { repairResultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+                                currentChatHistory = [ { role: 'user', content: [ { type: 'text', text: `وسیله: ${repairDescription.value}` }, { type: 'image_url', image_url: { url: base64Image } } ] }, { role: 'assistant', content: JSON.stringify(data) } ];
+                                chatContainer.style.display = 'flex'; chatMessages.innerHTML = ''; const welcomeMsg = document.createElement('div'); welcomeMsg.className = 'msg assistant'; welcomeMsg.innerText = 'سلام! من اینجام تا قدم به قدم کمکت کنم.'; chatMessages.appendChild(welcomeMsg);
+                            } else { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'خطا: ' + (data.error || 'نامشخص'); repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; }
+                        } catch (error) { repairResultContent.style.display = 'none'; repairErrorBox.innerText = 'ارتباط با سرور برقرار نشد.'; repairErrorBox.style.display = 'block'; repairResultCard.style.display = 'block'; } 
+                        finally { repairUploadBtn.innerHTML = '<span>🛠️</span> عکس دیگه‌ای بذار'; repairUploadBtn.disabled = false; }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function sendChatMessage() {
+            const question = chatInput.value.trim(); if (!question) return;
+            const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = question; chatMessages.appendChild(userMsgDiv); chatInput.value = ''; chatMessages.scrollTop = chatMessages.scrollHeight;
+            currentChatHistory.push({ role: 'user', content: question });
+            const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال نوشتن...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+            try {
+                const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
+                const data = await response.json(); chatMessages.removeChild(loadingDiv);
+                if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
+                else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
+            } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        chatSendBtn.addEventListener('click', sendChatMessage);
+        chatInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
+        chatImageBtn.addEventListener('click', () => chatImageInput.click());
+        chatImageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const img = new Image();
+                    img.onload = async function() {
+                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scale = MAX_WIDTH / img.width; canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        const userMsgDiv = document.createElement('div'); userMsgDiv.className = 'msg user'; userMsgDiv.innerText = '📷 (یک عکس فرستادید)'; chatMessages.appendChild(userMsgDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+                        currentChatHistory.push({ role: 'user', content: [ { type: 'text', text: 'عکس جدیدی از دستگاه فرستادم.' }, { type: 'image_url', image_url: { url: base64Image } } ] });
+                        const loadingDiv = document.createElement('div'); loadingDiv.className = 'msg assistant'; loadingDiv.innerHTML = '<div class="loader" style="width:15px; height:15px; border-width:2px;"></div> در حال بررسی عکس...'; chatMessages.appendChild(loadingDiv); chatMessages.scrollTop = chatMessages.scrollHeight;
+                        try {
+                            const response = await fetch('/api/repair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: currentChatHistory }) });
+                            const data = await response.json(); chatMessages.removeChild(loadingDiv);
+                            if (response.ok) { const botMsgDiv = document.createElement('div'); botMsgDiv.className = 'msg assistant'; botMsgDiv.innerText = data.text; chatMessages.appendChild(botMsgDiv); currentChatHistory.push({ role: 'assistant', content: data.text }); } 
+                            else { const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'متأسفم، مشکلی پیش اومد.'; chatMessages.appendChild(errorMsgDiv); }
+                        } catch (error) { chatMessages.removeChild(loadingDiv); const errorMsgDiv = document.createElement('div'); errorMsgDiv.className = 'msg assistant'; errorMsgDiv.innerText = 'ارتباط با سرور برقرار نشد.'; chatMessages.appendChild(errorMsgDiv); }
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            chatImageInput.value = '';
+        });
+
+        async function loadTasks() {
+            const tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = '<div style="text-align:center; width:100%;"><div class="loader"></div></div>';
+            try {
+                const response = await fetch('/api/tasks'); const tasks = await response.json(); tasksList.innerHTML = '';
+                if (tasks.length === 0) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:#777; font-size:12px;">هنوز کاری ثبت نشده. اولین نفر باش!</p>'; return; }
+                tasks.forEach(task => {
+                    tasksList.innerHTML += `<div class="task-card"><h4 class="task-title">${task.title}</h4><p class="task-desc">${task.description || ''}</p><p class="task-price">💰 ${task.price || 'توافقی'}</p><p class="task-contact">📞 ${task.contact}</p></div>`;
+                });
+            } catch (error) { tasksList.innerHTML = '<p style="text-align:center; width:100%; color:red; font-size:12px;">خطا در دریافت اطلاعات</p>'; }
+        }
+
+        document.getElementById('submitTaskBtn').addEventListener('click', async () => {
+            const title = document.getElementById('taskTitle').value; const description = document.getElementById('taskDescription').value; const price = document.getElementById('taskPrice').value; const contact = document.getElementById('taskContact').value;
+            if (!title || !contact) { return alert('عنوان کار و شماره تماس الزامی است!'); }
+            const btn = document.getElementById('submitTaskBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
+            try {
+                const response = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, price, contact }) });
+                if (response.ok) {
+                    alert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
+                } else { alert('خطا در ثبت کار.'); }
+            } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
+        });
+
+        document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
+            const ingredients = document.getElementById('chefIngredients').value;
+            if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
+            const btn = document.getElementById('chefSubmitBtn'); const resultCard = document.getElementById('chefResultCard'); const errorBox = document.getElementById('chefErrorBox'); const resultContent = document.getElementById('chefResultContent'); const imgContainer = document.getElementById('chefImageContainer'); const chefImage = document.getElementById('chefImage'); const noImageMsg = document.getElementById('chefNoImageMsg'); const chefImageWrapper = document.querySelector('.chef-image-wrapper'); const chefMotivationalText = document.querySelector('.chef-motivational');
+
+            let generateImage = false;
+            const canProceed = await checkImageQuota();
+            if (canProceed) generateImage = true;
+
+            btn.innerHTML = 'در حال پختن... <div class="loader"></div>'; btn.disabled = true; resultCard.style.display = 'none'; errorBox.style.display = 'none'; resultContent.style.display = 'block';
+            if(chefImageWrapper) chefImageWrapper.style.display = 'none'; if(chefMotivationalText) chefMotivationalText.style.display = 'none';
+            try {
+                const response = await fetch('/api/chef', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: ingredients, generate_image: generateImage }) });
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('chef-name').innerText = formatAIResponse(data.food_name); 
                     document.getElementById('chef-ingredients').innerText = formatAIResponse(data.ingredients_list); 
                     document.getElementById('chef-instructions').innerText = formatAIResponse(data.instructions);
                     
