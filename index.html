@@ -173,12 +173,60 @@
         .confirm-btn-yes:active { transform: scale(0.95); }
         .confirm-btn-no { background-color: #f0f0f0; color: #666; }
         .confirm-btn-no:active { transform: scale(0.95); }
+        
+        /* استایل مودال هشدار اختصاصی */
+        #customAlertModal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 6000; justify-content: center; align-items: center; }
+        .custom-alert-content { background: var(--card-bg); width: 85%; max-width: 320px; border-radius: 20px; padding: 25px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.3s; border: 2px solid var(--primary); }
+        .custom-alert-content p { color: var(--text-main); font-size: 15px; font-weight: bold; line-height: 1.8; margin: 0 0 20px 0; }
+        .custom-alert-btn { background-color: var(--primary); color: white; border: none; border-radius: 10px; padding: 12px 30px; font-family: inherit; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(212, 165, 116, 0.4); width: 100%; }
+        .custom-alert-btn:active { transform: scale(0.95); }
+
+        /* استایل صفحه لودینگ (Splash Screen) */
+        #splashScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5E6D3 100%);
+            z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease-out;
+        }
+        #splashScreen.hide { opacity: 0; pointer-events: none; }
+        .splash-logo-container {
+            width: 130px; height: 130px; border-radius: 50%;
+            background: white; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25), inset 0 -5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px; animation: pulse-logo 2.5s infinite ease-in-out;
+        }
+        .splash-logo { width: 85px; height: 85px; object-fit: contain; }
+        .splash-title { font-size: 32px; font-weight: 900; color: var(--primary); margin: 0; text-shadow: 2px 4px 8px rgba(0,0,0,0.08); letter-spacing: 1px; }
+        .splash-subtitle { font-size: 14px; color: #8B7355; font-weight: bold; margin-top: 8px; }
+        
+        /* لودر سه نقطه‌ای */
+        .dot-loader { display: flex; gap: 8px; margin-top: 35px; }
+        .dot-loader span {
+            width: 12px; height: 12px; border-radius: 50%; background-color: var(--primary);
+            display: inline-block; animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .dot-loader span:nth-child(1) { animation-delay: -0.32s; }
+        .dot-loader span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+        @keyframes pulse-logo { 0% { transform: scale(1); box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25); } 50% { transform: scale(1.05); box-shadow: 0 20px 45px rgba(212, 165, 116, 0.4); } 100% { transform: scale(1); box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25); } }
     </style>
 </head>
 <body>
+    <div id="splashScreen">
+        <div class="splash-logo-container">
+            <img src="https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/512/2602.png" alt="لوگو همیار" class="splash-logo">
+        </div>
+        <h1 class="splash-title">همیار زندگی</h1>
+        <p class="splash-subtitle">دستیار هوشمند شما در کارهای روزمره 🏺</p>
+        <div class="dot-loader">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
     <header>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
         <button class="install-btn" onclick="showInstallPrompt()"><span>📥</span> نصب اپلیکیشن</button>
+        <button id="profileBtn" onclick="openProfileModal()" style="position: absolute; top: 10px; right: 10px; background: white; border: 1px solid #ddd; border-radius: 20px; padding: 5px 12px; font-family: inherit; font-size: 11px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: var(--primary-dark); display: none; z-index: 100;">👤 پروفایل</button>
         <h1>همیار زندگی</h1>
         <p>دستیار هوشمند شما در کارهای روزمره 🏺</p>
     </header>
@@ -194,7 +242,6 @@
                 <li><button onclick="toggleMenu(); openRulesModal()"><i>📜</i> درباره ما و قوانین</button></li>
                 <li><a href="https://diirin.ir/bio/" target="_blank"><i>📞</i> پشتیبانی</a></li>
             </ul>
-            
             <div id="inviteBox" class="invite-box">
                 <p>🎁 با دعوت ۱۵ نفر از دوستانت، <strong>۳ ماه اشتراک رایگان</strong> بگیر!</p>
                 <p id="inviteCountText" style="font-weight: bold; color: #E74C3C;">دعوت‌های موفق شما: 0 از 15</p>
@@ -271,6 +318,26 @@
                 <button class="confirm-btn-yes" id="confirmPayBtn">تایید و انتقال به بله</button>
                 <button class="confirm-btn-no" onclick="closeCustomConfirm()">لغو</button>
             </div>
+        </div>
+    </div>
+
+    <div id="customAlertModal">
+        <div class="custom-alert-content">
+            <p id="customAlertText"></p>
+            <button class="custom-alert-btn" onclick="closeCustomAlert()">تایید</button>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+            <h2>👤 پروفایل من</h2>
+            <div id="profileInfo" style="text-align: right; font-size: 14px; line-height: 2;">
+                <p><strong>شماره موبایل:</strong> <span id="prof-phone">-</span></p>
+                <p><strong>وضعیت اشتراک:</strong> <span id="prof-sub">-</span></p>
+                <p><strong>دعوت‌های موفق:</strong> <span id="prof-invites">-</span></p>
+            </div>
+            <button class="upload-btn" onclick="closeProfileModal(); openSubscriptionModal()" style="background-color: var(--success); margin-top: 15px;">خرید / تمدید اشتراک</button>
         </div>
     </div>
     <div id="gallery" class="tab-content active">
@@ -428,16 +495,22 @@
 
     let deferredPrompt;
     const installBtn = document.querySelector('.install-btn');
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) { installBtn.style.display = 'none'; }
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) { 
+        installBtn.style.display = 'none'; 
+        document.getElementById('profileBtn').style.display = 'block';
+    }
 
     window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex'; });
-    window.addEventListener('appinstalled', (evt) => { installBtn.style.display = 'none'; });
+    window.addEventListener('appinstalled', (evt) => { 
+        installBtn.style.display = 'none'; 
+        document.getElementById('profileBtn').style.display = 'block'; 
+    });
 
     function showInstallPrompt() {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => { if (choiceResult.outcome === 'accepted') { console.log('User accepted'); } else { console.log('User dismissed'); } deferredPrompt = null; });
-        } else { alert('برای نصب اپلیکیشن، از منوی مرورگر خود گزینه «Add to Home Screen» را انتخاب کنید. 📲'); }
+        } else { showCustomAlert('برای نصب اپلیکیشن، از منوی مرورگر خود گزینه «Add to Home Screen» را انتخاب کنید. 📲'); }
     }
 
     if ('serviceWorker' in navigator) {
@@ -448,7 +521,7 @@
         const shareData = { title: 'همیار زندگی', text: 'دستیار هوشمند شما در کارهای روزمره! همین الان نصبش کن:', url: MAIN_SITE_URL };
         try {
             if (navigator.share) { await navigator.share(shareData); } 
-            else { await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`); alert('لینک اپلیکیشن کپی شد! می‌تونی برای دوستات بفرستی. 😊'); }
+            else { await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`); showCustomAlert('لینک اپلیکیشن کپی شد! می‌تونی برای دوستات بفرستی. 😊'); }
         } catch (err) { console.log('Error sharing:', err); }
     }
 
@@ -458,9 +531,32 @@
     function openRulesModal() { document.getElementById('rulesModal').style.display = 'flex'; }
     function closeRulesModal() { document.getElementById('rulesModal').style.display = 'none'; }
 
+    function showCustomAlert(message) {
+        document.getElementById('customAlertText').innerText = message;
+        document.getElementById('customAlertModal').style.display = 'flex';
+    }
+    function closeCustomAlert() {
+        document.getElementById('customAlertModal').style.display = 'none';
+    }
+
     function closeCustomConfirm() {
         document.getElementById('customConfirmModal').style.display = 'none';
     }
+
+    function openProfileModal() {
+        const savedPhone = localStorage.getItem('userPhone');
+        if (!savedPhone) { showCustomAlert('لطفاً ابتدا ثبت نام کنید.'); openRegisterModal(); return; }
+        document.getElementById('prof-phone').innerText = savedPhone;
+        fetch('/api/admin?action=list-users').then(res => res.json()).then(users => {
+            const user = users.find(u => u.phone === savedPhone);
+            if (user) {
+                document.getElementById('prof-sub').innerText = user.is_subscribed ? 'فعال ✅' : 'غیرفعال ❌';
+                document.getElementById('prof-invites').innerText = `${user.invite_count || 0} از 15`;
+            }
+        }).catch(() => { document.getElementById('prof-sub').innerText = 'خطا در دریافت اطلاعات'; });
+        document.getElementById('profileModal').style.display = 'flex';
+    }
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
 
     async function updateMenuAfterLogin() {
         const savedPhone = localStorage.getItem('userPhone');
@@ -488,13 +584,13 @@
         }
     }
 
-    function openRegisterModal() { toggleMenu(); const savedPhone = localStorage.getItem('userPhone'); if (savedPhone) { alert('شما با شماره ' + savedPhone + ' قبلاً ثبت نام کرده‌اید.'); return; } document.getElementById('registerModal').style.display = 'flex'; }
+    function openRegisterModal() { toggleMenu(); const savedPhone = localStorage.getItem('userPhone'); if (savedPhone) { showCustomAlert('شما با شماره ' + savedPhone + ' قبلاً ثبت نام کرده‌اید.'); return; } document.getElementById('registerModal').style.display = 'flex'; }
     function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
     function toggleCaptcha() { if (isCaptchaChecked) return; isCaptchaChecked = true; document.getElementById('captchaBox').classList.add('checked'); document.getElementById('phoneInputContainer').style.display = 'block'; }
 
     async function submitRegistration() {
         const phone = document.getElementById('regPhoneInput').value.trim();
-        if (!phone || phone.length < 10) { alert('لطفا یک شماره موبایل معتبر وارد کنید.'); return; }
+        if (!phone || phone.length < 10) { showCustomAlert('لطفا یک شماره موبایل معتبر وارد کنید.'); return; }
         const btn = document.getElementById('regSubmitBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
         const referred_by = localStorage.getItem('referred_by') || null;
         try {
@@ -502,23 +598,23 @@
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('userPhone', phone);
-                alert(data.message || 'ثبت نام با موفقیت انجام شد!');
+                showCustomAlert(data.message || 'ثبت نام با موفقیت انجام شد!');
                 closeRegisterModal();
                 updateMenuAfterLogin();
                 document.getElementById('regPhoneInput').value = ''; isCaptchaChecked = false; document.getElementById('captchaBox').classList.remove('checked'); document.getElementById('phoneInputContainer').style.display = 'none';
                 if (pendingPlan && pendingAmount) { setTimeout(() => { proceedToPayment(pendingPlan, pendingAmount); pendingPlan = null; pendingAmount = null; }, 500); }
-            } else { alert('خطا: ' + (data.error || 'مشکلی پیش آمد')); }
-        } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = 'ثبت نام و ورود'; btn.disabled = false; }
+            } else { showCustomAlert('خطا: ' + (data.error || 'مشکلی پیش آمد')); }
+        } catch (error) { showCustomAlert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = 'ثبت نام و ورود'; btn.disabled = false; }
     }
 
-    function copyInviteLink() { const link = document.getElementById('inviteLinkInput').value; navigator.clipboard.writeText(link).then(() => { alert('لینک دعوت شما کپی شد!'); }).catch(err => { alert('خطا در کپی.'); }); }
+    function copyInviteLink() { const link = document.getElementById('inviteLinkInput').value; navigator.clipboard.writeText(link).then(() => { showCustomAlert('لینک دعوت شما کپی شد!'); }).catch(err => { showCustomAlert('خطا در کپی.'); }); }
     window.onclick = function(event) { const menuModal = document.getElementById('menuModal'); const regModal = document.getElementById('registerModal'); const subModal = document.getElementById('subscriptionModal'); const rulesModal = document.getElementById('rulesModal'); if (event.target == menuModal) { menuModal.style.display = 'none'; } if (event.target == regModal) { regModal.style.display = 'none'; } if (event.target == subModal) { subModal.style.display = 'none'; } if (event.target == rulesModal) { rulesModal.style.display = 'none'; } }
 
     function selectGateway(planName, amount) {
         const savedPhone = localStorage.getItem('userPhone');
         if (!savedPhone) { 
             pendingPlan = planName; pendingAmount = amount; 
-            closeSubscriptionModal(); alert('برای خرید اشتراک، ابتدا باید ثبت نام کنید.'); 
+            closeSubscriptionModal(); showCustomAlert('برای خرید اشتراک، ابتدا باید ثبت نام کنید.'); 
             openRegisterModal(); 
         } else { 
             proceedToPayment(planName, amount); 
@@ -557,17 +653,27 @@
             if (res.ok && data.link) {
                 window.location.href = data.link; 
             } else {
-                alert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
+                showCustomAlert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }
         } catch (error) {
-            alert('ارتباط با سرور برقرار نشد.');
+            showCustomAlert('ارتباط با سرور برقرار نشد.');
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
     });
-            updateMenuAfterLogin();
+            window.addEventListener('load', () => {
+            const splash = document.getElementById('splashScreen');
+            if (splash) {
+                setTimeout(() => {
+                    splash.classList.add('hide');
+                    setTimeout(() => { splash.style.display = 'none'; }, 600);
+                }, 1500);
+            }
+        });
+
+        updateMenuAfterLogin();
         document.getElementById('uploadBtn').addEventListener('click', () => { imageInput.click(); });
 
         async function checkImageQuota() {
@@ -576,7 +682,7 @@
             try {
                 const res = await fetch('/api/user?action=check-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
                 const data = await res.json();
-                if (!data.allowed) { alert('سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس بیشتر، لطفا اشتراک تهیه کنید.'); openSubscriptionModal(); return false; }
+                if (!data.allowed) { showCustomAlert('سهمیه ۳ بار ارسال عکس شما تمام شده است. برای ارسال عکس بیشتر، لطفا اشتراک تهیه کنید.'); openSubscriptionModal(); return false; }
                 return true;
             } catch (e) { console.log('Error checking quota', e); return true; }
         }
@@ -820,19 +926,19 @@
 
         document.getElementById('submitTaskBtn').addEventListener('click', async () => {
             const title = document.getElementById('taskTitle').value; const description = document.getElementById('taskDescription').value; const price = document.getElementById('taskPrice').value; const contact = document.getElementById('taskContact').value;
-            if (!title || !contact) { return alert('عنوان کار و شماره تماس الزامی است!'); }
+            if (!title || !contact) { return showCustomAlert('عنوان کار و شماره تماس الزامی است!'); }
             const btn = document.getElementById('submitTaskBtn'); btn.innerHTML = 'در حال ثبت... <div class="loader"></div>'; btn.disabled = true;
             try {
                 const response = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, price, contact }) });
                 if (response.ok) {
-                    alert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
-                } else { alert('خطا در ثبت کار.'); }
-            } catch (error) { alert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
+                    showCustomAlert('کار شما با موفقیت ثبت شد!'); document.getElementById('taskTitle').value = ''; document.getElementById('taskDescription').value = ''; document.getElementById('taskPrice').value = ''; document.getElementById('taskContact').value = ''; loadTasks();
+                } else { showCustomAlert('خطا در ثبت کار.'); }
+            } catch (error) { showCustomAlert('ارتباط با سرور برقرار نشد.'); } finally { btn.innerHTML = '<span>📝</span> ثبت کار در سایت'; btn.disabled = false; }
         });
 
         document.getElementById('chefSubmitBtn').addEventListener('click', async () => {
             const ingredients = document.getElementById('chefIngredients').value;
-            if (!ingredients) return alert('لطفاً موادی که داری رو بنویس!');
+            if (!ingredients) return showCustomAlert('لطفاً موادی که داری رو بنویس!');
             const btn = document.getElementById('chefSubmitBtn'); const resultCard = document.getElementById('chefResultCard'); const errorBox = document.getElementById('chefErrorBox'); const resultContent = document.getElementById('chefResultContent'); const imgContainer = document.getElementById('chefImageContainer'); const chefImage = document.getElementById('chefImage'); const noImageMsg = document.getElementById('chefNoImageMsg'); const chefImageWrapper = document.querySelector('.chef-image-wrapper'); const chefMotivationalText = document.querySelector('.chef-motivational');
 
             let generateImage = false;
