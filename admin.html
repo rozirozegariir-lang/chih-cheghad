@@ -171,7 +171,22 @@
         <div id="toolsPanel" class="inner-panel">
             <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>ابزارهای مدیریتی</h3></div>
             
-            <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 5px;">🌐 هاست و دامنه:</h4>
+            <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 5px;">🔗 آپلود فایل و گرفتن لینک:</h4>
+            <a href="https://tmpfiles.org" target="_blank" class="tool-card"><span>📤 Tmpfiles (آپلود عکس و فیلم)</span><span>↗</span></a>
+            <a href="https://imgur.com/upload" target="_blank" class="tool-card"><span>🖼️ Imgur (آپلود عکس)</span><span>↗</span></a>
+            <a href="https://streamable.com" target="_blank" class="tool-card"><span>🎬 Streamable (آپلود فیلم)</span><span>↗</span></a>
+
+            <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 20px;">🎨 ابزارهای تولید عکس:</h4>
+            <a href="https://www.bing.com/images/create" target="_blank" class="tool-card"><span>🖼️ Bing Image Creator (رایگان)</span><span>↗</span></a>
+            <a href="https://leonardo.ai" target="_blank" class="tool-card"><span>🎨 Leonardo AI</span><span>↗</span></a>
+            <a href="https://www.canva.com/ai-image-generator/" target="_blank" class="tool-card"><span>🖌️ Canva AI</span><span>↗</span></a>
+
+            <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 20px;">🎬 ابزارهای تولید فیلم:</h4>
+            <a href="https://runwayml.com" target="_blank" class="tool-card"><span>🎥 Runway ML</span><span>↗</span></a>
+            <a href="https://pika.art" target="_blank" class="tool-card"><span>📽️ Pika Labs</span><span>↗</span></a>
+            <a href="https://www.capcut.com" target="_blank" class="tool-card"><span>✂️ CapCut (تدوین فیلم)</span><span>↗</span></a>
+
+            <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 20px;">🌐 هاست و دامنه:</h4>
             <a href="https://vercel.com/dashboard" target="_blank" class="tool-card"><span>▲ داشبورد Vercel</span><span>↗</span></a>
             <a href="https://github.com/rozirozegariir-lang/chih-cheghad" target="_blank" class="tool-card"><span>🐙 مخزن گیت‌هاب</span><span>↗</span></a>
             <a href="https://diirin.ir/devdor/" target="_blank" class="tool-card"><span>🛠️ پنل کنترل دیرین</span><span>↗</span></a>
@@ -284,7 +299,7 @@
         if (!confirm('حذف این محصول؟')) return;
         try { const res = await fetch(`/api/products?id=${id}`, { method: 'DELETE' }); if (res.ok) loadProductsList(); } catch (e) { alert('خطا'); }
     }
-                 async function addProduct() {
+                   async function addProduct() {
             const title = document.getElementById('prodTitle').value.trim(); const price = document.getElementById('prodPrice').value.trim();
             const imgFile = document.getElementById('prodImgFile').files[0]; const imgUrlInput = document.getElementById('prodImgUrl').value.trim();
             const vidFile = document.getElementById('prodVidFile').files[0]; const vidUrlInput = document.getElementById('prodVidUrl').value.trim();
@@ -297,19 +312,17 @@
             try {
                 if (imgFile) { 
                     btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
-                    const fd = new FormData(); fd.append('file', imgFile); 
-                    const res = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fd }); 
+                    const res = await fetch(`/api/upload?filename=${encodeURIComponent(imgFile.name)}&contentType=${encodeURIComponent(imgFile.type)}`, { method: 'POST', body: imgFile }); 
                     const data = await res.json(); 
-                    if (data.status === 'success') { finalImageUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/'); } 
-                    else { throw new Error('آپلود عکس ناموفق بود'); }
+                    if (res.ok) { finalImageUrl = data.url; } 
+                    else { throw new Error('آپلود عکس ناموفق بود: ' + (data.error || 'نامشخص')); }
                 }
                 if (vidFile) { 
                     btn.innerHTML = 'آپلود ویدیو... <div class="loader"></div>'; 
-                    const fd = new FormData(); fd.append('file', vidFile); 
-                    const res = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fd }); 
+                    const res = await fetch(`/api/upload?filename=${encodeURIComponent(vidFile.name)}&contentType=${encodeURIComponent(vidFile.type)}`, { method: 'POST', body: vidFile }); 
                     const data = await res.json(); 
-                    if (data.status === 'success') { finalVideoUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/'); } 
-                    else { throw new Error('آپلود ویدیو ناموفق بود'); }
+                    if (res.ok) { finalVideoUrl = data.url; } 
+                    else { throw new Error('آپلود ویدیو ناموفق بود: ' + (data.error || 'نامشخص')); }
                 }
                 
                 btn.innerHTML = 'ذخیره... <div class="loader"></div>';
@@ -351,11 +364,10 @@
             try {
                 if (imgFile) { 
                     btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
-                    const fd = new FormData(); fd.append('file', imgFile); 
-                    const res = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fd }); 
+                    const res = await fetch(`/api/upload?filename=${encodeURIComponent(imgFile.name)}&contentType=${encodeURIComponent(imgFile.type)}`, { method: 'POST', body: imgFile }); 
                     const data = await res.json(); 
-                    if (data.status === 'success') { finalImageUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/'); } 
-                    else { throw new Error('آپلود عکس ناموفق بود'); }
+                    if (res.ok) { finalImageUrl = data.url; } 
+                    else { throw new Error('آپلود عکس ناموفق بود: ' + (data.error || 'نامشخص')); }
                 }
                 
                 btn.innerHTML = 'ذخیره... <div class="loader"></div>';
@@ -420,4 +432,4 @@
         }
     </script>
 </body>
-</html>   
+</html> 
