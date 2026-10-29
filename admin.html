@@ -172,7 +172,7 @@
             <div class="panel-header"><button class="back-btn" onclick="closePanel()">➔</button><h3>ابزارهای مدیریتی</h3></div>
             
             <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px; margin-top: 5px;">🔗 آپلود فایل و گرفتن لینک:</h4>
-            <a href="https://postimages.org" target="_blank" class="tool-card"><span>🖼️ PostImages (آپلود عکس)</span><span>↗</span></a>
+            <a href="https://imglink.cc" target="_blank" class="tool-card"><span>🖼️ ImgLink (آپلود عکس)</span><span>↗</span></a>
             <a href="https://pone.rs" target="_blank" class="tool-card"><span>🎬 Pone.rs (آپلود فیلم)</span><span>↗</span></a>
             <a href="https://tmpfiles.org" target="_blank" class="tool-card"><span>📤 Tmpfiles (آپلود عکس و فیلم)</span><span>↗</span></a>
 
@@ -434,11 +434,25 @@
                 list.innerHTML = '';
                 if (tasks.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاری ثبت نشده است.</p>'; return; }
                 tasks.forEach(task => {
-                    list.innerHTML += `<div class="manage-card"><h4>${task.title}</h4><p>${task.description || ''}</p><p>💰 ${task.price || 'توافقی'}</p><p>📞 ${task.contact}</p></div>`;
+                    list.innerHTML += `<div class="manage-card"><h4>${task.title}</h4><p>${task.description || ''}</p><p>💰 ${task.price || 'توافقی'}</p><p>📞 ${task.contact}</p><div style="margin-top: 10px; display: flex; gap: 10px;"><button class="action-btn btn-success" onclick="editTask('${task.id}', '${task.title}', '${task.description || ''}', '${task.price || ''}', '${task.contact}')">ویرایش</button><button class="action-btn btn-danger" onclick="deleteTask('${task.id}')">حذف</button></div></div>`;
                 });
             } catch (error) { list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>'; }
+        }
+
+        async function deleteTask(id) {
+            if (!confirm('حذف این کار؟')) return;
+            try {
+                const res = await fetch(`/api/tasks?id=${id}`, { method: 'DELETE' });
+                if (res.ok) loadAdminTasks();
+                else alert('خطا در حذف کار');
+            } catch (e) { alert('خطا در ارتباط با سرور'); }
+        }
+
+        function editTask(id, title, desc, price, contact) {
+            // فعلاً یک پیام ساده برای ویرایش نمایش می‌دهیم. در آینده می‌توانیم مودال ویرایش بسازیم.
+            alert('برای ویرایش کار با شناسه ' + id + '، لطفاً به دیتابیس مراجعه کنید یا کد مودال ویرایش را اضافه کنید.');
+            // اینجا می‌توانید یک مودال باز کنید که فیلدها را پر کند و سپس با متد PUT به سرور بفرستد.
         }
     </script>
 </body>
 </html>
-    
