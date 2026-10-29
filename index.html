@@ -474,7 +474,7 @@
 </div>
 <script>
     const BALE_SUPPORT_LINK = "https://ble.ir/diirinbot"; 
-    const MAIN_SITE_URL = "https://ajnaseantik.ir"; 
+    const MAIN_SITE_URL = "https://chih-cheghad.vercel.app"; 
 
     let isSubscribed = false; 
     let isCaptchaChecked = false;
@@ -650,10 +650,24 @@
             });
             const data = await res.json();
             
-            if (res.ok && data.link) {
-                window.location.href = data.link; 
+            if (res.ok && data.success) {
+                closeCustomConfirm();
+                showCustomAlert('فاکتور پرداخت به ربات بله شما ارسال شد. لطفاً به بله بروید و پرداخت را تکمیل کنید.');
+            } else if (res.ok && data.link) {
+                window.location.href = data.link;
             } else {
-                showCustomAlert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
+                if (data.error && data.error.includes('استارت')) {
+                    const startLink = `https://ble.ir/diirinbot?start=${savedPhone}`;
+                    closeCustomConfirm();
+                    showCustomAlert('برای پرداخت، ابتدا باید در ربات بله استارت بزنید. روی دکمه تایید بزنید تا به ربات منتقل شوید.');
+                    setTimeout(() => {
+                        if(confirm('آیا می‌خواهید به ربات بله منتقل شوید؟')) {
+                            window.open(startLink, '_blank');
+                        }
+                    }, 1000);
+                } else {
+                    showCustomAlert('خطا در ایجاد درگاه پرداخت: ' + (data.error || 'ناشناخته'));
+                }
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }
