@@ -6,15 +6,21 @@ module.exports = async function handler(req, res) {
   const client = await pool.connect();
 
   try {
-    // 1. بررسی سهمیه عکس
+    // 1. بررسی سهمیه عکس (با در نظر گرفتن تاریخ انقضای اشتراک)
     if (action === 'check-image') {
       if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
       const { phone } = req.body;
       if (!phone) return res.status(400).json({ error: 'شماره الزامی است' });
-      const userRes = await client.query('SELECT is_subscribed, image_uses FROM users WHERE phone = $1', [phone]);
+      
+      const userRes = await client.query('SELECT is_subscribed, subscription_end_date, image_uses FROM users WHERE phone = $1', [phone]);
       if (userRes.rows.length === 0) return res.status(404).json({ error: 'کاربر یافت نشد' });
+      
       const user = userRes.rows[0];
-      if (user.is_subscribed) return res.status(200).json({ allowed: true });
+      const now = new Date();
+      const isActive = user.is_subscribed && user.subscription_end_date && new Date(user.subscription_end_date) > now;
+      
+      if (isActive) return res.status(200).json({ allowed: true });
+      
       const currentUses = user.image_uses || 0;
       if (currentUses >= 3) return res.status(200).json({ allowed: false, message: 'سهمیه ۳ بار شما تمام شده است.' });
       await client.query('UPDATE users SET image_uses = COALESCE(image_uses, 0) + 1 WHERE phone = $1', [phone]);
@@ -32,7 +38,6 @@ module.exports = async function handler(req, res) {
         return res.status(500).json({ error: 'توکن‌های پرداخت تنظیم نشده‌اند' });
       }
 
-      // دریافت chat_id کاربر از دیتابیس
       const userRes = await client.query('SELECT chat_id FROM users WHERE phone = $1', [phone]);
       if (userRes.rows.length === 0) {
         return res.status(404).json({ error: 'کاربر یافت نشد.' });
@@ -47,7 +52,7 @@ module.exports = async function handler(req, res) {
         chat_id: chatId,
         title: `اشتراک ${planName} همیار زندگی`,
         description: `پرداخت برای فعال‌سازی اشتراک ${planName}`,
-        payload: `${phone}_${Date.now()}`, // یکتا کردن payload برای جلوگیری از خطای فاکتور تکراری
+        payload: `${phone}_${Date.now()}`,
         provider_token: providerToken,
         currency: 'IRR',
         prices: [{ label: planName, amount: parseInt(amount) * 10 }]
@@ -84,8 +89,12 @@ module.exports = async function handler(req, res) {
       if (referred_by) {
         await client.query('UPDATE users SET invite_count = invite_count + 1 WHERE phone = $1', [referred_by]);
         const refCheck = await client.query('SELECT invite_count FROM users WHERE phone = $1', [referred_by]);
+        
+        // اگر کاربر ۱۵ نفر را دعوت کرد، اشتراک ۳ ماهه فعال شود
         if (refCheck.rows[0].invite_count >= 15) {
-          await client.query('UPDATE users SET is_subscribed = true WHERE phone = $1', [referred_by]);
+          const endDate = new Date();
+          endDate.setMonth(endDate.getMonth() + 3); // ۳ ماه بعد
+          await client.query('UPDATE users SET is_subscribed = true, subscription_end_date = $1 WHERE phone = $2', [endDate, referred_by]);
         }
       }
       
