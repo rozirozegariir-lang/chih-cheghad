@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
         chat_id: chatId,
         title: `اشتراک ${planName} همیار زندگی`,
         description: `پرداخت برای فعال‌سازی اشتراک ${planName}`,
-        payload: phone,
+        payload: `${phone}_${Date.now()}`, // یکتا کردن payload برای جلوگیری از خطای فاکتور تکراری
         provider_token: providerToken,
         currency: 'IRR',
         prices: [{ label: planName, amount: parseInt(amount) * 10 }]
