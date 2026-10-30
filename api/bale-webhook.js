@@ -24,14 +24,13 @@ module.exports = async function handler(req, res) {
     const payment = message.successful_payment;
     const parts = payment.invoice_payload.split('_');
     const phone = parts[0];
+    const planName = parts[2] || '۱ ماهه';
     
-    // تعیین مدت اشتراک بر اساس مبلغ پرداختی (به تومان)
-    // مبلغ در فاکتور به ریال ذکر شده، پس تقسیم بر ۱۰ می‌کنیم
-    const amountToman = payment.total_amount / 10;
     let months = 1;
-    if (amountToman >= 270000) months = 12;
-    else if (amountToman >= 190000) months = 6;
-    else if (amountToman >= 95000) months = 3;
+    if (planName.includes('سال')) months = 12;
+    else if (planName.includes('۶')) months = 6;
+    else if (planName.includes('۳')) months = 3;
+    else months = 1;
 
     try {
       const client = await pool.connect();
@@ -41,6 +40,23 @@ module.exports = async function handler(req, res) {
       await client.query('UPDATE users SET is_subscribed = true, subscription_end_date = $1 WHERE phone = $2', [endDate, phone]);
       client.release();
       console.log(`✅ اشتراک ${months} ماهه کاربر ${phone} فعال شد.`);
+
+      // ارسال پیام تایید با دکمه بازگشت به سایت
+      if (token) {
+        await fetch(`https://tapi.bale.ai/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: message.chat.id,
+            text: `✅ پرداخت شما با موفقیت انجام شد!\nاشتراک ${months} ماهه شما فعال گردید.\nحالا می‌توانید به سایت برگردید و از تمام امکانات استفاده کنید.`,
+            reply_markup: {
+              inline_keyboard: [[
+                { text: '🚀 بازگشت به سایت همیار زندگی', url: 'https://chih-cheghad.vercel.app' }
+              ]]
+            }
+          })
+        });
+      }
     } catch (error) {
       console.error('خطا در فعال‌سازی اشتراک:', error);
     }
@@ -72,7 +88,12 @@ module.exports = async function handler(req, res) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: chatId,
-            text: 'سلام! به ربات همیار زندگی خوش آمدید. ✅\nحساب شما با موفقیت به سایت متصل شد. اکنون می‌توانید از طریق سایت، اشتراک خود را خریداری کنید.'
+            text: 'سلام! به ربات همیار زندگی خوش آمدید. ✅\nحساب شما با موفقیت به سایت متصل شد. اکنون می‌توانید از طریق سایت، اشتراک خود را خریداری کنید.',
+            reply_markup: {
+              inline_keyboard: [[
+                { text: '🚀 بازگشت به سایت همیار زندگی', url: 'https://chih-cheghad.vercel.app' }
+              ]]
+            }
           })
         });
       }
