@@ -528,7 +528,14 @@
         fetch('/api/admin?action=list-users').then(res => res.json()).then(users => {
             const user = users.find(u => u.phone === savedPhone);
             if (user) {
-                document.getElementById('prof-sub').innerText = user.is_subscribed ? 'فعال ✅' : 'غیرفعال ❌';
+                const now = new Date();
+                const isActive = user.is_subscribed && user.subscription_end_date && new Date(user.subscription_end_date) > now;
+                document.getElementById('prof-sub').innerText = isActive ? 'فعال ✅' : 'غیرفعال ❌';
+                if (isActive) {
+                    const endDate = new Date(user.subscription_end_date);
+                    const endStr = endDate.toLocaleDateString('fa-IR');
+                    document.getElementById('prof-sub').innerText += ` (تا ${endStr})`;
+                }
                 document.getElementById('prof-invites').innerText = `${user.invite_count || 0} از 15`;
             }
         }).catch(() => { document.getElementById('prof-sub').innerText = 'خطا در دریافت اطلاعات'; });
@@ -539,7 +546,6 @@
     async function updateMenuAfterLogin() {
         const savedPhone = localStorage.getItem('userPhone');
         if (savedPhone) { 
-            // بررسی اینکه آیا کاربر هنوز توی دیتابیس وجود دارد یا نه
             fetch('/api/admin?action=list-users').then(res => res.json()).then(users => {
                 const userExists = users.some(u => u.phone === savedPhone);
                 if (!userExists) {
@@ -559,7 +565,9 @@
                     const users = await res.json();
                     const user = users.find(u => u.phone === savedPhone);
                     if(user) {
-                        isSubscribed = user.is_subscribed;
+                        const now = new Date();
+                        const isActive = user.is_subscribed && user.subscription_end_date && new Date(user.subscription_end_date) > now;
+                        isSubscribed = isActive;
                         document.getElementById('inviteCountText').innerText = `دعوت‌های موفق شما: ${user.invite_count || 0} از 15`;
                         if (isSubscribed) {
                             document.getElementById('inviteCountText').innerText = '🎉 تبریک! اشتراک شما فعال است.';
