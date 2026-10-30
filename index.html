@@ -184,43 +184,21 @@
         /* استایل صفحه لودینگ (Splash Screen) */
         #splashScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #FFF8F0 0%, #F5E6D3 100%);
-            z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-color: #FFD700; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease-out;
         }
         #splashScreen.hide { opacity: 0; pointer-events: none; }
-        .splash-logo-container {
-            width: 130px; height: 130px; border-radius: 50%;
-            background: white; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25), inset 0 -5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px; animation: pulse-logo 2.5s infinite ease-in-out;
-        }
-        .splash-logo { width: 85px; height: 85px; object-fit: contain; }
-        .splash-title { font-size: 32px; font-weight: 900; color: var(--primary); margin: 0; text-shadow: 2px 4px 8px rgba(0,0,0,0.08); letter-spacing: 1px; }
-        .splash-subtitle { font-size: 14px; color: #8B7355; font-weight: bold; margin-top: 8px; }
-        
-        /* لودر سه نقطه‌ای */
-        .dot-loader { display: flex; gap: 8px; margin-top: 35px; }
-        .dot-loader span {
-            width: 12px; height: 12px; border-radius: 50%; background-color: var(--primary);
-            display: inline-block; animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .dot-loader span:nth-child(1) { animation-delay: -0.32s; }
-        .dot-loader span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
-        @keyframes pulse-logo { 0% { transform: scale(1); box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25); } 50% { transform: scale(1.05); box-shadow: 0 20px 45px rgba(212, 165, 116, 0.4); } 100% { transform: scale(1); box-shadow: 0 15px 35px rgba(212, 165, 116, 0.25); } }
+        .splash-title { font-size: 42px; font-weight: 900; color: #4A3728; margin: 0; text-shadow: 2px 4px 8px rgba(0,0,0,0.1); letter-spacing: 2px; }
+        .splash-ad { font-size: 16px; color: #8B7355; font-weight: bold; margin-top: 20px; margin-bottom: 40px; }
+        .splash-spinner { width: 40px; height: 40px; border: 4px solid rgba(0,0,0,0.1); border-top: 4px solid #4A3728; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div id="splashScreen">
-        <div class="splash-logo-container">
-            <img src="https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/512/2602.png" alt="لوگو همیار" class="splash-logo">
-        </div>
         <h1 class="splash-title">همیار زندگی</h1>
-        <p class="splash-subtitle">دستیار هوشمند شما در کارهای روزمره 🏺</p>
-        <div class="dot-loader">
-            <span></span><span></span><span></span>
-        </div>
+        <p class="splash-ad">دستیار هوشمند شما در کارهای روزمره</p>
+        <div class="splash-spinner"></div>
     </div>
 
     <header>
@@ -561,6 +539,15 @@
     async function updateMenuAfterLogin() {
         const savedPhone = localStorage.getItem('userPhone');
         if (savedPhone) { 
+            // بررسی اینکه آیا کاربر هنوز توی دیتابیس وجود دارد یا نه
+            fetch('/api/admin?action=list-users').then(res => res.json()).then(users => {
+                const userExists = users.some(u => u.phone === savedPhone);
+                if (!userExists) {
+                    localStorage.removeItem('userPhone');
+                    window.location.reload();
+                }
+            }).catch(() => {});
+
             document.getElementById('menuRegisterBtn').innerHTML = `<i>👤</i> حساب کاربری: ${savedPhone}`; 
             document.getElementById('inviteBox').style.display = 'block';
             const cleanPhone = savedPhone.replace(/[^0-9]/g, ''); 
