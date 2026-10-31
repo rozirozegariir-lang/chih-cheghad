@@ -6,7 +6,7 @@ module.exports = async function handler(req, res) {
   const client = await pool.connect();
 
   try {
-    // 1. بررسی سهمیه عکس (با در نظر گرفتن تاریخ انقضای اشتراک)
+    // 1. بررسی سهمیه عکس
     if (action === 'check-image') {
       if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
       const { phone } = req.body;
@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ allowed: true, remaining: 3 - (currentUses + 1) });
     }
 
-    // 2. ساخت فاکتور پرداخت (ارسال به چت بله)
+    // 2. ساخت فاکتور پرداخت
     if (action === 'create-invoice') {
       if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
       const { phone, amount, planName } = req.body;
@@ -45,14 +45,14 @@ module.exports = async function handler(req, res) {
       
       const chatId = userRes.rows[0].chat_id;
       if (!chatId) {
-        return res.status(400).json({ error: 'کاربر در ربات بله استارت نزده است. لطفاً ابتدا ربات را استارت کنید.' });
+        return res.status(400).json({ error: 'کاربر در ربات بله استارت نزده است.' });
       }
 
       const payload = {
         chat_id: chatId,
         title: `اشتراک ${planName} همیار زندگی`,
         description: `پرداخت برای فعال‌سازی اشتراک ${planName}`,
-        payload: `${phone}_${Date.now()}`,
+        payload: `${phone}_${Date.now()}_${planName}`,
         provider_token: providerToken,
         currency: 'IRR',
         prices: [{ label: planName, amount: parseInt(amount) * 10 }]
@@ -67,7 +67,7 @@ module.exports = async function handler(req, res) {
         
         const baleData = await baleRes.json();
         if (baleData.ok) {
-          return res.status(200).json({ success: true, message: 'فاکتور به ربات بله شما ارسال شد.' });
+          return res.status(200).json({ success: true, message: 'فاکتور ارسال شد.' });
         } else {
           return res.status(400).json({ error: baleData.description || 'خطا در ارسال فاکتور' });
         }
@@ -90,10 +90,9 @@ module.exports = async function handler(req, res) {
         await client.query('UPDATE users SET invite_count = invite_count + 1 WHERE phone = $1', [referred_by]);
         const refCheck = await client.query('SELECT invite_count FROM users WHERE phone = $1', [referred_by]);
         
-        // اگر کاربر ۱۵ نفر را دعوت کرد، اشتراک ۳ ماهه فعال شود
         if (refCheck.rows[0].invite_count >= 15) {
           const endDate = new Date();
-          endDate.setMonth(endDate.getMonth() + 3); // ۳ ماه بعد
+          endDate.setMonth(endDate.getMonth() + 3);
           await client.query('UPDATE users SET is_subscribed = true, subscription_end_date = $1 WHERE phone = $2', [endDate, referred_by]);
         }
       }
