@@ -204,6 +204,19 @@
             <a href="https://ble.ir/diirinbot" target="_blank" class="tool-card"><span>💬 ربات بله (Bale)</span><span>↗</span></a>
         </div>
     </div>
+
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditTaskModal()">&times;</span>
+            <h2>ویرایش کار</h2>
+            <div class="form-group"><label>عنوان *</label><input type="text" id="editTaskTitle" class="form-control"></div>
+            <div class="form-group"><label>توضیحات</label><textarea id="editTaskDesc" class="form-control"></textarea></div>
+            <div class="form-group"><label>دستمزد</label><input type="text" id="editTaskPrice" class="form-control"></div>
+            <div class="form-group"><label>شماره تماس *</label><input type="text" id="editTaskContact" class="form-control"></div>
+            <input type="hidden" id="editTaskId">
+            <button class="submit-btn" id="saveEditTaskBtn" onclick="saveEditedTask()">ذخیره تغییرات</button>
+        </div>
+    </div>
     <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err)); });
@@ -303,90 +316,90 @@
             else { alert('خطا در حذف محصول'); }
         } catch (e) { alert('خطا در ارتباط با سرور'); }
     }
-                async function addProduct() {
-            const title = document.getElementById('prodTitle').value.trim(); const price = document.getElementById('prodPrice').value.trim();
-            const imgFile = document.getElementById('prodImgFile').files[0]; const imgUrlInput = document.getElementById('prodImgUrl').value.trim();
-            const vidFile = document.getElementById('prodVidFile').files[0]; const vidUrlInput = document.getElementById('prodVidUrl').value.trim();
-            const btn = document.getElementById('addProductBtn'); const statusMsg = document.getElementById('productStatusMsg');
-            
-            if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
-            btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
-            let finalImageUrl = imgUrlInput; let finalVideoUrl = vidUrlInput;
-            
-            try {
-                if (imgFile) { 
-                    btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
-                    const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
-                    const newBlob = await upload(imgFile.name, imgFile, { access: 'public', handleUploadUrl: '/api/upload' });
-                    finalImageUrl = newBlob.url;
-                }
-                if (vidFile) { 
-                    btn.innerHTML = 'آپلود ویدیو... <div class="loader"></div>'; 
-                    const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
-                    const newBlob = await upload(vidFile.name, vidFile, { access: 'public', handleUploadUrl: '/api/upload' });
-                    finalVideoUrl = newBlob.url;
-                }
-                
-                btn.innerHTML = 'ذخیره... <div class="loader"></div>';
-                const response = await fetch('/api/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, video_url: finalVideoUrl }) });
-                if (response.ok) { 
-                    statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; 
-                    document.getElementById('prodTitle').value = ''; document.getElementById('prodPrice').value = ''; document.getElementById('prodImgFile').value = ''; document.getElementById('prodImgUrl').value = ''; document.getElementById('prodVidFile').value = ''; document.getElementById('prodVidUrl').value = ''; 
-                    loadProductsList(); 
-                } else { throw new Error('خطا در ذخیره محصول'); }
-            } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } 
-            finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول'; }
-        }
 
-        async function loadShopList() {
-            const list = document.getElementById('shopList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
-            try {
-                const res = await fetch('/api/shop'); const products = await res.json(); list.innerHTML = '';
-                if (products.length === 0) { list.innerHTML = '<p style="text-align:center;">محصولی یافت نشد.</p>'; return; }
-                products.forEach(p => {
-                    list.innerHTML += `<div class="list-item"><div style="display:flex; align-items:center;"><img src="${p.image_url}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%23ccc\\' stroke-width=\\'2\\' stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\' ry=\\'2\\'></rect><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'></circle><polyline points=\\'21 15 16 10 5 21\\'></polyline></svg>'" alt="img"><div><strong style="font-size:12px;">${p.title}</strong><br><small>${p.price}</small></div></div><button class="action-btn btn-danger" onclick="deleteShopProduct('${p.id}')">حذف</button></div>`;
-                });
-            } catch (e) { list.innerHTML = '<p style="text-align:center; color:red;">خطا.</p>'; }
-        }
-
-        async function deleteShopProduct(id) {
-            if (!confirm('حذف این محصول؟')) return;
-            try { 
-                const res = await fetch(`/api/shop?id=${id}`, { method: 'DELETE' }); 
-                if (res.ok) { loadShopList(); } 
-                else { alert('خطا در حذف محصول'); }
-            } catch (e) { alert('خطا در ارتباط با سرور'); }
-        }
-
-        async function addShopProduct() {
-            const title = document.getElementById('shopTitle').value.trim(); const price = document.getElementById('shopPrice').value.trim(); const desc = document.getElementById('shopDesc').value.trim();
-            const imgFile = document.getElementById('shopImgFile').files[0]; const imgUrlInput = document.getElementById('shopImgUrl').value.trim();
-            const btn = document.getElementById('addShopBtn'); const statusMsg = document.getElementById('shopStatusMsg');
+    async function addProduct() {
+        const title = document.getElementById('prodTitle').value.trim(); const price = document.getElementById('prodPrice').value.trim();
+        const imgFile = document.getElementById('prodImgFile').files[0]; const imgUrlInput = document.getElementById('prodImgUrl').value.trim();
+        const vidFile = document.getElementById('prodVidFile').files[0]; const vidUrlInput = document.getElementById('prodVidUrl').value.trim();
+        const btn = document.getElementById('addProductBtn'); const statusMsg = document.getElementById('productStatusMsg');
+        
+        if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
+        btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
+        let finalImageUrl = imgUrlInput; let finalVideoUrl = vidUrlInput;
+        
+        try {
+            if (imgFile) { 
+                btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
+                const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
+                const newBlob = await upload(imgFile.name, imgFile, { access: 'public', handleUploadUrl: '/api/upload' });
+                finalImageUrl = newBlob.url;
+            }
+            if (vidFile) { 
+                btn.innerHTML = 'آپلود ویدیو... <div class="loader"></div>'; 
+                const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
+                const newBlob = await upload(vidFile.name, vidFile, { access: 'public', handleUploadUrl: '/api/upload' });
+                finalVideoUrl = newBlob.url;
+            }
             
-            if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
-            btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
-            let finalImageUrl = imgUrlInput;
-            
-            try {
-                if (imgFile) { 
-                    btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
-                    const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
-                    const newBlob = await upload(imgFile.name, imgFile, { access: 'public', handleUploadUrl: '/api/upload' });
-                    finalImageUrl = newBlob.url;
-                }
-                
-                btn.innerHTML = 'ذخیره... <div class="loader"></div>';
-                const response = await fetch('/api/shop', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, description: desc }) });
-                if (response.ok) { 
-                    statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; 
-                    document.getElementById('shopTitle').value = ''; document.getElementById('shopPrice').value = ''; document.getElementById('shopDesc').value = ''; document.getElementById('shopImgFile').value = ''; document.getElementById('shopImgUrl').value = ''; 
-                    loadShopList(); 
-                } else { throw new Error('خطا در ذخیره محصول'); }
-            } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } 
-            finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول در فروشگاه'; }
-        }
+            btn.innerHTML = 'ذخیره... <div class="loader"></div>';
+            const response = await fetch('/api/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, video_url: finalVideoUrl }) });
+            if (response.ok) { 
+                statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; 
+                document.getElementById('prodTitle').value = ''; document.getElementById('prodPrice').value = ''; document.getElementById('prodImgFile').value = ''; document.getElementById('prodImgUrl').value = ''; document.getElementById('prodVidFile').value = ''; document.getElementById('prodVidUrl').value = ''; 
+                loadProductsList(); 
+            } else { throw new Error('خطا در ذخیره محصول'); }
+        } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } 
+        finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول'; }
+    }
 
-        async function loadAdminUsers() {
+    async function loadShopList() {
+        const list = document.getElementById('shopList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
+        try {
+            const res = await fetch('/api/shop'); const products = await res.json(); list.innerHTML = '';
+            if (products.length === 0) { list.innerHTML = '<p style="text-align:center;">محصولی یافت نشد.</p>'; return; }
+            products.forEach(p => {
+                list.innerHTML += `<div class="list-item"><div style="display:flex; align-items:center;"><img src="${p.image_url}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%23ccc\\' stroke-width=\\'2\\' stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\' ry=\\'2\\'></rect><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'></circle><polyline points=\\'21 15 16 10 5 21\\'></polyline></svg>'" alt="img"><div><strong style="font-size:12px;">${p.title}</strong><br><small>${p.price}</small></div></div><button class="action-btn btn-danger" onclick="deleteShopProduct('${p.id}')">حذف</button></div>`;
+            });
+        } catch (e) { list.innerHTML = '<p style="text-align:center; color:red;">خطا.</p>'; }
+    }
+
+    async function deleteShopProduct(id) {
+        if (!confirm('حذف این محصول؟')) return;
+        try { 
+            const res = await fetch(`/api/shop?id=${id}`, { method: 'DELETE' }); 
+            if (res.ok) { loadShopList(); } 
+            else { alert('خطا در حذف محصول'); }
+        } catch (e) { alert('خطا در ارتباط با سرور'); }
+    }
+
+    async function addShopProduct() {
+        const title = document.getElementById('shopTitle').value.trim(); const price = document.getElementById('shopPrice').value.trim(); const desc = document.getElementById('shopDesc').value.trim();
+        const imgFile = document.getElementById('shopImgFile').files[0]; const imgUrlInput = document.getElementById('shopImgUrl').value.trim();
+        const btn = document.getElementById('addShopBtn'); const statusMsg = document.getElementById('shopStatusMsg');
+        
+        if (!title || !price || (!imgFile && !imgUrlInput)) { statusMsg.className = 'status-msg error'; statusMsg.innerText = 'لطفاً عنوان، قیمت و عکس را وارد کنید.'; return; }
+        btn.disabled = true; btn.innerHTML = 'در حال پردازش... <div class="loader"></div>'; statusMsg.style.display = 'none';
+        let finalImageUrl = imgUrlInput;
+        
+        try {
+            if (imgFile) { 
+                btn.innerHTML = 'آپلود عکس... <div class="loader"></div>'; 
+                const { upload } = await import('https://esm.sh/@vercel/blob@0.27.0/client');
+                const newBlob = await upload(imgFile.name, imgFile, { access: 'public', handleUploadUrl: '/api/upload' });
+                finalImageUrl = newBlob.url;
+            }
+            
+            btn.innerHTML = 'ذخیره... <div class="loader"></div>';
+            const response = await fetch('/api/shop', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, price, image_url: finalImageUrl, description: desc }) });
+            if (response.ok) { 
+                statusMsg.className = 'status-msg success'; statusMsg.innerText = '✅ محصول ثبت شد!'; 
+                document.getElementById('shopTitle').value = ''; document.getElementById('shopPrice').value = ''; document.getElementById('shopDesc').value = ''; document.getElementById('shopImgFile').value = ''; document.getElementById('shopImgUrl').value = ''; 
+                loadShopList(); 
+            } else { throw new Error('خطا در ذخیره محصول'); }
+        } catch (error) { statusMsg.className = 'status-msg error'; statusMsg.innerText = '❌ ' + error.message; } 
+        finally { btn.disabled = false; btn.innerHTML = 'ثبت محصول در فروشگاه'; }
+    }
+                async function loadAdminUsers() {
             const list = document.getElementById('usersList'); list.innerHTML = '<p style="text-align: center; color: #aaa;">در حال دریافت...</p>';
             try {
                 const response = await fetch('/api/admin?action=list-users'); 
@@ -431,7 +444,7 @@
                 list.innerHTML = '';
                 if (tasks.length === 0) { list.innerHTML = '<p style="text-align: center; color: #777;">هیچ کاری ثبت نشده است.</p>'; return; }
                 tasks.forEach(task => {
-                    list.innerHTML += `<div class="manage-card"><h4>${task.title}</h4><p>${task.description || ''}</p><p>💰 ${task.price || 'توافقی'}</p><p>📞 ${task.contact}</p><div style="margin-top: 10px; display: flex; gap: 10px;"><button class="action-btn btn-danger" onclick="deleteTask('${task.id}')">حذف</button></div></div>`;
+                    list.innerHTML += `<div class="manage-card"><h4>${task.title}</h4><p>${task.description || ''}</p><p>💰 ${task.price || 'توافقی'}</p><p>📞 ${task.contact}</p><div style="margin-top: 10px; display: flex; gap: 10px;"><button class="action-btn btn-success" onclick="openEditTaskModal('${task.id}', '${task.title}', '${task.description || ''}', '${task.price || ''}', '${task.contact}')">ویرایش</button><button class="action-btn btn-danger" onclick="deleteTask('${task.id}')">حذف</button></div></div>`;
                 });
             } catch (error) { list.innerHTML = '<p style="text-align: center; color: red;">خطا در دریافت اطلاعات.</p>'; }
         }
@@ -444,8 +457,37 @@
                 else alert('خطا در حذف کار');
             } catch (e) { alert('خطا در ارتباط با سرور'); }
         }
+
+        function openEditTaskModal(id, title, desc, price, contact) {
+            document.getElementById('editTaskId').value = id;
+            document.getElementById('editTaskTitle').value = title;
+            document.getElementById('editTaskDesc').value = desc;
+            document.getElementById('editTaskPrice').value = price;
+            document.getElementById('editTaskContact').value = contact;
+            document.getElementById('editTaskModal').style.display = 'flex';
+        }
+        function closeEditTaskModal() {
+            document.getElementById('editTaskModal').style.display = 'none';
+        }
+        async function saveEditedTask() {
+            const id = document.getElementById('editTaskId').value;
+            const title = document.getElementById('editTaskTitle').value;
+            const desc = document.getElementById('editTaskDesc').value;
+            const price = document.getElementById('editTaskPrice').value;
+            const contact = document.getElementById('editTaskContact').value;
+            const btn = document.getElementById('saveEditTaskBtn');
+            btn.disabled = true; btn.innerHTML = 'ذخیره... <div class="loader"></div>';
+            try {
+                const res = await fetch('/api/tasks', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, title, description: desc, price, contact })
+                });
+                if (res.ok) { closeEditTaskModal(); loadAdminTasks(); }
+                else { alert('خطا در ویرایش'); }
+            } catch (e) { alert('خطا در ارتباط با سرور'); }
+            finally { btn.disabled = false; btn.innerHTML = 'ذخیره تغییرات'; }
+        }
     </script>
 </body>
 </html>
-
-    
