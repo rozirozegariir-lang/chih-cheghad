@@ -41,7 +41,6 @@ module.exports = async function handler(req, res) {
       client.release();
       console.log(`✅ اشتراک ${months} ماهه کاربر ${phone} فعال شد.`);
 
-      // ارسال پیام تایید با دکمه بازگشت به سایت
       if (token) {
         await fetch(`https://tapi.bale.ai/bot${token}/sendMessage`, {
           method: 'POST',
@@ -88,10 +87,10 @@ module.exports = async function handler(req, res) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: chatId,
-            text: 'سلام! به ربات همیار زندگی خوش آمدید. ✅\nحساب شما با موفقیت به سایت متصل شد. اکنون می‌توانید از طریق سایت، اشتراک خود را خریداری کنید.',
+            text: 'سلام! به ربات همیار زندگی خوش آمدید. ✅\nحساب شما با موفقیت به سایت متصل شد.\n\n👇 برای ادامه، روی دکمه زیر بزنید تا به صفحه پلن‌های اشتراک برگردید و مجدداً پلن مورد نظر خود را انتخاب کنید تا فاکتور پرداخت صادر شود.',
             reply_markup: {
               inline_keyboard: [[
-                { text: '🚀 بازگشت به سایت همیار زندگی', url: 'https://chih-cheghad.vercel.app' }
+                { text: '💳 بازگشت به سایت و انتخاب پلن', url: 'https://chih-cheghad.vercel.app/?show_subscription=true' }
               ]]
             }
           })
