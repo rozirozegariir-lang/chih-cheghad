@@ -12,13 +12,13 @@
       "src": "https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/192/2602.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "https://cdn.jsdelivr.net/gh/EmojiTwo/emojitwo@master/png/512/2602.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
